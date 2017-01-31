@@ -1,0 +1,5 @@
+*.aux
+acl2017.log
+*.out
+acl2017.synctex
+*.synctex
