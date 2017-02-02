@@ -1,37 +1,41 @@
 \section{Introduction}
 
-\todo{ZW: Start by saying DS is a powerful technique for performing relation extraction on a large text corpus where manually labeling every single sentence is impossible. (2) The quality of DS highly depends on the training examples, but it not always possible to have a perfectly labelled data set and noise is pervasive in training data. Therefore, DS-based RE has to work with noisy data. 
-     (3)There have been attempts on modelling/reducing the noises in the training data set, but prior work are terrible... (4) We then move to talk about our key insights,  how fantastic our approach is and how does it go beyond the state-of-the-art. (5) Summarise our experimental results, saying that we beat the state-of-the-art by xx\%.}
+In recent years, distant supervision (\DS) is emerging as a viable means for
+supporting natural language processing (NLP) tasks such as
+relation extraction~\cite{mintz2009distant}, xx~\cite{} and cross-lingual
+semantic analysis~\cite{fang2016learning}.
 
-%Distant supervision is a commonly used method to automatically generate noisy training data with human designed heuristics. This method has been employed in many tasks including sentiment classification \cite{go2009twitter}, named entity recognition \cite{ritter2011named} and relation extraction \cite{mintz2009distant}. However,
+\DS works by first extracting knowledge from a small set of labelled examples
+and then use this knowledge to generate training examples from a large corpus
+of data where manually labeling individual data items will be
+expensive. In the context of relation extraction, one could start by
+feeding \DS with a small number of annotated texts where each sentence is
+mapped to a relation, i.e., a fact tuple like $<PERSON, born-in, PLACE>$;
+\DS can then use the knowledge extracted from the texts to automatically
+generate relation contexts from unlabeled texts.
 
-%Sometimes, the heuristic only consists of a simple rule. For example, \cite{read2005using} considers the smile emoticon and the frown emoticon to expression positive and negative sentiment respectively and build a sentiment classification dataset with this heuristic. Sometimes, the heuristic depends on an existing database. For example,
+One of the fundamental problems of \DS is that the algorithm does not
+guarantee perfect results and often introduces noise to the generated data.
+For instance, \DS could match the fact tuple $<``Donald Trump", born-in,
+``New York">$  in \emph{false positive} contexts like ``\emph{Donald Trump
+worked in New York City}". Prior work has shown that \DS often mistakenly
+labels real positive instances as negative (\emph{false negative}) or versa
+vice (\emph{false positive}), and there could have confusions between
+positive labels too. These noisy data can significantly affect the training
+procedure and lead to poorly-performing models.
 
-Distant supervision is a way of exploiting prior knowledge  to construct training data for large scale classification tasks, without relying on laborious human annotation. 
-The basic paradigm lies in making proper assumptions according to the nature of a task, distilling simple yet effective rules from prior knowledge and finally applying these rules to automatically prepare training data. Successful distant supervision applications include, relation extraction \cite{mintz2009distant}, cross-lingual semantic analysis \cite{fang2016learning}, and so on. The former assumes that any sentence containing both the subject and object of a $<$ $subj$,  $rel$,  $obj$ $>$ knowledge triple can be seen as a support for the existence of relation $rel$ between $subj$ and $obj$. Therefore, one can easily create large scale training data by aligning the triples in a structured knowledge base with free text automatically, without manually annotating a sentence. 
-%The latter assumes that words of different languages which share similar meaning should have similar POS tags, and thus automatically create training data for low-resource languages according to their English translations.
+There have been attempts to tackle the noisy data problem of \DS. These
+include work on xx, xxx, and xx. These works represent a substantial leap
+forward towards making \DS more practical. However, prior work is shitty
+because …
 
-%translates the English POS tag training data to other languages to compensate the the problem of limited training data for low-resourced languages.
+In this paper, we show that while noise is inevitable, it is possible to
+accurately model the noise pattern. Our key insight is that the noise is not
+random? We propose a novel approach to xxx. We apply our method to relation
+extraction. To tackle xxx, we employ curriculum learning to xxx…. As
+knowledge is built up, our algorithm can xxx.
 
-Although distant supervision can significantly reduce the cost of obtaining training data, it also inevitably brings noise to the data, since the assumptions may not be perfect.  \todo{F: we need example here. Shall we put the at-least-one assumption here? or somewhere later? } We find that many automatically labeled-positive data are actually negative instances (\emph{false positive}), while some labeled-negative data are real positive instances (\emph{false negative}). Furthermore, there may also be confusions between positive labels. All these noisy data inevitably affect the training procedure, and lead to a classification model with inaccurate performances.  \todo{F: there have been several work addressing the noises, but .....  for example,  \emph{at-least-one assumption}. we may talk about sentence level and bag level here. }
-
-We need to note that, the noise introduced by distant supervision is not random, and the resulting dataset may speak for itself, e.g.,  containing useful clues to identify its noise pattern. Take distantly supervised relation extraction as an example, many sentences automatically labeled to express the relation \emph{place\_of\_birth} between a person and a place may only talk about the work place of this person. \blue{F: this is the motivation for TM, right? but it is hard to understand, we need something simple but easy to get the point. Since we also find many sentences labeled as \emph{place\_lived} talks about the person's work place, we can reasonably assume that if a sentence is talking about the work place of a person, although the real relation expressed by the sentence is \emph{place\_lived}, there are still chances that it is erroneously labeled as \emph{place\_of\_birth} by distant supervision.} 
-
-\blue{F: We need to say, TM is a way to model the noise, better than previous work? but still need ways to control the noise though trace regularization???? }
-This shows that it is possible to identify the noise pattern by analyzing the input data. In this paper, we propose to dynamically generate a transition matrix $\mathbf{T}$ for each datum to model the transition from the true label to the observed label. Here $T_{ij}$ represents the conditional probability that the observed label is $j$ given the true label is $i$. Since the label \red{modeled by transition matrix} can be both positive and negative, this method actually has the ability to model all the three types of noise introduced by distant supervision. \blue{F: i do not know why we need this sentence?  The dynamically built transition matrices provide us the oppurtunity to characterize the noise of the data, which should be properly treated to control the noise.}
-
-\red{F: Here we need to gently shift our focus  from noises to quality of the data, and combine TM and curriculum learning.  In some cases, the rules used to build the training data may be further exploited to identify the noise level inside the data. For example, ....}
-
-%The difficulty of training the transition matrix lies in that the only supervision we can use is the noisy label of the data. 
-
-%To overcome the difficulty, we propose to combine curriculum learning and trace normalization over the transition matrix to train our model. 
-
-\blue{F: we do not need this, but we need how TM works to model the noise and how regularization helps to control the effect of noise controlling.    }
-In this paper, we focus specifically on the relation extraction task. The data is noisy because not all sentences containing $subj$ and $obj$ support the ($subj$, $rel$, $obj$) triple. \todo{for example...} In previous literature, this noise is often implicitly handled by the \emph{at-least-one assumption} that at least one of the sentences containing both $subj$ and $obj$ support the ($subj$, $rel$, $obj$) triple. The  sentences that containing both $subj$ and $obj$ are therefore aggregated into a sentence bag, and the problem becomes classifying the relation expressed by the sentence bag instead \cite{riedel2010modeling,lin2016neural}.
-
-\blue{F: we do not need this, but how to find the clues about data quality and combine them into a CL framework, and work with Regularized TM to improve. }However, the at-least-one assumption is not perfect either, and therefore introduces bag level noise. First, if all the retrieved sentences do not support the ($subj$, $rel$, $obj$) triple, this bag is false positive. Second, if the triple is true but missing in the KB, then the bag is false negative. 
-%Many methods have been developed to deal with this problem \cite{min2013distant,ritter2013modeling,xu2013filling}.
-
-We apply our transition matrix method to both sentence level and bag level models. We also propose to combine curriculum learning and trace regularization for training to deal with the lack of direct guidance over the noise. The experiments show that our transition matrix method improves both of these models in two datasets. We also show that our training procedure can make use of the prior knowledge of data quality and help the transition matrix model the noise better. 
-
-%We find that, the at-least-one assumption works better than the sentence level transition matrix model if no prior knowledge of the data quality is used. However, if we know which data are reliable, the sentence level transition matrix model works significantly better than bag level transition matrix models. This shows that, with some indirect guidance, explicitly modeling the noise works better than using heuristics to implicitly handle the noise.
+We evaluate our approach by applying it to xxx and compare it against a
+state-of-the-art xx. Experimental results show that our approach can create a
+higher-quality relation extraction classifier with xx% better performance
+using the same set of training data.
