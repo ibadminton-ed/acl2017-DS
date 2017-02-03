@@ -6,3 +6,4 @@ acl2017.synctex
 *.blg
 acl2017.bbl
 acl2017.pdf
+*.synctex(busy)
