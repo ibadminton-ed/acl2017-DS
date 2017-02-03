@@ -5,7 +5,7 @@
 %In this paper, we apply transition matrix to two types of models. First, sentence level models take a sentence $s$ containing both $subj$ and $obj$ as input. We need to identify the relation expressed by the sentence between $subj$ and $obj$. Second, bag level models are based on the at-least-one assumption and take a bag of sentences $S$ as input where each sentence $s\in S$ contains both $subj$ and $obj$. We need to identify the relation expressed by the sentence bag between $subj$ and $obj$.
 
 \blue{In this paper, we will inject our noise modeling approach in both settings, and further}
- investigate the performance of our approach in the situation with and without prior knowledge of the data quality. Specifically, we assume the prior knowledge can help us \red{roughly} distinguish reliable data from unreliable ones, and therefore split the dataset into several subsets with different levels of reliability. If no prior knowledge can be used, all the data are treated equally.
+ investigate the performance of our approach in the situation with and without prior knowledge of the data quality. Specifically, we assume the prior knowledge can help us roughly distinguish reliable data from unreliable ones, and therefore split the dataset into several subsets with different levels of reliability. If no prior knowledge can be used, all the data are treated equally.
 
 %we experiment with the dataset proposed by \cite{luo2016temporal} which aims at extracting relations between entity and time. With some heuristics, this dataset can be further split intro three subsets with different levels of reliability, which enables us to conduct all our experiment settings. To show the generalization ability of our model, we also experiment with the dataset proposed by \cite{riedel2010modeling}, which aims at extracting relations between entities and there is no prior knowledge of the data quality can be used. \todo{can be shorter}
 
@@ -38,10 +38,10 @@ For sentence level models, the sentence embedding $\mathbf{x}$ is passed to anot
 \begin{equation}
 T_{ij} = \frac{exp({\mathbf{w}_{ij}^T \mathbf{x}_n + b})}{\sum_{j=1}^{|\mathbb{C}|}{exp({\mathbf{w}_{ij}^T \mathbf{x}_n + b}})}
 \end{equation}
-where $T_{ij}$ is the conditional probability that this sentence is labeled as relation $j$ by distant supervision given \blue{$i$ as the true relation}, $\mathbf{w}_{ij}$ is the weight vector for this situation, $b$ is a scalar bias and $|\mathbb{C}|$ is the number of relations. Note that the softmax function guarantees that each row of the transition matrix $\mathbf{T}$ sums to 1.
+where $T_{ij}$ is the conditional probability that this sentence is labeled as relation $j$ by distant supervision given $i$ as the true relation, $\mathbf{w}_{ij}$ is the weight vector for this situation, $b$ is a scalar bias and $|\mathbb{C}|$ is the number of relations. Note that the softmax function guarantees that each row of the transition matrix $\mathbf{T}$ sums to 1.
 
 \subsection{Observed Relation Distribution}
-The observed relation distribution $\mathbf{o}$ is calculated by \blue{multiplying transition matrix $T$ and prediction probability $P$: }. %the following equation:
+The observed relation distribution $\mathbf{o}$ is calculated by multiplying transition matrix $T$ and the predicted relation distribution $p$:
  \begin{equation}
 \mathbf{o} = \mathbf{T}^T \bm\cdot \mathbf{p}
 \label{eq_transition}
@@ -54,7 +54,8 @@ The observed relation distribution $\mathbf{o}$ is calculated by \blue{multiplyi
  \fi
  where $\bm\cdot$ represents dot product and we normalizes the elements of $\mathbf{o}$ so that $\sum_i{o_i}=1$ afterwards.
 
-Different from previous works that use the predicted relation distribution $\mathbf{p}$ to directly match the relation labeled by distant supervision. We instead \red{want??? $\mathbf{p}$ to match??? the true relation} and use $\mathbf{o}$ to match the noisy label. Note that if the true relation of the input training instance is $i$, we can assume that this relation $i$ could be labeled as relation $j$ by distant supervision with probability $T_{ij}$. Therefore, Equation \ref{eq_transition} actually models the procedure of how the noisy label is produced and thus can help the model make better use of the noisy training data. \red{How to better use?? by using regularization????}
+Different from previous works that use the predicted relation distribution $\mathbf{p}$ to directly match the relation labeled by distant supervision. \orange{We still use $\mathbf{p}$ as output but match the noisy label with $\mathbf{o}$ instead}. Note that if the true relation of the input training instance is $i$, we can assume that this relation $i$ could be labeled as relation $j$ by distant supervision with probability $T_{ij}$. Therefore, Equation \ref{eq_transition} actually models the procedure of how the noisy label is produced and thus \orange{protects $\mathbf{p}$ from the bad influence of noise.}
+%can help the model make better use of the noisy training data. \red{How to better use?? by using regularization????}
 
 Also note that the noise modeling branch and $\mathbf{o}$ is only used in the training phase. In the test phase, we only use the prediction brach and take the predicted relation distribution $\mathbf{p}$ as our output. \todo{last paragraph can be removed}
 
@@ -70,7 +71,7 @@ The attention aggregation method is proposed by \cite{lin2016neural}. It calcula
 where $\mathbf{x}_{i}$ is the embedding of sentence $i$, $n$ is the number of sentences in the bag and $\alpha_{ij}$ is the attention value over sentence $i$ with respect to relation $j$. The resultant bag embedding is fed to a softmax classifier to predict the probability of relation $j$.
 
 \paragraph{Bag Level Transition Matrix}
-\red{THis is only for attention aggregation method?? how about average aggregation one??} Here we also use the attention mechanism to calculate the bag embedding with respect to each relation with Equation \ref{eq_att_bag_embed}, and the attention value for sentence $i$ with respect to relation $j$ is calculated by:
+\orange{We use attention mechanism to generate transition matrix for both average and attention aggregation models.} Specifically, we calculate the bag embedding with respect to each relation with Equation \ref{eq_att_bag_embed}, and the attention value for sentence $i$ with respect to relation $j$ is calculated by:
 \begin{equation}
 \alpha_{ij} = \frac{exp(\mathbf{x}_i^T \mathbf{r}_t^j)}{\sum_i^n{exp(\mathbf{x}_i^T \mathbf{r}_t^j)}}
 \end{equation}
@@ -84,7 +85,8 @@ where $\mathbf{s}_j$ is the bag embedding with respect to relation $j$, $\mathbf
 
 
 \section{Training Procedure}
-\red{I would suggest to move some of the motivations to the Introduction part,  we need to motivate regularization and CL there.}The difficulty of training the transition matrix lies in that there is no direct guidance over the noise pattern. The only supervision we have is the noisy label produced by distant supervision. However, if we have prior knowledge to roughly separate the data into reliable and unreliable parts, we can use the split as indirect supervision over the noise pattern by letting the model treat these data differently. In this section, we describe how to use trace regularization to control the behavior of the transition matrix. Furthermore, instead of modeling the noise at the very beginning of the training, we emphasis the noise modeling gradually by building different curriculums in the situation with and without prior knowledge of the data quality under the curriculum learning framework. Apart from that, we also show how to constrain the \red{ability??} of the transition matrix to avoid \red{overfitting???}.
+\red{I would suggest to move some of the motivations to the Introduction part,  we need to motivate regularization and CL there.}The difficulty of training the transition matrix lies in that there is no direct guidance over the noise pattern. The only supervision we have is the noisy label produced by distant supervision. However, if we have prior knowledge to roughly separate the data into reliable and unreliable parts, we can use the split as indirect supervision over the noise pattern by letting the model treat these data differently. In this section, we describe how to use trace regularization to control the behavior of the transition matrix. Furthermore, instead of modeling the noise at the very beginning of the training, we emphasis the noise modeling gradually by building different curriculums in the situation with and without prior knowledge of the data quality under the curriculum learning framework. 
+%Apart from that, we also show how to constrain the \red{ability??} of the transition matrix to avoid \red{overfitting???}.
 
 \subsection{Trace Regularization}
 Intuitively, if the noise is small, the transition matrix $\mathbf{T}$ will tend to become an identity matrix (vice versa).  Since each row of $\mathbf{T}$ sums to 1, the similarity between the transition matrix and the identity matrix can be represented by the trace of the transition matrix $\mathbf{T}$. The larger the $trace(\mathbf{T})$ is, the smaller the elements that do not lie in the diagonal are, and the more similar the transition matrix $\mathbf{T}$ is to identity matrix. Therefore, we can realize our expectation over the noise level of the data by controlling the value of $trace(\mathbf{T})$.
@@ -93,32 +95,35 @@ Intuitively, if the noise is small, the transition matrix $\mathbf{T}$ will tend
 The basic idea of curriculum learning is simple: start with the easiest aspect of a task, and level up the difficulty gradually.
 
 \paragraph{With Prior Knowledge of Data Quality}
-If we have prior knowledge about which part of the training data is more reliable and which is unreliable, the most straightforward way to build a curriculum is by controlling \red{reliability of ????} the training data. Specifically, we can first train the prediction branch on the reliable data for some epochs and then add the unreliable data \red{as well as the noise modeling branch???}. In this way, the prediction branch is roughly trained before exposed to more noisy data.
+If we have prior knowledge about which part of the training data is more reliable and which is unreliable, the most straightforward way to build a curriculum is by controlling the reliability of training data. Specifically, we can first train the prediction branch on the reliable data for some epochs and then add the unreliable data \orange{to train the full model}. In this way, the prediction branch is roughly trained before exposed to more noisy data.
 
-Furthermore, we can also \red{utilize our prior knowledge of the data quality in the form of trace regularization}. \red{Specifically, we use cross entropy as basic loss function and the final loss function with trace regularization is: this sentence is weird!}
+Furthermore, \orange{we can also take better control of the training procedure by trace regularization.}
+%\red{utilize our prior knowledge of the data quality in the form of trace regularization}. 
+Specifically, our loss function is:
 
 \begin{equation}
 \begin{aligned}
 Loss=\sum_{i=1}^M{\sum_{j=1}^{N_i}{-log(o_{ijy_{ij}})}} + \beta_i trace(\mathbf{T}_{ij})
 \end{aligned}
 \end{equation}
-where $i$ is the index of the data subsets, $j$ is the index of training data, $\beta_i$ is the trace regularization weight for subset $i$, $\mathbf{T}_{ij}$, $y_{ij}$ and $o_{ijy_{ij}}$ are the transition matrix, relation labeled by distant supervision, and the observed probability of that relation for datum $j$ in subset $i$ respectively.
+where the left side is vanilla cross entropy and the right side is trace regularization, $i$ is the index of the data subsets, $j$ is the index of training data, $\beta_i$ is the trace regularization weight for subset $i$, $\mathbf{T}_{ij}$, $y_{ij}$ and $o_{ijy_{ij}}$ are the transition matrix, relation labeled by distant supervision, and the observed probability of that relation for datum $j$ in subset $i$ respectively.
 
-For the reliable subset, we want $trace(\mathbf{T})$ to be large (negative $\beta$) so that the element values of $\mathbf{T}$ will be centralized to the diagonal and the transition matrix will be similar to identity matrix. As for the unreliable subsets, we want the $trace(\mathbf{T})$ to be small (positive $\beta$) so that the element values of their transition matrices will be diffusive and \red{the transition matrix is encouraged to model the noise??? how and why???}. Note that this loss function only works for sentence level models, since reliable sentences and unreliable ones are all aggregated into a sentence bag in the bag level models and therefore we can not determine which bag is reliable and which is not. However, bag level models can still use the curriculum by changing the content of the bag. \red{so ??}
+For the reliable subset, we want $trace(\mathbf{T})$ to be large (negative $\beta$) so that the element values of $\mathbf{T}$ will be centralized to the diagonal and the transition matrix will be similar to identity matrix. As for the unreliable subsets, we want the $trace(\mathbf{T})$ to be small (positive $\beta$) so that the element values of their transition matrices will be diffusive \orange{and the transition matrix will be less similar to identity matrix. In other words, the transition matrix is encouraged to model the noise}. Note that this loss function only works for sentence level models, since reliable sentences and unreliable ones are all aggregated into a sentence bag in the bag level models and therefore we can not determine which bag is reliable and which is not. However, bag level models can still use the curriculum by changing the content of the bag, \orange{and can therefore benefit from the prior knowledge of data quality.} 
 
 \paragraph{Without Prior Knowledge of Data Quality}
 \label{curr_over_data}
-If we do not have the prior knowledge about the quality of training data, we can still build a curriculum, which can be used in all situations, by controlling the training objective\red{ gradually controlling the impact of the transition matrix}. Specifically, \red{we design a decreasing weighting scheme for the trace regularization component}, defined as:
+If we do not have the prior knowledge about the quality of training data, we can still build a curriculum, which can be used in all situations, \orange{by controlling the training objective to gradually emphasis on noise modeling. Specifically, we design a decreasing weighting scheme for both the cross entropy of output prediction and the trace regularization component: (CHANGE EXPLAINATION: the decreasing scheme is for both $\alpha$ and $\beta$, not just $\beta$.)}
+%\red{ gradually controlling the impact of the transition matrix}. Specifically, \red{we design a decreasing weighting scheme for the trace regularization component}, defined as:
 
 \begin{equation}
 \begin{aligned}
-Loss	&=\sum_{i=1}^N{-(\alpha log(o_{iy_{i}}) + (1-\alpha) log(p_{iy_{i}}))} \\
+Loss	&=\sum_{i=1}^N{-((1-\alpha) log(o_{iy_{i}}) + \alpha log(p_{iy_{i}}))} \\
 &+ \beta trace(\mathbf{T}_{i})
 \end{aligned}
 \end{equation}
 where $0\le\alpha\le1$, $y_i$ is the relation assigned by distant supervision for datum $i$, $o_{iy_{i}}$ and $p_{iy_{i}}$ are the probabilities that the observed and predicted relation for datum $i$ is $y_i$ respectively. Instead of only using the observed relation distribution $\mathbf{o}$ to simulate the relation labeled by distant supervision, we use the linear combination of the cross entropy of both the observed relation distribution $\mathbf{o}$ and the predicted relation distribution $\mathbf{p}$.
 
-At the beginning of training, we set $\alpha=1$ and $\beta<0$, which means we do not expect to model the noise (easy part of the problem\red{????}). As the training proceeds, the prediction branch gradually learns the basic prediction ability,  then we increase the difficulty level by decreasing $\alpha$ and the absolute value of $\beta$ by $\rho$ every $\tau$ epochs to \red{gradually guide our model to learn to model the noise. }
+\orange{We consider ignoring the noise is easier than modeling the noise. Therefore, to build a curriculum}, we set $\alpha=1$ and $\beta<0$ at the start of the training, which means we do not expect to model the noise. As the training proceeds, the prediction branch gradually learns the basic prediction ability, then we increase the difficulty level by decreasing $\alpha$ and the absolute value of $\beta$ by $\rho$ every $\tau$ epochs to gradually guide our model to learn to model the noise.
 
 \subsection{Constrained Transition Matrix}
-Recall that the bag level noise mainly consists of false negative and false positive \blue{why there is no label confusion in bag level??}, but our transition matrix also has the ability to model the confusion among positive relations. To prevent overfitting and make the model \red{concentrate on the false negative and false positive noise??}, we restrict the transition matrix for bag level models so that only the diagonal, the first column and the first row of the transition matrix do not equal to zero (assume the index of \emph{no-relation} is 0).
+\orange{Since the triples in knowledge base are reliable in most of the times, the positive label confusion noise is less likely than the false negative and false positive noise.} However our transition matrix has the ability to model all these three types of noise. To prevent overfitting and make the model \red{concentrate on the false negative and false positive noise??}\orange{(not sure about the problem)}, we restrict the transition matrix for bag level models so that only the diagonal, the first column and the first row of the transition matrix do not equal to zero (assume the index of \emph{no-relation} is 0).
