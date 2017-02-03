@@ -1,0 +1,25 @@
+\section{Problem Definition}
+The task of distantly supervised relation extraction is to extract fact triples, i.e. $<$\emph{subj},  \emph{rel},
+\emph{obj} $>$, from free text using existing knowledge base. This technique can be applied in the sentence and the bag
+levels.  The former  takes a sentence $s$ containing both $subj$ and $obj$ as input, and outputs the relation expressed
+by the sentence between $subj$ and $obj$. The latter setting is based on the \textit{at-least-one} assumption
+(\todo{explain the assumption if not explained before}) and takes a bag of sentences $S$ as input where each sentence
+$s\in S$ contains both $subj$ and
+$obj$, and output  the relation expressed by the sentence bag between $subj$ and $obj$.
+
+
+This work aims to improve the state of the art in distant supervision for relation extraction. 
+We do so by (1)..(2)...(3).
+Our model is applied at both the sentence and the bag levels. We evaluate approach
+in a scenarios where we have prior knowledge of the data quality and those where we do not have. 
+\todo{How to split data sets should go to experimental setup}
+
+
+%In this paper, we will \orange{apply (changed from inject)} our noise modeling approach in both settings, and further investigate the performance of our approach in the situation with and without prior knowledge of the data quality. Specifically, we assume the prior knowledge can help us roughly distinguish reliable data from unreliable ones, and therefore split the dataset into several subsets with different levels of reliability. If no prior knowledge can be used, all the data are treated equally.
+
+
+%In this paper, we apply transition matrix to two types of models. First, sentence level models take a sentence $s$ containing both $subj$ and $obj$ as input. We need to identify the relation expressed by the sentence between $subj$ and $obj$. Second, bag level models are based on the at-least-one assumption and take a bag of sentences $S$ as input where each sentence $s\in S$ contains both $subj$ and $obj$. We need to identify the relation expressed by the sentence bag between $subj$ and $obj$.
+
+%\blue{DS is a powerful technique for performing relation extraction on a large text corpus where manually labeling every single sentence is impossible}
+%
+%Distantly supervised relation extraction aims at extracting $<$ $subj$,  $rel$,  $obj$ $>$ triples from free text using distantly obtained training data, which can be examined in two different settings, i.e., sentence level, and bag level. The former  takes a sentence $s$ containing both $subj$ and $obj$ as input, and output the relation expressed by the sentence between $subj$ and $obj$. The latter setting is based on the \textit{at-least-one} assumption (\todo{explain the assumption if not explained before}) and takes a bag of sentences $S$ as input where each sentence $s\in S$ contains both $subj$ and $obj$, and output  the relation expressed by the sentence bag between $subj$ and $obj$.

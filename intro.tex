@@ -1,28 +1,24 @@
 \section{Introduction}
 
-In recent years, distant supervision (\DS) is emerging as a viable means for
-supporting natural language processing (NLP) tasks such as
-relation extraction~\cite{mintz2009distant}, xx~\cite{} and cross-lingual
-semantic analysis~\cite{fang2016learning}.
+In recent years, distant supervision (\DS) is emerging as a viable means for supporting various natural language
+processing (NLP) tasks, including relation extraction~\cite{mintz2009distant}, xx~\cite{} and cross-lingual semantic
+analysis~\cite{fang2016learning}. \DS works by exploiting knowledge bases (such as Freebase) to automatically label
+entities to generate
+training examples from large corpora where manually labeling individual data items will be expensive.
 
-\DS works by first extracting knowledge from a small set of labelled examples
-and then using this knowledge to generate training examples from a large corpus
-of data where manually labeling individual data items will be
-expensive. In the context of relation extraction, one could start by
-feeding \DS with a small number of annotated texts where each sentence is
-mapped to a relation, i.e., a fact tuple like $<PERSON, born-in, PLACE>$;
-\DS can then use the knowledge extracted from the texts to automatically
-generate relation contexts from unlabeled texts.
+%. In the
+%context of relation extraction, one could start by feeding \DS with a set annotated texts where each
+%sentence is mapped to a relation, i.e., a fact tuple like $<$PERSON, \emph{born-in}, PLACE$>$; \DS can then use the knowledge
+%extracted from the texts to
+%generate relation contexts from unlabeled texts.
 
-One of the fundamental problems of \DS is that the algorithm does not
-guarantee perfect results and often introduces noise to the generated data.
-For instance, \DS could match the fact tuple $<``Donald Trump", born-in,
-``New York">$  in \emph{false positive} contexts like ``\emph{Donald Trump
-worked in New York City}". Prior work has shown that \DS often mistakenly
-labels real positive instances as negative (\emph{false negative}) or versa
-vice (\emph{false positive}), and there could have confusions between
-positive labels too. These noisy data can significantly affect the training
-procedure and lead to poorly-performing models.
+A fundamental problem of \DS is that the algorithm does not guarantee perfect results and often introduces noise to the
+generated data. In the context of relation extraction, \DS could match the fact tuple $<$``Donald Trump",
+\emph{born-in}, ``New York"$>$  in \emph{false positive} contexts like ``\emph{Donald Trump worked in New York City}".
+Prior work has shown that \DS often mistakenly labels real positive instances as negative (\emph{false negative}) or
+versa vice (\emph{false positive}), and there could have confusions between positive labels too. These noisy data can
+significantly affect the training
+procedure and lead to poorly-performing models. This drawback greatly hinders the wide adoption of this powerful technique. 
 
 There have been attempts to tackle the noisy data problem of \DS. These
 include work on xx, xxx, and xx. These works represent a substantial leap
