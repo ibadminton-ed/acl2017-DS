@@ -3,3 +3,6 @@ acl2017.log
 *.out
 acl2017.synctex
 *.synctex
+*.blg
+acl2017.bbl
+acl2017.pdf
