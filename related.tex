@@ -5,7 +5,7 @@
 \paragraph{Distant Supervision in NLP} In addition to relation extraction~\cite{mintz2009distant}, distant supervision
 (\DS) is shown to be effective in generating training data for various NLP tasks, e.g., tweet sentiment
 classification~\cite{go2009twitter}, multi-instance learning with overlapping relations~\cite{ritter2011named}.
-However, these early applications of \DS do not address the issue of data noise. 
+However, these early applications of \DS do not address the issue of data noise.
 
 %Due to the simplicity and the good generalization ability of distant supervision, this method has been utilized in
 %many tasks. \cite{go2009twitter} builds training data for sentiment classification by using emoticons to label the
@@ -16,14 +16,14 @@ However, these early applications of \DS do not address the issue of data noise.
 %existence of the triple.
 
 \paragraph{Noise Reduction}
-Numerous approaches have been proposed in recent years to reduce the influence of wrongly labeled data in relation extraction (\RE). 
+Numerous approaches have been proposed in recent years to reduce the influence of wrongly labeled data in relation extraction (\RE).
 The work presented by \cite{takamatsu2012reducing} removes potential noisy sentences by identifying bad syntactic
 patterns at the pre-processing stage. Several researchers proposed to alleviate the problem by considering the \RE task
 as a multi-instance classification
 problem and assume
-that at least one of the retrieved sentences (or sentence bags) supports the fact triple (i.e. at-least-one assumption)~\cite{riedel2010modeling,hoffmann2011knowledge,surdeanu2012multi,zeng2015distant,lin2016neural}. 
+that at least one of the retrieved sentences (or sentence bags) supports the fact triple (i.e. at-least-one assumption)~\cite{riedel2010modeling,hoffmann2011knowledge,surdeanu2012multi,zeng2015distant,lin2016neural}.
 In contrast to our work in noise modeling, these prior approaches all aim to identify reliable sentences to reduce
-the bad influence of unreliable ones. 
+the bad influence of unreliable ones.
 
 %
 %Although distant supervision significantly reduces human efforts in build training data, it also introduces noise to
@@ -39,19 +39,19 @@ the bad influence of unreliable ones.
 
 \paragraph{Noise Modeling}
 The at-least-one assumption mentioned above is often a rather strong assumption in practice, and there are still chances that the
-sentence bag may be false positive or false negative. Thus it is important to model the noise pattern to guide the learning procedure. 
+sentence bag may be false positive or false negative. Thus it is important to model the noise pattern to guide the learning procedure.
 Recent work in the area includes \cite{xu2013filling} which uses pseudo-relevance feedback to find
-possible false negative data, and \cite{ritter2013modeling} and \cite{min2013distant} that  
+possible false negative data, and \cite{ritter2013modeling} and \cite{min2013distant} that
 employ a set of latent variables to represent the true relation. Our approach differs
-from the latter two approaches in two aspects. Firstly, we target the neutral network framework while 
+from the latter two approaches in two aspects. Firstly, we target the neutral network framework while
 they target the probabilistic graphic model framework. Secondly, we
-advance their models by providing the capability to model the fine-grained transition from the true to the observed relation. 
+advance their models by providing the capability to model the fine-grained transition from the true to the observed relation.
 
 
 
 %\cite{ritter2013modeling,min2013distant} model the noise by adding a set of latent
 %variables to the MultiR model \cite{hoffmann2011knowledge} and the MIML model \cite{surdeanu2012multi} respectively to
-%represent the true relation before the observed relations. 
+%represent the true relation before the observed relations.
 %Our method shares similar spirit to
 %\cite{ritter2013modeling} and \cite{min2013distant} in that we all generate the true relation before the observed
 %relation. We differs from them in that our model is designed in the neural network framework and their models are
@@ -72,7 +72,7 @@ training data item. However, instead of using EM \todo{what's EM?}, we train our
 In the field of NLP, there is currently little work in neural-network-based denoising. The work presented in
 \cite{fang2016learning} is the nearest one, which uses a global transition matrix to model the noise introduced by
 cross-lingual projection of training data. Our work advances \cite{fang2016learning} through utilizing trace regularization
-to dynamically adapt the transition matrix. This leads to significant better performance (see Section~\ref{evaluation}).
+to dynamically adapt the transition matrix. This leads to significant better performance (see Section~\ref{sec:evaluation}).
 
 
 % Our method is also related to the thread of work of designing denoising neural network components in computer vision.  \cite{sukhbaatar2014training} proposes to use a global transition matrix to transform the true label distribution to the observed label distribution and uses weight decay on the transition matrix during training. \cite{reed2014training} also uses a hidden layer to represent the true label distribution but try to force it to predict both the noisy label and the input. \cite{chen2015webly,xiao2015learning} first estimates the transition matrix on the clean data set and use it in the noisy data set. \cite{misra2016seeing} generates the transition matrix dynamically for each training instance.
