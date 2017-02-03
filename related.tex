@@ -1,15 +1,62 @@
 \section{Related Work}
-\todo{add more description about DS}
-\todo{ZW: Starting by saying something like: Our work lies at the intersection of numerous areas: relation extraction, xx, xx. There is no work similar to ours, with respect to modeling the noise of training data for distant supervision and then use the knowledge of noise to improve relation extraction. We then organise the related work into different areas.}
+%\todo{add more description about DS}
+%\todo{ZW: Starting by saying something like: Our work lies at the intersection of numerous areas: relation extraction, xx, xx. There is no work similar to ours, with respect to modeling the noise of training data for distant supervision and then use the knowledge of noise to improve relation extraction. We then organise the related work into different areas.}
 
-\paragraph{Distant Supervision}
+\paragraph{Distant Supervision in NLP} In addition to relation extraction~\cite{mintz2009distant}, distant supervision
+(\DS) is shown to be effective in generating training data for various NLP tasks, e.g., tweet sentiment
+classification~\cite{go2009twitter}, multi-instance learning with overlapping relations~\cite{ritter2011named}.
+However, these early applications of \DS do not address the issue of data noise. 
+
+%Due to the simplicity and the good generalization ability of distant supervision, this method has been utilized in
+%many tasks. \cite{go2009twitter} builds training data for sentiment classification by using emoticons to label the
+%sentiment polarity of sentences. \cite{ritter2011named} constructs entity type classification data by aligning entity
+%mentions with their possible types in Freebase, \cite{duong2014can} builds POS tagging data for low-resource languages
+%by translating and projecting English POS tagging results. \cite{mintz2009distant} builds relation extraction data by
+%considering the sentences containing both the subject and the object of a triple in knowledge base to support the
+%existence of the triple.
+
+\paragraph{Noise Reduction}
+Numerous approaches have been proposed in recent years to reduce the influence of wrongly labeled data in relation extraction (\RE). 
+The work presented by \cite{takamatsu2012reducing} removes potential noisy sentences by identifying bad syntactic
+patterns at the pre-processing stage. Several researchers proposed to alleviate the problem by considering the \RE task
+as a multi-instance classification
+problem and assume
+that at least one of the retrieved sentences (or sentence bags) supports the fact triple (i.e. at-least-one assumption)~\cite{riedel2010modeling,hoffmann2011knowledge,surdeanu2012multi,zeng2015distant,lin2016neural}. 
+In contrast to our work in noise modeling, these prior approaches all aim to identify reliable sentences to reduce
+the bad influence of unreliable ones. 
+
+%
+%Although distant supervision significantly reduces human efforts in build training data, it also introduces noise to
+%the dataset. In relation extraction, \cite{takamatsu2012reducing} considers the denoising problem as a pre-processing
+%problem, and removes potential noisy sentences by identifying bad syntactic patterns. \cite{riedel2010modeling}
+%proposes to alleviate the noise problem by considering the relation extraction task as a multi-instance classification
+%problem based on the assumption that at least one of the retrieved sentences (sentence bag) support the triple. Under
+%the multi-instance classification paradigm, \cite{hoffmann2011knowledge,surdeanu2012multi} use graphic models to solve
+%the problem, \cite{zeng2015distant} use piece-wise convolutional neural network (PCNN) for sentence embedding and
+%\cite{lin2016neural} further proposes
+%to use attention mechanism to better distinguish true positive ones from false positive ones. Instead of modeling the noise, these models actually only tries to identify the reliable sentences and reduce the influence of unreliable ones.
 
 
-Due to the simplicity and the good generalization ability of distant supervision, this method has been utilized in many tasks. \cite{go2009twitter} builds training data for sentiment classification by using emoticons to label the sentiment polarity of sentences. \cite{ritter2011named} constructs entity type classification data by aligning entity mentions with their possible types in Freebase, \cite{duong2014can} builds POS tagging data for low-resource languages by translating and projecting English POS tagging results. \cite{mintz2009distant} builds relation extraction data by considering the sentences containing both the subject and the object of a triple in knowledge base to support the existence of the triple. 
+\paragraph{Noise Modeling}
+The at-least-one assumption mentioned above is often a rather strong assumption in practice, and there are still chances that the
+sentence bag may be false positive or false negative. Thus it is important to model the noise pattern to guide the learning procedure. 
+Recent work in the area includes \cite{xu2013filling} which uses pseudo-relevance feedback to find
+possible false negative data, and \cite{ritter2013modeling} and \cite{min2013distant} that  
+employ a set of latent variables to represent the true relation. Our approach differs
+from the latter two approaches in two aspects. Firstly, we target the neutral network framework while 
+they target the probabilistic graphic model framework. Secondly, we
+advance their models by providing the capability to model the fine-grained transition from the true to the observed relation. 
 
-Although distant supervision significantly reduces human efforts in build training data, it also introduces noise to the dataset. In relation extraction, \cite{takamatsu2012reducing} considers the denoising problem as a pre-processing problem, and removes potential noisy sentences by identifying bad syntactic patterns. \cite{riedel2010modeling} proposes to alleviate the noise problem by considering the relation extraction task as a multi-instance classification problem based on the assumption that at least one of the retrieved sentences (sentence bag) support the triple. Under the multi-instance classification paradigm, \cite{hoffmann2011knowledge,surdeanu2012multi} use graphic models to solve the problem, \cite{zeng2015distant} use piece-wise convolutional neural network (PCNN) for sentence embedding and \cite{lin2016neural} further proposes to use attention mechanism to better distinguish true positive ones from false positive ones. Instead of modeling the noise, these models actually only tries to identify the reliable sentences and reduce the influence of unreliable ones.
 
-The at-least-one assumption is not perfect either, and there are still chances that the sentence bag may be false positive or false negative.  \cite{xu2013filling} uses pseudo-relevance feedback to find possible false negative data. \cite{ritter2013modeling,min2013distant} model the noise by adding a set of latent variables to the MultiR model \cite{hoffmann2011knowledge} and the MIML model \cite{surdeanu2012multi} respectively to represent the true relation before the observed relations. Our method shares similar spirit to \cite{ritter2013modeling} and \cite{min2013distant} in that we all generate the true relation before the observed relation. We differs from them in that our model is designed in the neural network framework and their models are designed in the probabilistic graphic model framework. Furthermore, our model is fully differentiable can model fine grained transition from true relation to observed relation, while their noise modeling parameters need to by set by hand or heuristics and their methods only handle false negative and false positive noise.
+
+%\cite{ritter2013modeling,min2013distant} model the noise by adding a set of latent
+%variables to the MultiR model \cite{hoffmann2011knowledge} and the MIML model \cite{surdeanu2012multi} respectively to
+%represent the true relation before the observed relations. 
+%Our method shares similar spirit to
+%\cite{ritter2013modeling} and \cite{min2013distant} in that we all generate the true relation before the observed
+%relation. We differs from them in that our model is designed in the neural network framework and their models are
+%designed in the probabilistic graphic model framework.
+%Furthermore, our model is fully differentiable can model fine grained transition from true relation to observed relation, while their noise modeling parameters need to by set by hand or heuristics and their methods only handle false negative and false positive noise.
 
 %the noise modeling part in our model is fully differentiable while their parameters used to model the transition from true relation to observed relation need to be set by hand or with some heuristics.
 
@@ -19,12 +66,21 @@ The at-least-one assumption is not perfect either, and there are still chances t
 %This method has the problem that it also removes good sentences since the sentences containing bag patterns are not always noises.
 %The noise can come from automatically constructed dataset like Tiny Images dataset \cite{torralba200880} where the images are gathered from web search engine and can also come from human labeled dataset \cite{misra2016seeing} like the MS COCO Captions dataset \cite{chen2015microsoft}.
 
-Our method is also related to the thread of work of designing denoising neural network component in computer vision.  \cite{sukhbaatar2014training} proposes to use a global transition matrix to transform the true label distribution to the observed label distribution and uses weight decay on the transition matrix during training. \cite{reed2014training} also uses a hidden layer to represent the true label distribution but try to force it to predict both the noisy label and the input. \cite{chen2015webly,xiao2015learning} first estimates the transition matrix on the clean data set and use it in the noisy data set. \cite{misra2016seeing} generates the transition matrix dynamically for each training instance. 
+\paragraph{Neural Network Based Nenoising} Various approaches have been proposed in the computer vision domain for data noise reduction using neural networks~\cite{sukhbaatar2014training,reed2014training,chen2015webly,xiao2015learning,misra2016seeing}. Our model
+shares similar spirit with \cite{misra2016seeing} in that we all dynamically generate a transition matrix for each
+training data item. However, instead of using EM \todo{what's EM?}, we train our model with curriculum learning and trace regularization.
+In the field of NLP, there is currently little work in neural-network-based denoising. The work presented in
+\cite{fang2016learning} is the nearest one, which uses a global transition matrix to model the noise introduced by
+cross-lingual projection of training data. Our work advances \cite{fang2016learning} through utilizing trace regularization
+to dynamically adapt the transition matrix. This leads to significant better performance (see Section~\ref{evaluation}).
 
-In natural language processing (NLP), the research on denoising with neural network is limited. \cite{fang2016learning} also uses a global transition matrix to model the noise introduced by cross-lingual projection of training data in the task of POS tagging for low-resource languages and train the basic model on the clean data first and add the transition matrix when using noisy data afterwards. Our model shares similar spirit with \cite{misra2016seeing} in that we all dynamically generate a transition matrix for each training data. However, instead of using EM, we train our model with curriculum learning and trace regularization. Furthermore, we also discuss the architecture for generating bag level transition matrix. Similar to \cite{fang2016learning}, we also have both reliable and unreliable data in one of our datasets and we also train on the reliable subset first and then add the unreliable subset. We differs from them in that we also utilize trace regularization to help the transition matrix model the noise better.
+
+% Our method is also related to the thread of work of designing denoising neural network components in computer vision.  \cite{sukhbaatar2014training} proposes to use a global transition matrix to transform the true label distribution to the observed label distribution and uses weight decay on the transition matrix during training. \cite{reed2014training} also uses a hidden layer to represent the true label distribution but try to force it to predict both the noisy label and the input. \cite{chen2015webly,xiao2015learning} first estimates the transition matrix on the clean data set and use it in the noisy data set. \cite{misra2016seeing} generates the transition matrix dynamically for each training instance.
+
+%In natural language processing (NLP), the research on denoising with neural network is limited. \cite{fang2016learning} also uses a global transition matrix to model the noise introduced by cross-lingual projection of training data in the task of POS tagging for low-resource languages and train the basic model on the clean data first and add the transition matrix when using noisy data afterwards. Our model shares similar spirit with \cite{misra2016seeing} in that we all dynamically generate a transition matrix for each training data. However, instead of using EM, we train our model with curriculum learning and trace regularization. Furthermore, we also discuss the architecture for generating bag level transition matrix. Similar to \cite{fang2016learning}, we also have both reliable and unreliable data in one of our datasets and we also train on the reliable subset first and then add the unreliable subset. We differs from them in that we also utilize trace regularization to help the transition matrix model the noise better.
 
 %\paragraph{First Order Temporal Fact Extraction} Since most methods designed for relation extraction can be used directly to first order temporal fact extraction, the number of researches on this subtask is limited. Recently, \cite{luo2016temporal} suggests that the multi-granular nature of time expressions can help us distinguish reliable data from unreliable ones, and they divides the the distant supervision data of first order temporal fact extraction into four subsets with different levels of reliability. They further propose to dynamically generate a weight for each instance in the training set, hoping that noisy data will be assigned lower weights and have less influence on the training procedure. They also try to randomly convert the observed relation in noisy data set to \emph{no\_relation} so that the model will be more conservative when using less reliable data. The main drawback of their model is that they only try to lower the influence of the noisy data. Therefore, much of the information hidden in the noisy data are not fully used. On the other hand, our method models the noise explicitly and it has the potential to find the real relations of noisy data. Therefore, our model can make better use of noisy data and the experiments confirms our assumption.
 
 %\paragraph{Other Related Tasks}
 %Higher order temporal fact extraction focuses on finding the valid time scope of a (subject \emph{s}, relation \emph{r}, object \emph{o}) triple. The commonly used datasets are introduced by the 2011 and 2013 temporal slot filling (TSF) shared tasks \cite{Ji2011Overview,dang2013task}. Distant supervision can also be used in this task \cite{artiles2011cuny,sil2014temporal}. Although our general idea can be possibly applied to this task, the fact that it takes triples as subjects further complicates the task, and it will be non-trivial to develop the final model for this task because the basic model need to be changed. We will leave this adaptation to future work.
-%Another related task is event temporal relation identification. This task is introduced by TempEval \cite{verhagen2007semeval,pustejovsky2009semeval} and aims at extracting event-time and event-event temporal relations like \emph{before}, \emph{after}, and \emph{overlap}. Unlike previous tasks, this task mainly focuses on ordering events rather than extracting triples that take time expressions as objects, and this task is often conducted in fully supervised manner where the data set is human-labeled \cite{mani2006machine,yoshikawa2009jointly}. 
+%Another related task is event temporal relation identification. This task is introduced by TempEval \cite{verhagen2007semeval,pustejovsky2009semeval} and aims at extracting event-time and event-event temporal relations like \emph{before}, \emph{after}, and \emph{overlap}. Unlike previous tasks, this task mainly focuses on ordering events rather than extracting triples that take time expressions as objects, and this task is often conducted in fully supervised manner where the data set is human-labeled \cite{mani2006machine,yoshikawa2009jointly}.

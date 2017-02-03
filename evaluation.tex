@@ -1,4 +1,4 @@
-\section{Evaluation}
+\section{Evaluation \label{evaluation}}
 To explore the behavior of our transition matrix method under different settings, we experiment our transition matrix method with both sentence level and bag level models in the situation with and without prior knowledge of the data quality. We show that our method works in all of these settings and prior knowledge of the data quality can benefit the training of transition matrix. We also find that the sentence level models works better when we have both reliable and unreliable data, but the bag level model performs better if all the data are treated equally. Furthermore, to explore the generalization ability of our method, we also conduct experiments in two datasets.
 \subsection{Data Set}
 The first dataset is proposed by \cite{luo2016temporal} and aims at extraction relations between entity and time (\emph{time RE data}). The dataset is constructed by aligning Wikidata triples with Wikipedia corpus. Based on the granularity of the time expression in the sentence, this dataset can be split into 3 subsets with different levels of reliability. The reliable subset is used as basic training data, validation data and test data which contains 22,214, 2,776 and 2,771 positive sentences respectively. The two less reliable subset contains 2,094 and 53,469 positive sentences and are used as additional training data. Negative data are constructed with two heuristic strategies. We use this dataset because this is a public dataset on relation extraction that has both reliable and unreliable data, which is suitable for all of our experiment settings.
@@ -43,7 +43,7 @@ The results of the bag level models with attention aggregation is shown in Figur
 
 \paragraph{Bag Level Average Aggregation Models}
 The results of the bag level models with average aggregation is shown in Figure \ref{fig: bag_avg_luo}. The ranking of each setting is similar to the attention aggregation models. However, since its denoising ability is not as good as attention aggregation, adding unreliable data gradually (\emph{bag\_avg\_currd}) improves the model performance here. We can also see that the transition matrix improves the average aggregation models more significantly than the attention aggregation models. Note that due to the inferior denoising ability of average aggregation, the unhandled sentence level noise may further propagates to bag level, which gives the transition matrix more chance to help model the noise.
- 
+
 \begin{figure}[htbp]
 \begin{center}
 \includegraphics[width=0.9\linewidth]{figures/best_cmp_exp_overall.png}
@@ -51,14 +51,14 @@ The results of the bag level models with average aggregation is shown in Figure 
 \label{fig: cmp_luo}
 \end{center}
 \end{figure}
- 
+
 \paragraph{Comparison}
 The comparison of the best settings of each model family is shown in Figure \ref{fig: cmp_luo}. We can see that all of our transition matrix models outperform the model of \cite{luo2016temporal}. With the help of transition matrix, although the basic version of average aggregation is not as good as attention aggregation, its transition matrix version is similar to the attention aggregation. Also note that although the sentence level models trained on mixed data do not perform very good, the sentence level model can use transition matrix to model the sentence level noise and thus performs best in all these models. Recall that the transition matrix can model the noise rather than just reduce the influence of noisy sentences as in bag level models, the sentence level model actually has the ability to make use of the noisy data. This shows that sentence level noise is more significant than the bag level noise in relation extraction, and modeling noise works better than just trying to reducing the influence of noise.
 
 
 \begin{figure}[htbp]
 \includegraphics[width=0.9\linewidth]{figures/re_att_avg_cmp_exp.png}
-\caption{Results on Dataset of Riedel et.al.} 
+\caption{Results on Dataset of Riedel et.al.}
 \label{fig: Riedel_res}
 \end{figure}
 
@@ -76,7 +76,7 @@ To show the generalization ability of our proposed transition matrix method, we 
 \includegraphics[width=0.475\linewidth]{reg_exp_small.png}
 \label{fig: reg_small_rel_pr_curve}
 }
-\caption{Imapct of Regularization Weights} 
+\caption{Imapct of Regularization Weights}
 \label{fig: reg_PR_curve}
 \end{figure*}
 \fi

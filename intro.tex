@@ -1,10 +1,10 @@
 \section{Introduction}
 
 In recent years, distant supervision (\DS) is emerging as a viable means for supporting various natural language
-processing (NLP) tasks, including relation extraction~\cite{mintz2009distant}, xx~\cite{} and cross-lingual semantic
-analysis~\cite{fang2016learning}. \DS works by exploiting knowledge bases (such as Freebase) to automatically label
-entities to generate
-training examples from large corpora where manually labeling individual data items will be expensive.
+processing (NLP) tasks -- from relation extraction~\cite{mintz2009distant} and xx~\cite{} to cross-lingual semantic
+analysis~\cite{fang2016learning}. By automatically aligning
+facts from knowledge bases to text, this technique allows us to scale a small number of relations to thousands.
+
 
 %. In the
 %context of relation extraction, one could start by feeding \DS with a set annotated texts where each
@@ -12,13 +12,14 @@ training examples from large corpora where manually labeling individual data ite
 %extracted from the texts to
 %generate relation contexts from unlabeled texts.
 
-A fundamental problem of \DS is that the algorithm does not guarantee perfect results and often introduces noise to the
+While promising, \DS does not guarantee perfect results and often introduces noise to the
 generated data. In the context of relation extraction, \DS could match the fact tuple $<$``Donald Trump",
 \emph{born-in}, ``New York"$>$  in \emph{false positive} contexts like ``\emph{Donald Trump worked in New York City}".
-Prior work has shown that \DS often mistakenly labels real positive instances as negative (\emph{false negative}) or
-versa vice (\emph{false positive}), and there could have confusions between positive labels too. These noisy data can
+There many prior works~\cite{} show that \DS often mistakenly labels real positive instances as negative (\emph{false negative}) or
+versa vice (\emph{false positive}), and there could have confusions between positive labels too. These noises can
 significantly affect the training
-procedure and lead to poorly-performing models. This drawback greatly hinders the wide adoption of this powerful technique. 
+procedure and lead to poorly-performing models. 
+%This drawback greatly hinders the wide adoption of this powerful technique. 
 
 There have been attempts to tackle the noisy data problem of \DS. These
 include work on xx, xxx, and xx. These works represent a substantial leap
