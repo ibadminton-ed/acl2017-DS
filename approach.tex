@@ -29,15 +29,13 @@
 %\subsection{Sentence Encoder}
 %The sentence encoder serves to transform an input sentence to an embedding vector that encodes semantic meaning of the sentence. Theoretically, almost any sentence encoder would work here. Similar to previous researches, we also use the piecewise convolutional neural network (PCNN) model \cite{zeng2015distant} as our sentence encoder. First, the distances of each word to the subject and the object are embedded as randomly initialized vectors and concatenated to the original word vector. After that, the PCNN model divides the input sentence into three pieces by the subject and the object, and apply convolutional neural network (CNN) to each piece to calculate the piece embedding. The final sentence embedding is the concatenation of the embeddings of the three pieces.
 
-To model the noise distribution of relations, our approach follows four steps as depicted in Figure \ref{fig: denoise_framework}.
-First, each input sentence is parsed by a sentence encoder to generate an embedding vector. In this work, we
+In order to deal with the noisy training data obtained through DS, our approach follows four steps as depicted in Figure \ref{fig: denoise_framework}.
+First, each input sentence is fed to a sentence encoder to generate an embedding vector. In this work, we
 use a piecewise convolutional neural network~\cite{zeng2015distant} for sentence encoding, but other encoding models can also be
 used. After encoding, our model takes in the sentence embeddings to generate a predicted relation
-distribution, $\mathbf{p}$, for the input sentence (or sentence bag). The model also generates a transition matrix,
-$\mathbf{T}$, which is used to model the noise of the \DS-generated relations. Finally, the predicted distribution is
-multiplied by the transition matrix to produce the observed relation distribution, $\mathbf{o}$. The predicted
-relation distribution $\mathbf{p}$ is the output of our model while the observed relation distribution $\mathbf{o}$ is
-used to capture the relation assigned by \DS. 
+distribution, $\mathbf{p}$, for the input sentence (or the input sentence bag). Meanwhile, our model also generates a transition matrix,
+$\mathbf{T}$, which is used to characterize the noise level of this \DS-labeled instance. Finally, the predicted distribution is
+multiplied by the transition matrix to produce the observed relation distribution, $\mathbf{o}$. The observed relation distribution $\mathbf{o}$ is used to capture the (possibly noisy) relation labels assigned by \DS and update our model parameters during training, while the predicted relation distribution $\mathbf{p}$ is the output of our model during testing. 
 
 
 One of the key challenges of our approach is
@@ -52,7 +50,7 @@ The prediction branch generates the predicted relation distribution $\mathbf{p}$
 prediction part of almost any relation extraction neural network models. Similar to \cite{luo2016temporal}, for
 sentence level models, we first feed the sentence embedding to a full connection layer, and then use softmax for
 relation classification.
-\todo{ZW: I assume this is not a new contribution?}
+\todo{ZW: I assume this is not a new contribution? Yes, this is not novel, we just reuse exsiting tech.}
 
 \subsection{Noise Modeling Branch}
 The noise modeling branch calculates a transition matrix dynamically for each sentence (or sentence bag) to model its noise pattern.
