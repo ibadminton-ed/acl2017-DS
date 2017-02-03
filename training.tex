@@ -1,0 +1,43 @@
+\section{Training Procedure \label{sec:training}}
+\red{I would suggest to move some of the motivations to the Introduction part,  we need to motivate regularization and CL there.}The difficulty of training the transition matrix lies in that there is no direct guidance over the noise pattern. The only supervision we have is the noisy label produced by distant supervision. However, if we have prior knowledge to roughly separate the data into reliable and unreliable parts, we can use the split as indirect supervision over the noise pattern by letting the model treat these data differently. In this section, we describe how to use trace regularization to control the behavior of the transition matrix. Furthermore, instead of modeling the noise at the very beginning of the training, we emphasis noise modeling gradually by building different curriculums in the situation with and without prior knowledge of the data quality under the curriculum learning framework.
+%Apart from that, we also show how to constrain the \red{ability??} of the transition matrix to avoid \red{overfitting???}.
+
+\subsection{Trace Regularization}
+Intuitively, if the noise is small, the transition matrix $\mathbf{T}$ will tend to become an identity matrix (vice versa).  Since each row of $\mathbf{T}$ sums to 1, the similarity between the transition matrix and the identity matrix can be represented by the trace of the transition matrix $\mathbf{T}$. The larger the $trace(\mathbf{T})$ is, the smaller the elements that do not lie in the diagonal are, and the more similar the transition matrix $\mathbf{T}$ is to identity matrix. Therefore, we can realize our expectation over the noise level of the data by controlling the value of $trace(\mathbf{T})$.
+
+\subsection{Curriculum Learning}
+The basic idea of curriculum learning is simple: start with the easiest aspect of a task, and level up the difficulty gradually.
+
+\paragraph{With Prior Knowledge of Data Quality}
+If we have prior knowledge about which part of the training data is more reliable and which is unreliable, the most straightforward way to build a curriculum is by controlling the reliability of training data. Specifically, we can first train the prediction branch on the reliable data for some epochs and then add the unreliable data \orange{to train the full model}. In this way, the prediction branch is roughly trained before exposed to more noisy data.
+
+Furthermore, \orange{we can also take better control of the training procedure by trace regularization.}
+%\red{utilize our prior knowledge of the data quality in the form of trace regularization}.
+Specifically, our loss function is:
+
+\begin{equation}
+\begin{aligned}
+Loss=\sum_{i=1}^M{\sum_{j=1}^{N_i}{-log(o_{ijy_{ij}})}} + \beta_i trace(\mathbf{T}_{ij})
+\end{aligned}
+\end{equation}
+where the left side is vanilla cross entropy and the right side is trace regularization, $i$ is the index of the data subsets, $j$ is the index of training data, $\beta_i$ is the trace regularization weight for subset $i$, $\mathbf{T}_{ij}$, $y_{ij}$ and $o_{ijy_{ij}}$ are the transition matrix, relation labeled by distant supervision, and the observed probability of that relation for datum $j$ in subset $i$ respectively.
+
+For the reliable subset, we want $trace(\mathbf{T})$ to be large (negative $\beta$) so that the element values of $\mathbf{T}$ will be centralized to the diagonal and the transition matrix will be similar to identity matrix. As for the unreliable subsets, we want the $trace(\mathbf{T})$ to be small (positive $\beta$) so that the element values of their transition matrices will be diffusive \orange{and the transition matrix will be less similar to identity matrix. In other words, the transition matrix is encouraged to model the noise}. Note that this loss function only works for sentence level models, since reliable sentences and unreliable ones are all aggregated into a sentence bag in the bag level models and therefore we can not determine which bag is reliable and which is not. However, bag level models can still use the curriculum by changing the content of the bag, \orange{and can therefore benefit from the prior knowledge of data quality.}
+
+\paragraph{Without Prior Knowledge of Data Quality}
+\label{curr_over_data}
+If we do not have prior knowledge about the quality of training data, we can still build a curriculum, which can be used in all situations, \orange{by controlling the training objective to gradually emphasis on noise modeling. Specifically, we design a decreasing weighting scheme for both the cross entropy of output prediction and the trace regularization component: (CHANGE EXPLAINATION: the decreasing scheme is for both $\alpha$ and $\beta$, not just $\beta$.)}
+%\red{ gradually controlling the impact of the transition matrix}. Specifically, \red{we design a decreasing weighting scheme for the trace regularization component}, defined as:
+
+\begin{equation}
+\begin{aligned}
+Loss	&=\sum_{i=1}^N{-((1-\alpha) log(o_{iy_{i}}) + \alpha log(p_{iy_{i}}))} \\
+&+ \beta trace(\mathbf{T}_{i})
+\end{aligned}
+\end{equation}
+where $0\le\alpha\le1$, $y_i$ is the relation assigned by distant supervision for datum $i$, $o_{iy_{i}}$ and $p_{iy_{i}}$ are the probabilities that the observed and predicted relation for datum $i$ is $y_i$ respectively. Instead of only using the observed relation distribution $\mathbf{o}$ to simulate the relation labeled by distant supervision, we use the linear combination of the cross entropy of both the observed relation distribution $\mathbf{o}$ and the predicted relation distribution $\mathbf{p}$.
+
+\orange{We consider ignoring the noise is easier than modeling the noise. Therefore, to build a curriculum}, we set $\alpha=1$ and $\beta<0$ at the start of the training, which means we do not expect to model the noise. As the training proceeds, the prediction branch gradually learns the basic prediction ability, then we increase the difficulty level by decreasing $\alpha$ and the absolute value of $\beta$ by $\rho$ every $\tau$ epochs to gradually guide our model to learn to model the noise.
+
+\subsection{Constrained Transition Matrix}
+\orange{Since the triples in knowledge base are reliable in most of the times, the positive label confusion noise is less likely than the false negative and false positive noise.} However our transition matrix has the ability to model all these three types of noise. To prevent overfitting and make the model \red{concentrate on the false negative and false positive noise??}\orange{(not sure about the problem)}, we restrict the transition matrix for bag level models so that only the diagonal, the first column and the first row of the transition matrix do not equal to zero (assume the index of \emph{no-relation} is 0).
