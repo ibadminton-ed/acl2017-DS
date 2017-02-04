@@ -5,17 +5,17 @@ Our experiments aim to answer the following three questions: (1) can our
 transition matrix effectively model the noise in the training data generated
 through \DS? (2) what kind of noise our approach can deal with? and (3)
 whether the prior knowledge of data quality can help our approach better
-handle the noise. 
+handle the noise.
 
 We apply our approach to both sentence level and bag level
 extraction models, and evaluate it in the situation where prior knowledge of
-the data quality is presented as well as in the situation where the prior
-knowledge of the data quality is missing.
+the data quality is presented as well as in the situation where the 
+knowledge is missing.
 
 
 %We show that our method works in all of these settings and prior knowledge of the data quality can benefit the training of transition matrix. We also find that the sentence level models works better when we have both reliable and unreliable data, but the bag level model performs better if all the data are treated equally. Furthermore, to explore the generalization ability of our method, we also conduct experiments in two datasets.
 \subsection{Datasets}
-We evaluate our approach on two datasets, \TimeRE and \EntityRE, described as follows. 
+We evaluate our approach on two datasets, \TimeRE and \EntityRE, described as follows.
 
 To evaluate our method in the situation with and witout prior knowledge of data quality,
 we build a relation extraction data set (\TimeRE) which aims at extracting relations between entity and time.
@@ -30,7 +30,7 @@ the more likely the instance  supports the existence of the triple will be.
 \orange{For example, a sentence containing both \emph{Alphabet} and \emph{October\_2\_2015} is highly likely to express the \emph{inception-time} of \emph{Alphabet}, while a sentence containing both \emph{Alphabet} and \emph{2015} may instead talk about its financial report of year 2015.}
 We thus split the dataset split into
 3 subsets with different levels of reliability. \todo{ZW: Why we thus split
-into 3 subsets???} Instances with full date expressions, i.e.,
+into 3 subsets??? why??} Instances with full date expressions, i.e.,
 Year-Month-Day, can be seen as the most reliable data, while those with
 partial date expressions, e.g., Month-Year and Year-Only, can be seen as less
 reliable ones.  Negative data are constructed with the heuristic strategy that the
@@ -82,7 +82,7 @@ with transition matrix (\texttt{\_TM}), and models trained models trained
 with the curriculum learning setting  (\texttt{\_CL}). In the bag level
 experiments, we also study the effect of attention (\texttt{\_att}) and
 average
-(\texttt{\_avg}) aggregation methods. 
+(\texttt{\_avg}) aggregation methods.
 \todo{ZW: This paragraph need to be polished.}
 
 \begin{figure*}[htbp]
@@ -133,8 +133,8 @@ written.}
 
 
 \paragraph{Bag Level Models}
-In this experiment, we first look at the performance of the bag level models with attention aggregation. The results are shown in Figure \ref{fig: bag_att_luo}. 
-Consider a comparatione between the  model trained on the reliable subset only (\texttt{bag\_att\_reliable}) and  the model trained on the mixed dataset (\texttt{bag\_att\_mix}). 
+In this experiment, we first look at the performance of the bag level models with attention aggregation. The results are shown in Figure \ref{fig: bag_att_luo}.
+Consider a comparatione between the  model trained on the reliable subset only (\texttt{bag\_att\_reliable}) and  the model trained on the mixed dataset (\texttt{bag\_att\_mix}).
 In contrast to the sentence level cases, \texttt{bag\_att\_mix} outperforms \texttt{bag\_att\_reliable} by a large margin. This is due to the fact that  \texttt{bag\_att\_mix} has taken the noise within the bag into consideration through the attention aggregation mechanism, which can be seen as a denoising step within the bag.
 This may also be the reason that when we introduce either our transition matrix approach \red{(\texttt{bag\_att\_TM})}  or curriculum learning framework (\texttt{bag\_att\_CL})   into the bad level model , the improvement compared to \texttt{bag\_att\_mix}  is not as significant as in the sentence level.
 However, when we utilize our transition matrix approach to control the noise ate different levels within the curriculum learning paradigm (\texttt{bag\_att\_CL\_TM}), the performance gets further improved. This is especially in the high precision part compared to \texttt{bag\_att\_CL}.
@@ -191,4 +191,4 @@ Again, because the attention aggregation model , this model already has good abi
 \fi
 
 \paragraph{Summary}
-\todo{ZW: This section is incredibly complex. I suggest to have a summary section to highlight the take away messages.} 
+\todo{ZW: This section is incredibly complex. I suggest to have a summary section to highlight the take away messages.}
