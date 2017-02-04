@@ -68,7 +68,7 @@ advance their models by providing the capability to model the fine-grained trans
 
 \paragraph{Neural Network Based Nenoising} Various approaches have been proposed in the computer vision domain for data noise reduction using neural networks~\cite{sukhbaatar2014training,reed2014training,chen2015webly,xiao2015learning,misra2016seeing}. Our model
 shares similar spirit with \cite{misra2016seeing} in that we all dynamically generate a transition matrix for each
-training data item. However, instead of using EM \todo{what's EM?}, we train our model with curriculum learning and trace regularization.
+training data item. However, instead of using Expectation-Maximization (EM), we train our model with a curriculum learning framework and trace regularization.
 In the field of NLP, there is currently little work in neural-network-based denoising. The work presented in
 \cite{fang2016learning} is the nearest one, which uses a global transition matrix to model the noise introduced by
 cross-lingual projection of training data. Our work advances \cite{fang2016learning} through utilizing trace regularization

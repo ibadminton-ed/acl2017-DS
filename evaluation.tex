@@ -1,6 +1,6 @@
 \section{Evaluation}
 
-\subsection{Evaluation Methodology}
+%\subsection{Evaluation Methodology}
 Our experiments aim to answer the following three questions: (1) can our
 transition matrix effectively model the noise in the training data generated
 through \DS? (2) what kind of noise our approach can deal with? and (3)
@@ -9,47 +9,50 @@ handle the noise.
 
 We apply our approach to both sentence level and bag level
 extraction models, and evaluate it in the situation where prior knowledge of
-the data quality is presented as well as in the situation where the 
+the data quality is presented as well as the situation where such prior  
 knowledge is missing.
 
 
 %We show that our method works in all of these settings and prior knowledge of the data quality can benefit the training of transition matrix. We also find that the sentence level models works better when we have both reliable and unreliable data, but the bag level model performs better if all the data are treated equally. Furthermore, to explore the generalization ability of our method, we also conduct experiments in two datasets.
 \subsection{Datasets}
-We evaluate our approach on two datasets, \TimeRE and \EntityRE, described as follows.
+We evaluate our approach on two datasets, \TimeRE and \EntityRE,  %described as follows.
+%In order to evaluate in the situation with and without prior knowledge of data quality,
+%we build a relation extraction data set (\TimeRE) which aims at extracting relations between entity and time.
+%We show that we can use some heuristics to distinguish reliable and unreliable data.
+% we build a new relation extraction dataset,  
+where \TimeRE is constructed 
+in a \DS style by aligning time-related Wikidata knowledge triples to
+Wikipedia text, containing278,141 sentences with 12
+types of relations  between an entity mention and a time expression. 
 
-To evaluate our method in the situation with and witout prior knowledge of data quality,
-we build a relation extraction data set (\TimeRE) which aims at extracting relations between entity and time.
-We show that we can use some heuristics to distinguish reliable and unreliable data.
-Specifically, \TimeRE is constructed in a \DS style by aligning Wikidata triples to
-Wikipedia text. This data set contains 278,141 senences with 12
-types of relations  between an entity mention and a time expression. In the
-\DS framework, the granularity of time expressions speaks for themselves in
-terms of reliability. That is, given a knowledge triple $<e, rel, t>$ and its
-alignment,  the  finer-grained the time expression $t$ is in the instance,
-the more likely the instance  supports the existence of the triple will be.
-\orange{For example, a sentence containing both \emph{Alphabet} and \emph{October\_2\_2015} is highly likely to express the \emph{inception-time} of \emph{Alphabet}, while a sentence containing both \emph{Alphabet} and \emph{2015} may instead talk about its financial report of year 2015.}
+In the \DS framework, the granularity of time expressions speaks for themselves in
+terms of reliability. That is, given a knowledge triple $<$$e,rel,t$$>$ and its
+aligned sentences,  the  finer-grained the time expression $t$ is in the sentence,
+the more likely the sentence  supports the existence of the triple.
+For example, a sentence containing both \emph{Alphabet} and \emph{October\_2\_2015} is highly likely to express the \emph{inception-time} of \emph{Alphabet}, while a sentence containing both \emph{Alphabet} and \emph{2015} could instead talk  about many events, e.g.,  financial report of 2015, hiring a new CEO, etc.
 We thus split the dataset split into
-3 subsets with different levels of reliability. \todo{ZW: Why we thus split
-into 3 subsets??? why??} Instances with full date expressions, i.e.,
-Year-Month-Day, can be seen as the most reliable data, while those with
+3 subsets according to different granularities of the time expressions involved, indicating different levels of reliability. 
+%\todo{ZW: Why we thus split into 3 subsets??? why??} 
+Instances with full date expressions, i.e., Year-Month-Day, can be seen as the most reliable data, while those with
 partial date expressions, e.g., Month-Year and Year-Only, can be seen as less
-reliable ones.  Negative data are constructed with the heuristic strategy that the
-\emph{entity-time} pairs in a sentence without corresponding triples in knowledge base are considered as negative data. 
+reliable ones.  Negative data are constructed  heuristically that any
+\emph{entity-time} pairs in a sentence without corresponding triples in Wikidata are considered as negative data. \red{we still have noises in terms of \textbf{false negative}, right? do we have experiments to say this? }
 During training, we can access  184,579 negative
 instances and  77,777 positive instances, including 22,214 reliable
 ones, 2,094 and 53,469 less reliable ones. The validation set and test set are randomly sampled from full-date data and contains
-2,776, 2,771 positive instances and 5,143, 5,095 negative instances respectively. 
-We evaluate both the sentence and bag level models in this dataset
-\red{talk bag level numbers?????}
+2,776, 2,771 positive instances and 5,143, 5,095 negative instances respectively. \red{talk bag level numbers?????}
 
-We also experiment on \EntityRE data set, a widely used entity
-relation extraction dataset. This dataset was constructed by aligning triples
+
+One of the advantages of \TimeRE is that it enables us to evaluate both the sentence and the bag level models, in the situation with and without prior knowledge of data quality.
+
+We also experiment on \EntityRE, a widely used entity
+relation extraction dataset, constructed by aligning triples
 in Freebase to the New York Times corpus (NYT
 corpus)~\cite{riedel2010modeling}. It contains 52 relations, 522,611 sentences and 281,270
 entity pairs for training and  172,448 sentences and 96,678 entity pairs for
-testing. This dataset provides a good example to evaluate the generalization
-ability of our transition matrix approach. 
-\orange{Since the sentence level data in the test set is very noisy, we only evaluate bag level models on this data set, which is the main experiment in most of the previous works on this data set.}
+testing. \blue{This dataset provides a good example to evaluate the generalization
+ability of our transition matrix approach. (I would like to move this sentence to somewhere when discussing results)} 
+\red{The sentence level annotations in the test set of \EntityRE are too noisy to be gold-standard,  we thus follow most previous practice by evaluate bag level models only on \EntityRE.}
 %\red{why there is sentence level evaluations????}
 %\todo{ZW: Why not evaluate sentence-level model on this data set????}
 
@@ -71,19 +74,19 @@ We experiment our sentence level model on \TimeRE. We use 100-dimensional word e
 The parameters of the bag level model is almost the same as the sentence level model on TimeRE data, except that the learning rate is 0.01. As for the \EntityRE data, the word embedding is of dimension 50 and is pre-trained on the NYT corpus using word2vec\footnote{\url{ https://code.google.com/p/word2vec/}}. The convolution window is 3 and the number of convolution kernels is 256, distance embedding size is 5, batch size is 16 and learning rate is 0.01. For all the bag level models, the linear combination parameter $\alpha$ is 1 and trace regularization parameter $\beta$ is -0.1 at the start of training. We experiment with decay rate \{0.95, 0.9, 0.8\} and decay step \{3, 5, 8\}. We find that using decay rate 0.9 and decay step 5 performs best in most situations.
 
 \paragraph{Evaluation Metrics}
-We evaluate the relation extraction performances using precision-recall (\PR) curves, which is calculated according to the extraction results ranked decreasingly by confidence score.
+We evaluate the relation extraction performances using precision-recall (\PR) curves, which is calculated according to the extraction results ranked decreasingly by their confidence scores.
 
 \paragraph{Baseline Settings}
 We evaluate our approach under two extraction settings, sentence level
 (\texttt{sent\_}) and bag level (\texttt{bag\_}). In both settings, we
 investigate models trained on all subsets mixed together (\texttt{\_mix}),
 models trained on reliable data only (\texttt{\_reliable}), models trained
-with transition matrix (\texttt{\_TM}), and models trained models trained
+with transition matrix (\texttt{\_TM}), and models trained
 with the curriculum learning setting  (\texttt{\_CL}). In the bag level
 experiments, we also study the effect of attention (\texttt{\_att}) and
 average
 (\texttt{\_avg}) aggregation methods.
-\todo{ZW: This paragraph need to be polished.}
+\todo{ZW: This paragraph need to be polished.} 
 
 \begin{figure*}[htbp]
 \centering
@@ -99,7 +102,7 @@ average
 \label{fig: results_on_luo}
 \end{figure*}
 
-\subsection{Evaluation on \TimeRE}
+\subsection{Performances on \TimeRE}
 \paragraph{Sentence Level Models}
 The results of sentence level models on \TimeRE are shown in Figure \ref{fig:
 sent_luo}. We can see that mixing all subsets together (\texttt{sent\_mix})
@@ -113,18 +116,18 @@ delivering the same level of performance as (\texttt{sent\_reliable}) in most
 cases. This suggests that our transition matrix can help to mitigate the bad influence of noisy training instances.
 
 
-Let us consider the scenario where the training is first performed on the
-reliable subset first and then gradually moved to the space with less
-reliable data. In this case, the curriculum learning based model
-(\texttt{sent\_CL}) even  outperforms \emph{sent\_reliable} significantly,
+Let us consider the \texttt{CL} scenario where one can first train on the
+reliable subset and then gradually move to the space with both reliable and  less
+reliable subsets. In this case, the curriculum learning based model
+(\texttt{sent\_CL}) even  outperforms \emph{sent\_reliable} significantly \red{(F: does \texttt{sent\_CL} have help from other components? e.g., TM?) },
 indicating that the curriculum learning framework not only reduces the effect
 of noise, but also helps the model learns from noisy data. When applying the
-transition matrix into the curriculum learning framework using one reliable
-subset and one less reliable one,   our model (\emph{sent\_CL\_seg2\_TM})
-improves \emph{sent\_CL} by exploring the prior knowledge about data quality
-and enable the transition matrix approach to control the noise in different
-levels. \todo{ZW: Have no idea of what this sentence is talking about.} It is
-not surprising that when we use more less reliable data, i.e., using all
+transition matrix approach into the curriculum learning framework using one reliable
+subset and one less reliable one,  \blue{ our model (\emph{sent\_CL\_seg2\_TM})
+improves \emph{sent\_CL} by  %exploring the prior knowledge about data quality and 
+enabling the transition matrix approach to control the noise at different
+levels during different curriculums. }  \todo{ZW: Have no idea of what this sentence is talking about. \textbf{I have rephrased it}.} 
+It is not surprising that when we use more less reliable data, i.e., using all
 three subsets, our model (\emph{sent\_CL\_TM}) significantly outperforms all
 other models by a large margin\footnote{We will use all three subsets for all
 \emph{\_CL\_TM} settings in the rest of the experiments.}. \todo{ZW: I
@@ -134,7 +137,7 @@ written.}
 
 \paragraph{Bag Level Models}
 In this experiment, we first look at the performance of the bag level models with attention aggregation. The results are shown in Figure \ref{fig: bag_att_luo}.
-Consider a comparatione between the  model trained on the reliable subset only (\texttt{bag\_att\_reliable}) and  the model trained on the mixed dataset (\texttt{bag\_att\_mix}).
+Consider a comparison between the  model trained on the reliable subset only (\texttt{bag\_att\_reliable}) and  the model trained on the mixed dataset (\texttt{bag\_att\_mix}).
 In contrast to the sentence level cases, \texttt{bag\_att\_mix} outperforms \texttt{bag\_att\_reliable} by a large margin. This is due to the fact that  \texttt{bag\_att\_mix} has taken the noise within the bag into consideration through the attention aggregation mechanism, which can be seen as a denoising step within the bag.
 This may also be the reason that when we introduce either our transition matrix approach \red{(\texttt{bag\_att\_TM})}  or curriculum learning framework (\texttt{bag\_att\_CL})   into the bad level model , the improvement compared to \texttt{bag\_att\_mix}  is not as significant as in the sentence level.
 However, when we utilize our transition matrix approach to control the noise ate different levels within the curriculum learning paradigm (\texttt{bag\_att\_CL\_TM}), the performance gets further improved. This is especially in the high precision part compared to \texttt{bag\_att\_CL}.
@@ -165,7 +168,7 @@ The comparison of the best settings of each model family is shown in Figure \ref
 \end{figure}
 
 \subsection{Performance on \EntityRE}
-We also conduct experiments on the \EntityRE dataset, where we can evaluate our bag level models only. \todo{ZW: Why bag-level models only? We need a an answer!}
+We also conduct experiments on the \EntityRE dataset, where we can evaluate our bag level models only. \todo{ZW: Why bag-level models only? We need a an answer! } \blue{F: I put a sentence in data preparation.}
 We  implemented the average aggregation method (\texttt{avg}), and the attention aggregation method (\texttt{att}) proposed by \cite{lin2016neural} as well as their corresponding transition matrix versions (\texttt{avg\_TM} and \texttt{att\_TM}). As we can see in Figure \ref{fig: Riedel_res},  due to the inferior denoising ability of the average aggregation component, \texttt{avg} performs worst among all those models. %Similar to the trends on the TimeRE data, when
 \red{what should we say about this figure????}
 When we inject our transition matrix approach into both \emph{avg} and \emph{att}, the resulting two  models, both of which can  clearly outperform their basic extraction models.

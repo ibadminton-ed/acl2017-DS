@@ -1,18 +1,18 @@
 \section{Problem Definition}
-The task of distantly supervised relation extraction is to extract fact triples, i.e. $<$\emph{subj},  \emph{rel},
-\emph{obj} $>$, from free text using existing knowledge base. This technique can be applied in the sentence and the bag
+The task of distantly supervised relation extraction is to extract knowledge triples, i.e. $<$\emph{subj},  \emph{rel},
+\emph{obj} $>$, from free text using existing knowledge base. This technique can be applied in both the sentence and the bag
 levels.  The former  takes a sentence $s$ containing both $subj$ and $obj$ as input, and outputs the relation expressed
 by the sentence between $subj$ and $obj$. The latter setting is based on the \textit{at-least-one} assumption
-(\todo{explain the assumption if not explained before}) and takes a bag of sentences $S$ as input where each sentence
+ and takes a bag of sentences $S$ as input where each sentence
 $s\in S$ contains both $subj$ and
 $obj$, and output  the relation expressed by the sentence bag between $subj$ and $obj$.
 
 
 This work aims to improve the state of the art in \DS for relation extraction. 
-We do so by first modeling the noise distribution of the \DS generated relations (Section xx) and then use xxx to xx (Section xx).
-Our model is applied at both the sentence and the bag levels. We evaluate approach
-in scenarios with and without prior knowledge of the data quality (Section xx). 
-\todo{How to split data sets should go to experimental setup}
+We do so by first modeling the noise of the \DS generated training data using dynamic transition matrix,  at both the sentence and the bag levels (Section~\ref{sec:approach}),  and then introducing a curriculum learning framework  to control the behavior of noise  under various training situations (Section~\ref{sec:training}).
+\red{Our model is applied at both the sentence and the bag levels. We evaluate approach
+in scenarios with and without prior knowledge of the data quality (Section xx).  we do not need the last sentence, right??}
+%\todo{How to split data sets should go to experimental setup}
 
 
 %In this paper, we will \orange{apply (changed from inject)} our noise modeling approach in both settings, and further investigate the performance of our approach in the situation with and without prior knowledge of the data quality. Specifically, we assume the prior knowledge can help us roughly distinguish reliable data from unreliable ones, and therefore split the dataset into several subsets with different levels of reliability. If no prior knowledge can be used, all the data are treated equally.
