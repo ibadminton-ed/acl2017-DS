@@ -1,7 +1,7 @@
 \section{Introduction}
 
 In recent years, distant supervision (\DS) is emerging as a viable means for supporting various natural language
-processing (NLP) tasks -- from relation extraction~\cite{mintz2009distant} and xx~\cite{} to cross-lingual semantic
+processing (NLP) tasks -- from relation extraction~\cite{mintz2009distant} and sentiment classification~\cite{go2009twitter} to cross-lingual semantic
 analysis~\cite{fang2016learning}. By automatically aligning
 facts from knowledge bases to text, this technique allows us to scale a small number of relations to thousands.
 
@@ -21,16 +21,10 @@ significantly affect the training
 procedure and lead to poorly-performing models.
 %This drawback greatly hinders the wide adoption of this powerful technique.
 
-There have been attempts to tackle the noisy data problem of \DS. These
-include work on xx, xxx, and xx. These works represent a substantial leap
-forward towards making \DS more practical. However, prior work is shitty
-because …
+There have been attempts to tackle the noisy data problem of \DS. Previous works have tried to preprocess the data by removing sentences containing unreliable syntactic patterns \cite{takamatsu2012reducing}, use the \emph{at-least-one} assumption that at least one of the retrieved sentences support the triple to reduce the influence of noise \cite{riedel2010modeling} and add a set of variables in probablistic graphic models to represent the true relation before the noisy relation labeled by distant supervision \cite{hoffmann2011knowledge,surdeanu2012multi}. These works represent a substantial leap forward towards making \DS more practical. However, these methods either do not model the noise explicitly or just handle false positive and false negative noise.
 
-In this paper, we show that while noise is inevitable, it is possible to
-accurately model its pattern. Our key insight is that the noise is not
-random? We propose a novel approach to xxx. We apply our method to relation
-extraction. To tackle xxx, we employ curriculum learning to xxx…. As
-knowledge is built up, our algorithm can xxx.
+In this paper, we show that while noise is inevitable, it is possible to model the pattern of all the three types of noise in a unified form. Our key insight is that the input data contain useful clues about the noise pattern. For example, if we see an input sentence describing the work place of a person, we can reasonably assume that it has some chances to be erroneously labeled by distant supervision to express relation $born\_in$. 
+Accordingly, we propose to dynamically generate a transition matrix for each input datum to model its noise pattern. We apply our method to the relation extraction task. To tackle the difficulty of lack of direct guidance over the noise pattern, we employ curriculum learning to guide our model to learn to model the noise gradually, and use trace regularization to control the behavior of the transition matrix during training. %As knowledge is built up, our algorithm can xxx.
 
 We evaluate our approach by applying it to xxx and compare it against a
 state-of-the-art xx. Experimental results show that our approach can create a
