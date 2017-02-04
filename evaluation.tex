@@ -17,34 +17,41 @@ knowledge of the data quality is missing.
 \subsection{Datasets}
 We evaluate our approach on two datasets, \TimeRE and \EntityRE, described as follows. 
 
-\TimeRE is constructed in a \DS style by aligning Wikidata triples ot
-Wikipedia text. This data set contains \red{XXXX} sentences with \red{XXX}
-types of relations  between an entity mention and a time expression.  In the
-\DS framework,   the granularity of time expressions speaks for themselves in
+To evaluate our method in the situation with and witout prior knowledge of data quality,
+we build a relation extraction data set (\TimeRE) which aims at extracting relations between entity and time.
+We show that we can use some heuristics to distinguish reliable and unreliable data.
+Specifically, \TimeRE is constructed in a \DS style by aligning Wikidata triples to
+Wikipedia text. This data set contains 278,141 senences with 12
+types of relations  between an entity mention and a time expression. In the
+\DS framework, the granularity of time expressions speaks for themselves in
 terms of reliability. That is, given a knowledge triple $<e, rel, t>$ and its
 alignment,  the  finer-grained the time expression $t$ is in the instance,
 the more likely the instance  supports the existence of the triple will be.
-\red{we may need a concrete example.}   We thus split the dataset  split into
+\orange{For example, a sentence containing both \emph{Alphabet} and \emph{October\_2\_2015} is highly likely to express the \emph{inception-time} of \emph{Alphabet}, while a sentence containing both \emph{Alphabet} and \emph{2015} may instead talk about its financial report of year 2015.}
+We thus split the dataset split into
 3 subsets with different levels of reliability. \todo{ZW: Why we thus split
 into 3 subsets???} Instances with full date expressions, i.e.,
 Year-Month-Day, can be seen as the most reliable data, while those with
 partial date expressions, e.g., Month-Year and Year-Only, can be seen as less
-reliable ones.  Negative data are constructed with heuristic strategies,
-e.g.,  \red{XXXX}. During training, we can access  \red{XXX} negative
-instances and  \red{XXX} positive sentences, including \red{XXX} reliable
-ones, \red{XXX} and \red{XXX} less reliable ones. The test set contains
-\red{XXX} positive instances and \red{YYY} negative instances.
-\red{talk bag level numbers????? and how many relations in total}
+reliable ones.  Negative data are constructed with the heuristic strategy that the
+\emph{entity-time} pairs in a sentence without corresponding triples in knowledge base are considered as negative data. 
+During training, we can access  184,579 negative
+instances and  77,777 positive instances, including 22,214 reliable
+ones, 2,094 and 53,469 less reliable ones. The validation set and test set are randomly sampled from full-date data and contains
+2,776, 2,771 positive instances and 5,143, 5,095 negative instances respectively. 
+We evaluate both the sentence and bag level models in this dataset
+\red{talk bag level numbers?????}
 
-Our bag level models are evaluated on a \EntityRE, a widely used entity
+We also experiment on \EntityRE data set, a widely used entity
 relation extraction dataset. This dataset was constructed by aligning triples
 in Freebase to the New York Times corpus (NYT
-corpus)~\cite{riedel2010modeling}. It contains 522,611 sentences and 281,270
+corpus)~\cite{riedel2010modeling}. It contains 52 relations, 522,611 sentences and 281,270
 entity pairs for training and  172,448 sentences and 96,678 entity pairs for
 testing. This dataset provides a good example to evaluate the generalization
-ability of our transition matrix approach. \red{????? and how many relations
-in total????? why there is sentence level evaluations????}
-\todo{ZW: Why not evaluate sentence-level model on this data set????}
+ability of our transition matrix approach. 
+\orange{Since the sentence level data in the test set is very noisy, we only evaluate bag level models on this data set, which is the main experiment in most of the previous works on this data set.}
+%\red{why there is sentence level evaluations????}
+%\todo{ZW: Why not evaluate sentence-level model on this data set????}
 
 
 \begin{figure}[t!]
@@ -58,13 +65,13 @@ in total????? why there is sentence level evaluations????}
 \subsection{Experimental Setup}
 
 \paragraph{Hyperparameters} \red{can we put those parameters in a table?? especially those shared by the two settings.} \todo{ZW: Agree. These parameters should be given in a table!}
-We experiment our sentence level model on \TimeRE. We use 100-dimensional word embedding pre-trained using GloVe \cite{pennington2014glove} on Wikipedia and Gigaword, and 20-dimensional vector for distance embedding. The convolution window is 3 and the number of convolution kernels is 200. The size of the full connection layer is also 200. As for training, we use stochastic gradient descend (SGD) with batch size 20, learning rate 0.1. We also use dropout with probability 0.5 upon the sentence embedding. Each data subset is added after 15 epochs since the precious one is added. The trace regularization parameters for three subsets are $\beta_1=-0.01$, $\beta_2=0.01$ and $\beta_3=0.1$ respectively from the reliable one to the most unreliable one \blue{(the ratio of $\beta_3$ and $\beta_2$ is fixed to 10 and??? 5 during hyper-parameter tuning)}.
+We experiment our sentence level model on \TimeRE. We use 100-dimensional word embedding pre-trained using GloVe \cite{pennington2014glove} on Wikipedia and Gigaword, and 20-dimensional vector for distance embedding. The convolution window is 3 and the number of convolution kernels is 200. The size of the full connection layer is also 200. As for training, we use stochastic gradient descend (SGD) with batch size 20, learning rate 0.1. We also use dropout with probability 0.5 upon the sentence embedding. Each data subset is added after 15 epochs since the precious one is added. The trace regularization parameters for three subsets are $\beta_1=-0.01$, $\beta_2=0.01$ and $\beta_3=0.1$ respectively from the reliable one to the most unreliable one (the ratio of $\beta_3$ and $\beta_2$ is fixed to 10 or 5 during hyper-parameter tuning).
 
 
 The parameters of the bag level model is almost the same as the sentence level model on TimeRE data, except that the learning rate is 0.01. As for the \EntityRE data, the word embedding is of dimension 50 and is pre-trained on the NYT corpus using word2vec\footnote{\url{ https://code.google.com/p/word2vec/}}. The convolution window is 3 and the number of convolution kernels is 256, distance embedding size is 5, batch size is 16 and learning rate is 0.01. For all the bag level models, the linear combination parameter $\alpha$ is 1 and trace regularization parameter $\beta$ is -0.1 at the start of training. We experiment with decay rate \{0.95, 0.9, 0.8\} and decay step \{3, 5, 8\}. We find that using decay rate 0.9 and decay step 5 performs best in most situations.
 
 \paragraph{Evaluation Metrics}
-We evaluate the relation extraction performances using precision-recall (\PR) curves, which is calculated \red{........}.
+We evaluate the relation extraction performances using precision-recall (\PR) curves, which is calculated according to the extraction results ranked decreasingly by confidence score.
 
 \paragraph{Baseline Settings}
 We evaluate our approach under two extraction settings, sentence level
