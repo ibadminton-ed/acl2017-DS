@@ -1,4 +1,4 @@
-\section{Evaluation}
+\section{Evaluation \label{sec:evaluation}}
 
 %\subsection{Evaluation Methodology}
 Our experiments aim to answer the following three questions: (1) can our
@@ -9,7 +9,7 @@ handle the noise.
 
 We apply our approach to both sentence level and bag level
 extraction models, and evaluate it in the situation where prior knowledge of
-the data quality is presented as well as the situation where such prior  
+the data quality is presented as well as the situation where such prior
 knowledge is missing.
 
 
@@ -19,11 +19,11 @@ We evaluate our approach on two datasets, \TimeRE and \EntityRE,  %described as 
 %In order to evaluate in the situation with and without prior knowledge of data quality,
 %we build a relation extraction data set (\TimeRE) which aims at extracting relations between entity and time.
 %We show that we can use some heuristics to distinguish reliable and unreliable data.
-% we build a new relation extraction dataset,  
-where \TimeRE is constructed 
+% we build a new relation extraction dataset,
+where \TimeRE is constructed
 in a \DS style by aligning time-related Wikidata knowledge triples to
 Wikipedia text, containing278,141 sentences with 12
-types of relations  between an entity mention and a time expression. 
+types of relations  between an entity mention and a time expression.
 
 In the \DS framework, the granularity of time expressions speaks for themselves in
 terms of reliability. That is, given a knowledge triple $<$$e,rel,t$$>$ and its
@@ -31,8 +31,8 @@ aligned sentences,  the  finer-grained the time expression $t$ is in the sentenc
 the more likely the sentence  supports the existence of the triple.
 For example, a sentence containing both \emph{Alphabet} and \emph{October\_2\_2015} is highly likely to express the \emph{inception-time} of \emph{Alphabet}, while a sentence containing both \emph{Alphabet} and \emph{2015} could instead talk  about many events, e.g.,  financial report of 2015, hiring a new CEO, etc.
 We thus split the dataset split into
-3 subsets according to different granularities of the time expressions involved, indicating different levels of reliability. 
-%\todo{ZW: Why we thus split into 3 subsets??? why??} 
+3 subsets according to different granularities of the time expressions involved, indicating different levels of reliability.
+%\todo{ZW: Why we thus split into 3 subsets??? why??}
 Instances with full date expressions, i.e., Year-Month-Day, can be seen as the most reliable data, while those with
 partial date expressions, e.g., Month-Year and Year-Only, can be seen as less
 reliable ones.  Negative data are constructed  heuristically that any
@@ -51,7 +51,7 @@ in Freebase to the New York Times corpus (NYT
 corpus)~\cite{riedel2010modeling}. It contains 52 relations, 522,611 sentences and 281,270
 entity pairs for training and  172,448 sentences and 96,678 entity pairs for
 testing. \blue{This dataset provides a good example to evaluate the generalization
-ability of our transition matrix approach. (I would like to move this sentence to somewhere when discussing results)} 
+ability of our transition matrix approach. (I would like to move this sentence to somewhere when discussing results)}
 \red{The sentence level annotations in the test set of \EntityRE are too noisy to be gold-standard,  we thus follow most previous practice by evaluate bag level models only on \EntityRE.}
 %\red{why there is sentence level evaluations????}
 %\todo{ZW: Why not evaluate sentence-level model on this data set????}
@@ -86,7 +86,7 @@ with the curriculum learning setting  (\texttt{\_CL}). In the bag level
 experiments, we also study the effect of attention (\texttt{\_att}) and
 average
 (\texttt{\_avg}) aggregation methods.
-\todo{ZW: This paragraph need to be polished.} 
+\todo{ZW: This paragraph need to be polished.}
 
 \begin{figure*}[htbp]
 \centering
@@ -124,9 +124,9 @@ indicating that the curriculum learning framework not only reduces the effect
 of noise, but also helps the model learns from noisy data. When applying the
 transition matrix approach into the curriculum learning framework using one reliable
 subset and one less reliable one,  \blue{ our model (\emph{sent\_CL\_seg2\_TM})
-improves \emph{sent\_CL} by  %exploring the prior knowledge about data quality and 
+improves \emph{sent\_CL} by  %exploring the prior knowledge about data quality and
 enabling the transition matrix approach to control the noise at different
-levels during different curriculums. }  \todo{ZW: Have no idea of what this sentence is talking about. \textbf{I have rephrased it}.} 
+levels during different curriculums. }  \todo{ZW: Have no idea of what this sentence is talking about. \textbf{I have rephrased it}.}
 It is not surprising that when we use more less reliable data, i.e., using all
 three subsets, our model (\emph{sent\_CL\_TM}) significantly outperforms all
 other models by a large margin\footnote{We will use all three subsets for all
@@ -194,4 +194,4 @@ Again, because the attention aggregation model , this model already has good abi
 \fi
 
 \paragraph{Summary}
-\todo{ZW: This section is incredibly complex. I suggest to have a summary section to highlight the take away messages.}
+\todo{ZW: This section is incredibly complex. I suggest to have a summary section to highlight the take away messages.} 
