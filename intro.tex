@@ -22,8 +22,9 @@ procedure and lead to poorly-performing models.
 
 There have been attempts to tackle the noisy data problem of \DS. Previous works have tried to preprocess the data by removing sentences containing unreliable syntactic patterns \cite{takamatsu2012reducing}, making the \textbf{\textit{at-least-one}} assumption that at least one of the aligned sentences support the knowledge triple to reduce the influence of noise \cite{riedel2010modeling} and adding a set of variables in probabilistic graphic models to \red{represent the true relation before????? the noisy relation} labeled by distant supervision \cite{hoffmann2011knowledge,surdeanu2012multi}. These works represent a substantial leap forward towards making \DS more practical. However, these methods either do not model the noise explicitly or \red{just handle false positive or false negative noise. ---------F: This argument is weak! can we say they either rely on predefined rules or extra labeled dataset?}
 
-In this paper, we show that while noise is inevitable, it is possible to model the pattern of \blue{different} \red{all the three} types of noise in a unified form. \red{---F: This is the first time you mentioned THREE types.} Our key insight is that the input data contain useful clues about the noise pattern. For example, if we see an input sentence describing the work place of a person, we can reasonably assume that it has some chances to be erroneously labeled by distant supervision to express relation \red{$born\_in$ (---F: can we use $live\_place$??)} .
-Accordingly, we propose to dynamically generate a transition matrix for each input datum to model its noise pattern. We apply our method to the relation extraction task. To tackle the difficulty of lack of direct guidance over the noise pattern, we employ curriculum learning to guide our model to learn to model the noise gradually, and use trace regularization to control the behavior of the transition matrix during training. %As knowledge is built up, our algorithm can xxx.
+In this paper, we show that while noise is inevitable, it is possible to model its pattern  in a unified framework Our key insight is that the input data would typically contain useful clues about the noise pattern. For example, if we see an input sentence describing the work place of a person, we can reasonably assume that it has some chances to be erroneously labeled by distant supervision to express relation \red{$born\_in$ (---F: can we use $live\_place$??)} .
+Accordingly, we propose to dynamically generate a transition matrix for each input datum to model its noise pattern. We apply our method to the relation extraction task. To tackle the difficulty of lack of direct guidance over the noise pattern, we employ curriculum learning to gradually model the noise pattern over time. To prevent \todo{xx}, we use trace regularization to control the behavior of the transition matrix during training. 
+We show that our novel technique can better model the noise pattern over the start-of-the-art, leading to improved learning performance. 
 
 We evaluate our approach by applying it to \red{xxx??} and compare it against a
 \red{state-of-the-art xx}. Experimental results show that \red{our approach can create a
@@ -32,7 +33,7 @@ using the same set of training data. (----F: Maybe we should change another type
 
 This paper makes the following specific contributions. It is the first to
 \begin{itemize}
-\item bla 
+\item bla
 \item bla
 \item bla
 \end{itemize}
