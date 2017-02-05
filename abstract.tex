@@ -1,11 +1,12 @@
 \begin{abstract}
 Distant supervision significantly reduces human efforts in constructing
 training data for classification tasks by automatically labeling data using
-knowledge learned from \red{a small set of??}  seed examples. While promising,
+knowledge learned from  seed examples. While promising,
 this technique often introduces noise into the dataset, which can
 severely affect the quality of the learned model. In this paper, we take
 a deep look at the application of distant supervision in relation extraction.
-We show that \red{constrained} dynamic transition matrices can effectively model the noise in the training data \todo{ generated through DS}. 
+We show that  dynamic transition matrices can effectively model the noise in the training data 
+generated through distant supervision. 
 We propose to use curriculum learning to \red{characterize} the noise patterns, and
 \red{control the behavior of noise} to further improve the model robustness. We apply our approach
 to relation extraction at both the sentence and
@@ -13,8 +14,6 @@ the bag levels. %, with and without prior knowledge of the data quality.
 The experimental results show that our method can better handle the noise over
 the state of the art in distantly supervised
 relation extraction and improve extraction performance in various settings.
-\todo{I do not like the last sentence!! }
-
-\todo{btw, shall we consider \TimeRE as a contribution? }
+\todo{I do not like the last sentence!!  btw, shall we consider \TimeRE as a contribution? }
 
 \end{abstract} 
