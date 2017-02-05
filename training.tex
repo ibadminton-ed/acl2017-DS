@@ -1,16 +1,34 @@
-\section{Training Procedure \label{sec:training}}
+\section{Curriculum Learning based Training \label{sec:training}}  
+%Training with Curriculum Learning??
+\blue{we talk about the difficulty of training with $\sum_{i=1}^N{-log(o_{iy_{i}}) } + \beta trace(\mathbf{T}_{i})$  first. 1) noisy data, 2) local optima. Therefore, we need CL. The advantages are 1) learn to model with noise gradually, 2) more robust, avoid local optima, 3) have a chance to control the effect of noise via Trace norm.  }
 
-One of the key innovations of this work is on how to train and generate the
-transition matrix. The challenge here lies in the fact that we often do not have 
+%One of the key innovations of this work is on how to train and generate the transition matrix.
+One of the key challenges of this work is  on how train and produce the transition matrix to model the noise without any direct guidance in the training data. 
+%The challenge here lies in the fact that we often do not have 
 %The difficulty of training the transition matrix lies in that there is no 
-direct guidance over the noise pattern. 
-This means that simply aligning the observed distribution, $\mathbf{o}$, with the noisy labels does not
-guarantee that the prediction distribution, $\mathbf{p}$, will match the true
-relation distribution. To tackle this challenge, we employ a curriculum
+%direct guidance over the noise pattern. 
+A straightforward solution is to align the observed distribution, $\mathbf{o}$, with respect to the noisy annotations by minimizing:
+$CrossEntropy(\mathbf{o}) + Regularization$, but doing so 
+%
+%This means that simply aligning the observed distribution, $\mathbf{o}$, with the noisy labels 
+does not guarantee that the prediction distribution, $\mathbf{p}$, will match the true
+relation distribution. 
+%
+\blue{Because: 1) noisy data, 2) local optima. Therefore, we a strategy to guide our model to gradually adapt to the noisy training data, which means, learning something simple first, and then trying to deal with noises.}
+
+\blue{Fortunately, this is exactly what CL can do. 
+The idea of curriculum learning is simple: starting with the easiest aspect of a task, and leveling up the difficulty gradually,
+which fits well with our problem.} 
+%There are situations where we may have prior knowledge of the data quality and situations where we do not.  Curriculum learning performs well in both scenarios.  
+%
+%To tackle this challenge, 
+We thus employ a curriculum
 learning framework to guide our model to gradually learn how to 
 \red{characterize the noise and how to control its effect via trace regularization},
 rather than modeling the noise at the very beginning of the training when
 there is little knowledge about the noise pattern.
+%
+\blue{The advantages are 1) learn to model with noise gradually, 2) more robust, avoid local optima, 3) have a chance to control the effect of noise via Trace norm.}
 %
 Our approach also provides the
 flexibility to combine any prior knowledge of noise to improve the
