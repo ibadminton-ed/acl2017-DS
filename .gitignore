@@ -8,3 +8,4 @@ acl2017.bbl
 acl2017.pdf
 *.synctex(busy)
 acl2017.synctex.gz
+*.DS_Store
