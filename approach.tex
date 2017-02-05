@@ -101,37 +101,34 @@ In this work, we experiment two methods, namely average and attention aggregatio
 %The average aggregation 
 The former calculates the bag embedding, $\mathbf{s}$, by averaging the embeddings of each sentence, and  then feed it to a \emph{softmax} classifier for relation classification.
 
-The attention aggregation calculates an attention value, $\alpha_{ij}$, for each sentence $i$ in the bag with respect to each relation $j$, and aggregates to  the bag level as  $\mathbf{s}_j$, by the following equations:
+The attention aggregation calculates an attention value, $a_{ij}$, for each sentence $i$ in the bag with respect to each relation $j$, and aggregates to  the bag level as  $\mathbf{s}_j$, by the following equations\footnote{While~\cite{lin2016neural} use bilinear function to calculate $a_{ij}$ in their paper, we simply use dot product since we find these two functions perform similarly.}:
+
 \begin{equation}
 \begin{aligned}
-\mathbf{s}_j &= \sum_i^{n}{\alpha_{ij} \mathbf{x}_{i}}\\
-\red{\alpha_{ij}} &= \frac{exp(\mathbf{x}_i^T \mathbf{r}_t^j)}{\sum_i^n{exp(\mathbf{x}_i^T \mathbf{r}_t^j)}}
+\mathbf{s}_j = \sum_i^{n}{a_{ij} \mathbf{x}_{i}}
 \end{aligned}
-\label{eq_att_bag_embed}
+\label{att_sum}
 \end{equation}
-%\begin{equation}
-%\mathbf{s}_j = \sum_i^{n}{\alpha_{ij} \mathbf{x}_{i}}
-%\label{eq_att_bag_embed}
-%\end{equation}
-where $\mathbf{x}_{i}$ is the embedding of sentence $i$, $n$ the number of sentences in the bag, and $\mathbf{r}_t^j$ is the randomly initialized embedding of relation $j$ used specifically for the noise modeling branch.% and $\alpha_{ij}$ is the attention value over sentence $i$ with respect to relation $j$. 
-The resulting bag embedding $\mathbf{s}_j$ is fed to a \emph{softmax} classifier to predict the probability of relation $j$. \blue{this is a binary classifier, right??? this is Lin's approach, right??? }
+
+\begin{equation}
+\begin{aligned}
+a_{ij} = \frac{exp(\mathbf{x}_i^T \mathbf{r}_j)}{\sum_i^n{exp(\mathbf{x}_i^T \mathbf{r}_j)}}
+\end{aligned}
+\label{cal_att}
+\end{equation}
+where $\mathbf{x}_{i}$ is the embedding of sentence $i$, $n$ the number of sentences in the bag, and $\mathbf{r}_j$ is the randomly initialized embedding of relation $j$.
+% and $\alpha_{ij}$ is the attention value over sentence $i$ with respect to relation $j$. 
+Following~\cite{lin2016neural}, the resultant bag embedding $\mathbf{s}_j$ is fed to a \emph{softmax} classifier to predict the probability of relation $j$. \blue{this is a binary classifier, right???} \orange{no, multi-class classifier}
 
 \paragraph{Noise Modeling}
-We use an attention based mechanism to generate the transition matrix %for both average and attention aggregation models.
-for each sentence bag. 
-%\red{WHY we can not have a separate one for average????} 
-Specifically, we calculate the bag embedding with respect to each relation using Equation \ref{eq_att_bag_embed}; next, we use the following formula to calculate the the attention value for sentence $i$ with respect to relation $j$:
-\begin{equation}
-\alpha_{ij} = \frac{exp(\mathbf{x}_i^T \mathbf{r}_t^j)}{\sum_i^n{exp(\mathbf{x}_i^T \mathbf{r}_t^j)}}
-\end{equation}
-where $\mathbf{x}_i$ is the embedding of sentence $i$ in the bag and $\mathbf{r}_t^j$ is a randomly initialized embedding for relation $j$ used specifically for noise modeling branch.
-
-\blue{I guess we need one or two sentences as the motivation, for thses equations. }
-
+\orange{Since the transition matrix models the transition distribution with respect to each true relation, the attention mechanism appears to be a natural fit for calculating the transition matrix in bag level. Similar to attention aggregation, we concentrate on each relation one by one and calculate its transition distribution respectively.}
+Specifically, we calculate the bag embedding with respect to each relation using Equation \ref{att_sum} and \ref{cal_att} but with another set of relation embeddings $\mathbf{r}_t^j$. 
 We then calculate the transition matrix, $\mathbf{T}$, by:
 \begin{equation}
 T_{ij} = \frac{exp({\mathbf{s}_i^T \mathbf{r}_t^j  + b})}{\sum_{j=1}^{|\mathbb{C}|}{exp(\mathbf{s}_i^T \mathbf{r}_t^j + b})}
 \end{equation}
 where $\mathbf{s}_i$ is the bag embedding with respect to relation $i$, and $\mathbf{r}_t^j$ is the same embedding of relation $j$.
-
+\orange{do we need to clarify that avg and att share the same noise modeling method?}
+% We use an attention based mechanism to generate the transition matrix %for both average and attention aggregation models.
+% for each sentence bag. 
 
