@@ -1,43 +1,43 @@
 \section{Training Procedure \label{sec:training}}
+
 One of the key innovations of this work is on how to train and generate the
-transition matrix. The challenge here lies in the fact that we often do not
-have direct guidance over the noise pattern. This means that simply aligning
-the noisy label with the observed distribution, $\mathbf{o}$, does not
-guarantee the prediction distribution, $\mathbf{p}$, will match the true
-relation distribution. To tackle this challenge, we employ curriculum
-learning to guide the algorithm to gradually learn how to model the noise,
-rather than modelling the noise at the very beginning of the training when
-there is little knowledge of the noise pattern. To \todo{ZW: prevent the
-transposition matrix becomes bias towards xx??}, we use  trace regularization
-to control the behavior of transition matrix. Our approach also provides the
+transition matrix. The challenge here lies in the fact that we often do not have 
+%The difficulty of training the transition matrix lies in that there is no 
+direct guidance over the noise pattern. 
+This means that simply aligning the observed distribution, $\mathbf{o}$, with the noisy labels does not
+guarantee that the prediction distribution, $\mathbf{p}$, will match the true
+relation distribution. To tackle this challenge, we employ a curriculum
+learning framework to guide our model to gradually learn how to 
+\red{characterize the noise and how to control its effect via trace regularization},
+rather than modeling the noise at the very beginning of the training when
+there is little knowledge about the noise pattern.
+%
+Our approach also provides the
 flexibility to combine any prior knowledge of noise to improve the
 effectiveness of  the transition matrix. We show that if one could break the
-data into reliable and unreliable parts, our approach can exploit the split
-as indirect supervision over the noise pattern to build a more effective
-transition matrix to better model the noise. The sum is greater than its
-parts. As can be seen latter in Section~\ref{sec:evaluation}, putting
-together these techniques
+dataset into reliable and less reliable parts, our approach can exploit the split
+as indirect supervision over the noise pattern to build more effective
+transition matrix to better model the noise. The sum is greater than its parts. 
+As can be seen later in Section~\ref{sec:evaluation}, putting together these techniques
 enables us to build an adaptive scheme to better model the noise pattern over the state-of-the-art. 
 
 
 
-%The difficulty of training the transition matrix lies in that there is no direct guidance over the noise pattern. Therefore, matching the noisy label with $\mathbf{o}$ does not guarantee the prediction $\mathbf{p}$ to match the true relation distribution. To deal with this issue, instead of modeling the noise from the very beginning of the training step, we use a curriculum learning framework to guide the model to gradually learn to model the noise, and use trace regularization to control the behavior of transition matrix. Furthermore, if we have prior knowledge to roughly separate the data into reliable and less reliable subsets, we can utilize the split as indirect supervisions over the noise pattern to help the transition matrix to better model the noise.
-%%Apart from that, we also show how to constrain the \red{ability??} of the transition matrix to avoid \red{overfitting???}.
+%Furthermore, if we have prior knowledge to roughly separate the data into reliable and less reliable subsets, we can utilize the split as indirect supervisions over the noise pattern to help the transition matrix to better model the noise.
+%Apart from that, we also show how to constrain the \red{ability??} of the transition matrix to avoid \red{overfitting???}.
 
 \subsection{Trace Regularization}
 Intuitively, if the noise is small, the transition matrix $\mathbf{T}$ will tend to become an identity matrix (vice versa \red{????}).  Since each row of $\mathbf{T}$ sums to 1, the similarity between the transition matrix and the identity matrix can be represented by the trace of $\mathbf{T}$, $trace(\mathbf{T})$. The larger the $trace(\mathbf{T})$ is, the smaller the elements that do not lie in the diagonal are, and the more similar the transition matrix $\mathbf{T}$ is to the identity matrix. Therefore, we can \red{characterize  the noise level of the data by controlling the \red{expected} value of $trace(\mathbf{T})$ in the form of regularization}. \blue{For example, we expect a larger $trace(\mathbf{T})$ for reliable data, but  a smaller $trace(\mathbf{T})$  for less reliable data.}
-\todo{ZW: I have no ideas of what this paragraph is talking about.}
 
 \subsection{Curriculum Learning}
-%The basic idea of curriculum learning is simple: start with the easiest aspect of a task, and level up the difficulty gradually.
-The idea of curriculum learning is simple: we start with the easiest aspect of a task, and then level up the difficulty gradually.
-This algorithm fits well with our problem.
-There are situations where we have the knowledge of the data quality and situations where we do not. Curriculum learning performs
-well in both scenarios.    
+The idea of curriculum learning is simple: starting with the easiest aspect of a task, and leveling up the difficulty gradually,
+which fits well with our problem.
+There are situations where we may have prior knowledge of the data quality and situations where we do not. 
+Curriculum learning performs well in both scenarios.  
 
 \paragraph{Without Prior Knowledge of Data Quality}
-To handle the situation that $\mathbf{p}$ does not guarantee to match the true relation distribution, a straightforward idea is to first train the model without considerations for noise,  and then take the noise modeling into account gradually along the training procedure. In this way, the prediction branch is roughly trained before the model managing to model the noise. We implement this idea in the curriculum learning framework, and,  specifically,
-%we consider ignoring the noise is the easier part of training compared with modeling the noise, and our
+To handle the situation that $\mathbf{p}$ does not guarantee to match the true relation distribution, a straightforward idea is to first train the model without considerations for noise,  and then take the noise modeling into account gradually along the training procedure. In this way, the prediction branch is roughly trained before the model managing to model the noise. We implement this idea in the curriculum learning framework, and,  specifically, 
+%we consider ignoring the noise is the easier part of training compared with modeling the noise, and our 
 design the loss function as:
 %
 %If no guidance over the noise pattern exists, using only $\mathbf{o}$ to match the noisy label does not guarantee $\mathbf{p}$ to match the true relation distribution. Therefore, we use the linear combination of the cross entropy of both $\mathbf{o}$ and $\mathbf{p}$ as our objective function. Furthermore, we build a curriculum by controlling the training objective to gradually emphasis on noise modeling. Specifically, we design a decreasing weighting scheme for both the cross entropy of output prediction and the trace regularization component:
@@ -68,17 +68,17 @@ Loss=\sum_{i=1}^M{\sum_{j=1}^{N_i}{-log(o_{ijy_{ij}})}} + \beta_i \red{trace(\ma
 \end{equation}
 where the first component is the vanilla cross entropy loss  and the second is the trace regularization, $i$ is the index of the data subsets, $j$ is the index of training data, $\beta_i$ is the trace regularization weight for subset $i$, $\mathbf{T}_{ij}$, $y_{ij}$ and $o_{ijy_{ij}}$ are the transition matrix, relation labeled by distant supervision, and the observed probability of that relation for datum $j$ in subset $i$, respectively.
 
-For the reliable subset, we want $trace(\mathbf{T})$ to be large (negative $\beta$ \red{ $\beta_i<0$???????}) so that the element values of $\mathbf{T}$ will be centralized to the diagonal and the transition matrix will be more similar to the identity matrix. As for the  less reliable subsets, we want the $trace(\mathbf{T})$ to be small (positive $\beta$ \red{ $\beta_i>0$???????}) so that the element values of their transition matrices will be diffusive and the transition matrix will be less similar to identity matrix. In other words, the transition matrix is encouraged to model the noise.
+For the reliable subset, we want $trace(\mathbf{T})$ to be large (negative $\beta$ \red{ $\beta_i<0$???????}) so that the element values of $\mathbf{T}$ will be centralized to the diagonal and the transition matrix will be more similar to the identity matrix. As for the  less reliable subsets, we want the $trace(\mathbf{T})$ to be small (positive $\beta$ \red{ $\beta_i>0$???????}) so that the element values of their transition matrices will be diffusive and the transition matrix will be less similar to identity matrix. In other words, the transition matrix is encouraged to model the noise. 
 
 Note that this loss function only works for sentence level models, since reliable sentences and less reliable ones are all aggregated into a sentence bag in the bag level models,  we therefore can not determine which bag is reliable and which is not. However, the bag level setting can still use the curriculum by changing the content of the bag, \red{e.g., keeping reliable sentences in the bag first and gradually adding less reliable ones,}  and use Equation \ref{general_loss} for training. In such way, it can benefit from the prior knowledge of data quality as well.
 
 
 
 \subsection{Constrained Transition Matrix} \blue{DO we need special discussion for this one??}
-%\orange{Since the triples in knowledge base are reliable in most of the times, the positive label confusion noise is less likely than the false negative and false positive noise.}
+%\orange{Since the triples in knowledge base are reliable in most of the times, the positive label confusion noise is less likely than the false negative and false positive noise.} 
 \red{In most DS relation extraction cases,  the imperfect knowledge bases and the inexact alignments between seed knowledge facts and unstructured text lead to many  \textit{false negative} and \textit{false positive} instances, more severe compared to  the \textit{label confusions} issues among positive relations.
 %the problems of \textit{false negative} and \textit{false positive} are more severe, compared to \textit{label confusions} among positive relations.
 %The reasons are twofold. First, since the knowledge bases are usually far from perfect, the \DS generated negative data are often \textit{false negative}. And the inexact alignments between seed knowledge facts and unstructured text produces many  \textit{false positive} instances.
  }
-%However our transition matrix has the ability to model all these three types of noise. To prevent overfitting and make the model \red{concentrate on the false negative and false positive noise??}\orange{(not sure about the problem)},
+%However our transition matrix has the ability to model all these three types of noise. To prevent overfitting and make the model \red{concentrate on the false negative and false positive noise??}\orange{(not sure about the problem)}, 
 We  thus restrict the transition matrix for bag level models to \blue{(why not sentence level?)} so that the diagonal, the first column and the first row of the transition matrix may not equal to zero\footnote{we assume that the index of \emph{No-Relation} is 0.}, \blue{acommodating  such noisy instances???}.
