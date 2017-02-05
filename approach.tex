@@ -46,10 +46,10 @@ on determining the weights of the transition matrix, $\mathbf{T}$, which will be
 \subsection{Sentence-level Modeling}
 
 \paragraph{Sentence Embedding and Prediction}
- In this work, we use a piecewise convolutional neural network~\cite{zeng2015distant} for sentence encoding, but other sentence embedding models can also be used.  
-%We use a model similar to the one presented in \cite{luo2016temporal} for distribution prediction at the sentence level. 
+ In this work, we use a piecewise convolutional neural network~\cite{zeng2015distant} for sentence encoding, but other sentence embedding models can also be used.
+%We use a model similar to the one presented in \cite{luo2016temporal} for distribution prediction at the sentence level.
 To generate the predicted relation distribution, $\mathbf{p}$,  we first feed the sentence embedding to a full connection layer, and then use \emph{softmax} for
-relation classification. Again, other probabilistic prediction methods can also be used here. 
+relation classification. Again, other probabilistic prediction methods can also be used here.
 
 \paragraph{Noise Modeling}
 %The noise modeling branch calculates a transition matrix dynamically for each sentence (or sentence bag) to model its noise pattern.
@@ -66,17 +66,18 @@ branch.
 \begin{equation}\label{eq_tm}
 T_{ij} = \frac{exp({\mathbf{w}_{ij}^T \mathbf{x}_n + b})}{\sum_{j=1}^{|\mathbb{C}|}{exp({\mathbf{w}_{ij}^T \mathbf{x}_n + b}})}
 \end{equation}
-where $T_{ij}$ is the conditional probability for the given sentence to be labeled as relation $j$ by \DS, but with $i$ as the true relation, $b$ a scalar bias,  $|\mathbb{C}|$ the number of relations, $\mathbf{w}_{ij}$ is a shared weight vector to characterize the confusion between $i$ and~$j$. %, shared across the dataset. 
+where $T_{ij}$ is the conditional probability for the given sentence to be labeled as relation $j$ by \DS, but with $i$ as the true relation, $b$ a scalar bias,  $|\mathbb{C}|$ the number of relations, $\mathbf{w}_{ij}$ is a shared weight vector to characterize the confusion between $i$ and~$j$. %, shared across the dataset.
 %The \emph{softmax} function guarantees that each row of $\mathbf{T}$ sums to 1.
 
-\blue{----F: Dynamic v.s. Static:  Here, we dynamically produce a transition matrix, $\mathbf{T}$, specifically for each sentence, but with the parameters ($\mathbf{w}_{ij}$) shared across the dataset. By doing so, we are able to adaptively characterize  the noise level for each sentence, with a few parameters only. In contrast, one could also produce one single transition matrix for all sentences, with much less computation, where one need not to compute $\mathbf{T}$ on the air.} 
+\blue{----F: Dynamic v.s. Static:  Here, we dynamically produce a transition matrix, $\mathbf{T}$, specifically for each sentence, but with the parameters ($\mathbf{w}_{ij}$) shared across the dataset. By doing so, we are able to adaptively characterize  the noise level for each sentence, with a few parameters only. In contrast, one could also produce one single transition matrix for all sentences, with much less computation, where one need not to compute $\mathbf{T}$ on the air.}
+
 
 
 
 \paragraph{Observed Distribution}
-When we model the noise with a transition matrix, 
+When we model the noise with a transition matrix,
 if the true relation of an input training instance is $i$, we can assume that this relation $i$ could be labeled as relation $j$ by \DS  with probability $T_{ij}$. Therefore, we can model the observed relation distribution, $\mathbf{o}$, by
-multiplying transition matrix, $\mathbf{T}$, and the predicted relation distribution, $\mathbf{p}$: 
+multiplying transition matrix, $\mathbf{T}$, and the predicted relation distribution, $\mathbf{p}$:
  \begin{equation}
 \mathbf{o} = \mathbf{T}^T \bm\cdot \mathbf{p}
 \label{eq_transition}
@@ -89,16 +90,16 @@ multiplying transition matrix, $\mathbf{T}$, and the predicted relation distribu
  \fi
 where $\bm\cdot$ represents dot product, and we normalize the elements of $\mathbf{o}$ to ensure $\sum_i{o_i}=1$.
 
-Different from previous works that use the predicted relation distribution $\mathbf{p}$ to directly \red{match} the relation labeled by \DS\red{~\cite{zeng2015distant,lin2016neural}??}. We instead use $\mathbf{o}$ to match the noisy label during training and still use $\mathbf{p}$ as output during testing. 
+Different from previous works that use the predicted relation distribution $\mathbf{p}$ to directly \red{match} the relation labeled by \DS\red{~\cite{zeng2015distant,lin2016neural}??}. We instead use $\mathbf{o}$ to match the noisy label during training and still use $\mathbf{p}$ as output during testing.
 By doing so, we can see that Equation \ref{eq_transition} actually models the procedure of how the noisy label is produced and thus protects $\mathbf{p}$ from the noise.
 %can help the model make better use of the noisy training data. \red{How to better use?? by using regularization????}
 %Also note that the noise modeling branch and $\mathbf{o}$ is only used in the training phase. In the test phase, we only use the prediction branch and take the predicted relation distribution $\mathbf{p}$ as our output. \todo{last paragraph can be removed}
 
 \subsection{Bag Level Modeling}
 \paragraph{Bag Embedding and Prediction}
-One of the key challenges for bag level model is how to aggregate the embeddings of individual sentences of the bag.  
-In this work, we experiment two methods, namely average and attention aggregation~\cite{lin2016neural}. 
-%The average aggregation 
+One of the key challenges for bag level model is how to aggregate the embeddings of individual sentences of the bag.
+In this work, we experiment two methods, namely average and attention aggregation~\cite{lin2016neural}.
+%The average aggregation
 The former calculates the bag embedding, $\mathbf{s}$, by averaging the embeddings of each sentence, and  then feed it to a \emph{softmax} classifier for relation classification.
 
 The attention aggregation calculates an attention value, $a_{ij}$, for each sentence $i$ in the bag with respect to each relation $j$, and aggregates to  the bag level as  $\mathbf{s}_j$, by the following equations\footnote{While~\cite{lin2016neural} use bilinear function to calculate $a_{ij}$ in their paper, we simply use dot product since we find these two functions perform similarly.}:
@@ -117,12 +118,12 @@ a_{ij} = \frac{exp(\mathbf{x}_i^T \mathbf{r}_j)}{\sum_i^n{exp(\mathbf{x}_i^T \ma
 \label{cal_att}
 \end{equation}
 where $\mathbf{x}_{i}$ is the embedding of sentence $i$, $n$ the number of sentences in the bag, and $\mathbf{r}_j$ is the randomly initialized embedding of relation $j$.
-% and $\alpha_{ij}$ is the attention value over sentence $i$ with respect to relation $j$. 
+% and $\alpha_{ij}$ is the attention value over sentence $i$ with respect to relation $j$.
 Following~\cite{lin2016neural}, the resultant bag embedding $\mathbf{s}_j$ is fed to a \emph{softmax} classifier to predict the probability of relation $j$. \blue{this is a binary classifier, right???} \orange{no, multi-class classifier}
 
 \paragraph{Noise Modeling}
 \orange{Since the transition matrix models the transition distribution with respect to each true relation, the attention mechanism appears to be a natural fit for calculating the transition matrix in bag level. Similar to attention aggregation, we concentrate on each relation one by one and calculate its transition distribution respectively.}
-Specifically, we calculate the bag embedding with respect to each relation using Equation \ref{att_sum} and \ref{cal_att} but with another set of relation embeddings $\mathbf{r}_t^j$. 
+Specifically, we calculate the bag embedding with respect to each relation using Equation \ref{att_sum} and \ref{cal_att} but with another set of relation embeddings $\mathbf{r}_t^j$.
 We then calculate the transition matrix, $\mathbf{T}$, by:
 \begin{equation}
 T_{ij} = \frac{exp({\mathbf{s}_i^T \mathbf{r}_t^j  + b})}{\sum_{j=1}^{|\mathbb{C}|}{exp(\mathbf{s}_i^T \mathbf{r}_t^j + b})}
@@ -130,5 +131,5 @@ T_{ij} = \frac{exp({\mathbf{s}_i^T \mathbf{r}_t^j  + b})}{\sum_{j=1}^{|\mathbb{C
 where $\mathbf{s}_i$ is the bag embedding with respect to relation $i$, and $\mathbf{r}_t^j$ is the same embedding of relation $j$.
 \orange{do we need to clarify that avg and att share the same noise modeling method?}
 % We use an attention based mechanism to generate the transition matrix %for both average and attention aggregation models.
-% for each sentence bag. 
+% for each sentence bag.
 
