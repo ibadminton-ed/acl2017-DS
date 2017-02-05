@@ -15,27 +15,27 @@ knowledge is missing.
 
 %We show that our method works in all of these settings and prior knowledge of the data quality can benefit the training of transition matrix. We also find that the sentence level models works better when we have both reliable and unreliable data, but the bag level model performs better if all the data are treated equally. Furthermore, to explore the generalization ability of our method, we also conduct experiments in two datasets.
 \subsection{Datasets}
-We evaluate our approach on two datasets, \TimeRE and \EntityRE,  %described as follows.
-%In order to evaluate in the situation with and without prior knowledge of data quality,
-%we build a relation extraction data set (\TimeRE) which aims at extracting relations between entity and time.
-%We show that we can use some heuristics to distinguish reliable and unreliable data.
-% we build a new relation extraction dataset,
-where \TimeRE is constructed
-in a \DS style by aligning time-related Wikidata knowledge triples to
-Wikipedia text, containing 278,141 sentences with 12
-types of relations  between an entity mention and a time expression.
+We evaluate our approach on two datasets. The first one is  \TimeRE, constructed by ourself using \DS. 
+This dataset is used to evaluate our approach on scenarios where we
+have prior knowledge of the data quality. The second dataset is the widely used \EntityRE data set\todo{\cite{}},
+which provides no prior knowledge of the data quality. 
 
-In the \DS framework, the granularity of time expressions speaks for themselves in
+
+\paragraph{\TimeRE}
+This dataset is automatically constructed by using \DS to align time-related Wikidata knowledge triples to
+Wikipedia text.  It contains 278,141 sentences with 12
+types of relations  between an entity mention and a time expression.
+We choose time expressions as this relation speaks for themselves in
 terms of reliability. That is, given a knowledge triple $<$$e,rel,t$$>$ and its
 aligned sentences,  the  finer-grained the time expression $t$ is in the sentence,
 the more likely the sentence  supports the existence of the triple.
-For example, a sentence containing both \emph{Alphabet} and \emph{October\_2\_2015} is highly likely to express the \emph{inception-time} of \emph{Alphabet}, while a sentence containing both \emph{Alphabet} and \emph{2015} could instead talk  about many events, e.g.,  financial report of 2015, hiring a new CEO, etc.
-We thus split the dataset split into
+For example, a sentence containing both \texttt{Alphabet} and \texttt{October\_2\_2015} is highly likely to express the \texttt{inception-time} of \texttt{Alphabet}, while a sentence containing both \texttt{Alphabet} and \texttt{2015} could instead talk  about many events, e.g.,  financial report of 2015, hiring a new CEO, etc.
+Using the time expressions, we split the dataset into
 3 subsets according to different granularities of the time expressions involved, indicating different levels of reliability.
-%\todo{ZW: Why we thus split into 3 subsets??? why??}
-Instances with full date expressions, i.e., Year-Month-Day, can be seen as the most reliable data, while those with
-partial date expressions, e.g., Month-Year and Year-Only, can be seen as less
-reliable ones.  Negative data are constructed  heuristically that any
+Our criteria for determining the reliability of the data are as follows. 
+Instances with full date expressions, i.e., \texttt{Year-Month-Day}, can be seen as the most reliable data, while those with
+partial date expressions, e.g., \texttt{Month-Year} and \texttt{Year-Only}, can be seen as less
+reliable.  Negative data are constructed  heuristically that any
 \emph{entity-time} pairs in a sentence without corresponding triples in Wikidata are considered as negative data. \red{we still have noises in terms of \textbf{false negative}, right? do we have experiments to say this? } \orange{yes, but no experiments}
 During training, we can access  184,579 negative
 instances and  77,777 positive instances, including 22,214 reliable
@@ -43,17 +43,15 @@ ones, 2,094 and 53,469 less reliable ones. The validation set and test set are r
 2,776, 2,771 positive instances and 5,143, 5,095 negative instances respectively. \red{talk bag level numbers?????} \orange{maybe too messy? how about only showing sentence level numbers in both dataset?}
 
 
-One of the advantages of \TimeRE is that it enables us to evaluate both the sentence and the bag level models, in the situation with and without prior knowledge of data quality.
-
-We also experiment on \EntityRE, a widely used entity
-relation extraction dataset, constructed by aligning triples
-in Freebase to the New York Times corpus (NYT
-corpus)~\cite{riedel2010modeling}. \orange{It contains 52 relations, 136,947 positive and 385,664 negative sentences for training and 6,444 positive and 166,004 negative sentences  for testing.} 
-\blue{This dataset provides a good example to evaluate the generalization
-ability of our transition matrix approach. (I would like to move this sentence to somewhere when discussing results)}
-Since the sentence level annotations in the test set of \EntityRE are too noisy to be gold-standard,  we thus follow most previous practice by evaluate bag level models only on \EntityRE.
-%\red{why there is sentence level evaluations????}
-%\todo{ZW: Why not evaluate sentence-level model on this data set????}
+\paragraph{\EntityRE} 
+This widely used entity
+relation extraction dataset was built by independent researchers by aligning triples
+in Freebase to the New York Times corpus~\cite{riedel2010modeling}. \orange{It contains 52 relations, 136,947 positive and 385,664 negative sentences for training and 6,444 positive and 166,004 negative sentences  for testing.}.
+Unlike \TimeRE, this dataset does not provide prior knowledge of the data quality. 
+However, it is a good example to evaluate the generalization
+ability of our transition matrix approach.
+Since the sentence level annotations in the test set of \EntityRE are too noisy to be gold-standard,  we only evaluate use it to 
+evaluate our bag-level models. This is a standard practice used by prior work~\todo{\cite{}} too. 
 
 
 \begin{figure}[t!]
@@ -80,7 +78,7 @@ We evaluate our approach under two extraction settings, sentence level
 investigate models trained on all subsets mixed together (\texttt{\_mix}),
 models trained on reliable data only (\texttt{\_reliable}), models trained
 with transition matrix (\texttt{\_TM}), and models trained
-with the curriculum of using the relialbe data first and adding unreliable data afterwards (\texttt{\_CL})\footnote{Since curriculum learning without prior knowledge is our default training method, we use \texttt{\_CL} to refer to the situation with prior knowledge of data quality here for simplicity.}. 
+with the curriculum of using the relialbe data first and adding unreliable data afterwards (\texttt{\_CL})\footnote{Since curriculum learning without prior knowledge is our default training method, we use \texttt{\_CL} to refer to the situation with prior knowledge of data quality here for simplicity.}.
 In the bag level experiments, we also study the effect of attention (\texttt{\_att}) and average
 (\texttt{\_avg}) aggregation methods.
 \todo{ZW: This paragraph need to be polished.}
