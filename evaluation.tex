@@ -15,10 +15,10 @@ knowledge is missing.
 
 %We show that our method works in all of these settings and prior knowledge of the data quality can benefit the training of transition matrix. We also find that the sentence level models works better when we have both reliable and unreliable data, but the bag level model performs better if all the data are treated equally. Furthermore, to explore the generalization ability of our method, we also conduct experiments in two datasets.
 \subsection{Datasets}
-We evaluate our approach on two datasets. The first one is  \TimeRE, constructed by ourself using \DS. 
+We evaluate our approach on two datasets. The first one is  \TimeRE, constructed by ourself using \DS.
 This dataset is used to evaluate our approach on scenarios where we
 have prior knowledge of the data quality. The second dataset is the widely used \EntityRE data set\todo{\cite{}},
-which provides no prior knowledge of the data quality. 
+which provides no prior knowledge of the data quality.
 
 
 \paragraph{\TimeRE}
@@ -32,7 +32,7 @@ the more likely the sentence  supports the existence of the triple.
 For example, a sentence containing both \texttt{Alphabet} and \texttt{October\_2\_2015} is highly likely to express the \texttt{inception-time} of \texttt{Alphabet}, while a sentence containing both \texttt{Alphabet} and \texttt{2015} could instead talk  about many events, e.g.,  financial report of 2015, hiring a new CEO, etc.
 Using the time expressions, we split the dataset into
 3 subsets according to different granularities of the time expressions involved, indicating different levels of reliability.
-Our criteria for determining the reliability of the data are as follows. 
+Our criteria for determining the reliability of the data are as follows.
 Instances with full date expressions, i.e., \texttt{Year-Month-Day}, can be seen as the most reliable data, while those with
 partial date expressions, e.g., \texttt{Month-Year} and \texttt{Year-Only}, can be seen as less
 reliable.  Negative data are constructed  heuristically that any
@@ -43,15 +43,15 @@ ones, 2,094 and 53,469 less reliable ones. The validation set and test set are r
 2,776, 2,771 positive instances and 5,143, 5,095 negative instances respectively. \red{talk bag level numbers?????} \orange{maybe too messy? how about only showing sentence level numbers in both dataset?}
 
 
-\paragraph{\EntityRE} 
+\paragraph{\EntityRE}
 This widely used entity
 relation extraction dataset was built by independent researchers by aligning triples
-in Freebase to the New York Times corpus~\cite{riedel2010modeling}. \orange{It contains 52 relations, 136,947 positive and 385,664 negative sentences for training and 6,444 positive and 166,004 negative sentences  for testing.}.
-Unlike \TimeRE, this dataset does not provide prior knowledge of the data quality. 
+in Freebase to the New York Times (\NYT) corpus~\cite{riedel2010modeling}. \orange{It contains 52 relations, 136,947 positive and 385,664 negative sentences for training and 6,444 positive and 166,004 negative sentences  for testing.}.
+Unlike \TimeRE, this dataset does not provide prior knowledge of the data quality.
 However, it is a good example to evaluate the generalization
-ability of our transition matrix approach.
-Since the sentence level annotations in the test set of \EntityRE are too noisy to be gold-standard,  we only evaluate use it to 
-evaluate our bag-level models. This is a standard practice used by prior work~\todo{\cite{}} too. 
+ability of our transition matrix approach.b
+Since the sentence level annotations in the test set of \EntityRE are too noisy to be gold-standard,  we only evaluate use it to
+evaluate our bag-level models. This is a standard practice used by prior work~\todo{\cite{}} too.
 
 
 \begin{figure}[t!]
@@ -62,26 +62,40 @@ evaluate our bag-level models. This is a standard practice used by prior work~\t
 \end{center}
 \end{figure}
 
-\subsection{Experimental Setup}
+%\subsection{Experimental Setup}
 
-\paragraph{Hyperparameters} \red{can we put those parameters in a table?? especially those shared by the two settings.} \todo{ZW: Agree. These parameters should be given in a table!}
-We experiment our sentence level model on \TimeRE. We use 100-dimensional word embedding pre-trained using GloVe \cite{pennington2014glove} on Wikipedia and Gigaword, and 20-dimensional vector for distance embedding. The convolution window is 3 and the number of convolution kernels is 200. The size of the full connection layer is also 200. As for training, we use stochastic gradient descend (SGD) with batch size 20, learning rate 0.1. Each data subset is added after the previous phase has run for 15 epochs. The trace regularization weights for three subsets are $\beta_1=-0.01$, $\beta_2=0.01$ and $\beta_3=0.1$ respectively from the reliable one to the most unreliable one (the ratio of $\beta_3$ and $\beta_2$ is fixed to 10 or 5 during hyper-parameter tuning).
+\subsection{Hyperparameters}
 
-The parameters of the bag level model is almost the same as the sentence level model on TimeRE data, except that the learning rate is 0.01 and the less reliable data are added when the previous phase has run for 3 and 6 epochs. As for the \EntityRE data, the word embedding is of dimension 50 and is pre-trained on the NYT corpus using word2vec\footnote{\url{ https://code.google.com/p/word2vec/}}. The convolution window is 3 and the number of convolution kernels is 256, distance embedding size is 5, batch size is 16 and learning rate is 0.01. For all the bag level models, the linear combination parameter $\alpha$ is 1 and trace regularization parameter $\beta$ is -0.1 at the start of training. We experiment with decay rate \{0.95, 0.9, 0.8\} and decay step \{3, 5, 8\}. We find that using decay rate 0.9 and decay step 5 performs best in most situations.
+\paragraph{Neural network} Our training algorithm is based on a convolution neural network with 200 convolution kernels and 200 layers.
+The convolution window is 3. To train the network, we use stochastic gradient descend (SGD) with a batch size of 20.  The learning rates for sentence-level
+ and bag-level modeling are 0.1 and 0.01 respectively.
 
-\paragraph{Evaluation Metrics}
-We evaluate the relation extraction performances using precision-recall (\PR) curves, which is calculated according to the extraction results ranked decreasingly by their confidence scores.
 
-\paragraph{Baseline Settings}
-We evaluate our approach under two extraction settings, sentence level
-(\texttt{sent\_}) and bag level (\texttt{bag\_}). In both settings, we
-investigate models trained on all subsets mixed together (\texttt{\_mix}),
-models trained on reliable data only (\texttt{\_reliable}), models trained
-with transition matrix (\texttt{\_TM}), and models trained
-with the curriculum of using the relialbe data first and adding unreliable data afterwards (\texttt{\_CL})\footnote{Since curriculum learning without prior knowledge is our default training method, we use \texttt{\_CL} to refer to the situation with prior knowledge of data quality here for simplicity.}.
-In the bag level experiments, we also study the effect of attention (\texttt{\_att}) and average
-(\texttt{\_avg}) aggregation methods.
-\todo{ZW: This paragraph need to be polished.}
+\paragraph{Sentence level evaluation}
+Sentence level modeling was performed on the \TimeRE data set. For this evaluation,  we used 100-dimensional word embedding pre-trained using GloVe \cite{pennington2014glove} on Wikipedia and Gigaword, and 20-dimensional vector for distance embedding. Each of the three subsets of \TimeRE is added after the previous phase has run for 15 epochs. The trace regularization weights for the three subsets are $\beta_1=-0.01$, $\beta_2=0.01$ and $\beta_3=0.1$ respectively from the reliable to the most unreliable part, and the ratio of $\beta_3$ and $\beta_2$ is fixed to 10 or 5 during hyper-parameter tuning.
+
+\paragraph{Bag level evaluation}
+Bag level modeling was performed using the \TimeRE and the \EntityRE data sets. We used the same parameters for \TimeRE, described above. 
+%The parameters of the bag level model is almost the same as the sentence level model on TimeRE data, except that the learning rate is 0.01 and the less reliable data are added when the previous phase has run for 3 and 6 epochs. 
+For \EntityRE, we used 50-dimensional word embedding pre-trained on the \NYT corpus using word2vec\footnote{\url{ https://code.google.com/p/word2vec/}}. The distance of the embedding size is 5. For both datasets, the linear combination parameter $\alpha$ is 1 and trace regularization parameter $\beta$ is -0.1 at the start of training. We experiment with various decay rates, \{0.95, 0.9, 0.8\}, and decay steps, \{3, 5, 8\}. We find that using a decay rate of 0.9 and step of 5 gives best in most situations.
+
+\subsection{Evaluation Metric}
+The performance is reported using the precision-recall (\PR) curve, calculated according to the extraction results ranked decreasingly by their confidence scores. This is a standard evaluation metric in relation extraction.
+
+\subsection{Naming Conventions}
+We evaluate our approach under a wide range of settings, for  
+ sentence level
+(\texttt{sent\_}) and bag level (\texttt{bag\_}) modeling. 
+We evaluate the performance of the models that were trained under different training data settings: 
+(1) \texttt{\_mix} -- the three subsets of \TimeRE are mixed and treated as a single data set;
+(2) \texttt{\_reliable} -- models were trained using only the reliable 
+data set of \TimeRE;
+(3) \texttt{\_TM} -- training was guided by the transition matrix;
+(4) \texttt{\_CL} -- training was guided by curriculum learning, starting from
+the reliable data and then move to the unreliable data\footnote{Since curriculum learning without prior knowledge is our default training method, we use \texttt{\_CL} to refer to the situation with prior knowledge of data quality here for simplicity. \red{ZW: What???}}.
+
+For bag level modeling, we also evaluate model peformance using average aggregation (\texttt{\_avg})
+and attention aggregation (\texttt{\_att}), as described in Section~\ref{sec:baglevelmodeling}.
 
 \begin{figure*}[htbp]
 \centering

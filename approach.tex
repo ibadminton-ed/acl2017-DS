@@ -95,7 +95,7 @@ By doing so, we can see that Equation \ref{eq_transition} actually models the pr
 %can help the model make better use of the noisy training data. \red{How to better use?? by using regularization????}
 %Also note that the noise modeling branch and $\mathbf{o}$ is only used in the training phase. In the test phase, we only use the prediction branch and take the predicted relation distribution $\mathbf{p}$ as our output. \todo{last paragraph can be removed}
 
-\subsection{Bag Level Modeling}
+\subsection{Bag Level Modeling \label{sec:baglevelmodeling}}
 \paragraph{Bag Embedding and Prediction}
 One of the key challenges for bag level model is how to aggregate the embeddings of individual sentences of the bag.
 In this work, we experiment two methods, namely average and attention aggregation~\cite{lin2016neural}.
