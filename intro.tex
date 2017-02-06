@@ -9,13 +9,13 @@ analysis~\cite{fang2016learning}.
 
 %. In the
 %context of relation extraction, one could start by feeding \DS with a set annotated texts where each
-%sentence is mapped to a relation, i.e., a fact tuple like $<$PERSON, \emph{born-in}, PLACE$>$; \DS can then use the knowledge
+%sentence is mapped to a relation, i.e., a fact tuple like $<$PERSON, \texttt{born-in}, PLACE$>$; \DS can then use the knowledge
 %extracted from the texts to
 %generate relation contexts from unlabeled texts.
 
 While promising, \DS does not guarantee perfect results and often introduces noise to the
-generated data. In the context of relation extraction, \DS could match the \orange{knowledge base triple} $<$``Donald Trump",
-\emph{born-in}, ``New York"$>$  in \emph{false positive} contexts like ``\emph{Donald Trump worked in New York City}".
+generated data. In the context of relation extraction, \DS could match the \orange{knowledge base triple} $<$\emph{Donald Trump},
+\texttt{born-in}, \emph{New York}$>$  in \emph{false positive} contexts like \emph{Donald Trump worked in New York City}.
 \orange{Prior works~\cite{takamatsu2012reducing,ritter2013modeling}} show that \DS often mistakenly labels real positive instances as negative (\emph{false negative}) or
 versa vice (\emph{false positive}), and there could also have confusions among positive labels too. These noises can
 severely affect the training
@@ -39,7 +39,7 @@ In fact, those neural network architectures provide more opportunities to explic
 % \red{---F: This argument is weak! can we say they either rely on predefined rules or extra labeled dataset?}
 
 In this paper, we show that while noise is inevitable in the \DS-style training data, it is still possible to characterize its pattern  in a unified framework along with its original classification objective. Our key insight is that the \DS-style training  data would typically contain useful clues about the noise pattern. For example, 
-\orange{since some people work in their birth place, we can reasonably assume that a training sentence describing the work place of a person has some chances to be erroneously labeled by \DS as relation \emph{born-in}}.
+\orange{since some people work in their birth place, we can reasonably assume that a training sentence describing the work place of a person has some chances to be erroneously labeled by \DS as relation \texttt{born-in}}.
 % if we see a training sentence describing the work place of a person, we can reasonably assume that it has some chances to be erroneously labeled by \DS as relation \red{$live\_place$} .
 \red{Accordingly, we propose to dynamically generate a transition matrix for each training instance to characterize the possibility that the \DS labeled relation is confused, to indicate its noise level.}\orange{(or noise pattern?)}  To tackle the challenge of no direct guidance over the noise pattern, we employ a curriculum learning based training method to gradually model the noise pattern over time \orange{and further use trace regularization to control the behavior of the transition matrix during training. Furthermore,} our novel approach also provides the flexibility to combine the prior knowledge of data quality. 
 % \orange{by building a curriculum  utilizing trace regularization to control the behavior of the transition matrix during training.??}

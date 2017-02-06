@@ -29,10 +29,10 @@ which provides no prior knowledge of the data quality.
 Wikipedia text, containing 278,141 sentences with 12
 types of relations  between an entity mention and a time expression.
 We choose time-related relations in this dataset as time expressions speak for themselves in
-terms of reliability. That is, given a knowledge triple $<$$e,rel,t$$>$ and its
+terms of reliability. That is, given a knowledge triple $<$$e$, \texttt{rel}, $t$$>$ and its
 aligned sentences,  the  finer-grained the time expression $t$ appears in the sentence,
 the more likely the sentence  supports the existence of this triple.
-For example, a sentence containing both \texttt{Alphabet} and \texttt{October\_2\_2015} is highly likely to express the \texttt{inception-time} of \texttt{Alphabet}, while a sentence containing both \texttt{Alphabet} and \texttt{2015} could instead talk  about many events, e.g.,  releasing financial report of 2015, hiring a new CEO, etc.
+For example, a sentence containing both \emph{Alphabet} and \emph{October\_2\_2015} is highly likely to express the \texttt{inception-time} of \emph{Alphabet}, while a sentence containing both \emph{Alphabet} and \emph{2015} could instead talk  about many events, e.g.,  releasing financial report of 2015, hiring a new CEO, etc.
 Using this heuristics, we split the dataset into
 3 subsets according to different granularities of the time expressions involved, indicating different levels of reliability.
 Our criteria for determining the reliability of the data are as follows.
@@ -55,7 +55,7 @@ by aligning triples
 in Freebase to the New York Times (\NYT) corpus~\cite{riedel2010modeling}. It contains 52 relations, 136,947 positive and 385,664 negative sentences for training, and 6,444 positive and 166,004 negative sentences  for testing.
 Unlike \TimeRE, this dataset does not contain any prior knowledge about the data quality.
 However, it is a good example to evaluate the generalization ability of our transition matrix approach.
-\emph{Since the sentence level annotations in the test set of \EntityRE are too noisy to serve as gold standard,  we only evaluate bag-level models on \EntityRE -- a standard practice in previous works}~\cite{surdeanu2012multi,zeng2015distant,lin2016neural}.
+\emph{Since the sentence level annotations in the test set of \EntityRE are too noisy to serve as gold standard,  we only evaluate bag-level models on \EntityRE -- a standard practice in previous works}~\cite{surdeanu2012multi,zeng2015distant,lin2016neural}. \orange{necessary to use different style?}
 
 
 %\subsection{Experimental Setup}
@@ -65,7 +65,7 @@ However, it is a good example to evaluate the generalization ability of our tran
 \paragraph{Neural network components} used in our algorithm are based on a convolution neural network with 200 convolution kernels and the window size is 3. To train the network, we use stochastic gradient descend (SGD) with a batch size of 20.  The learning rates for sentence-level  and bag-level models are 0.1 and 0.01, respectively.
 
 \paragraph{Sentence level modeling}
- is performed on the \TimeRE dataset, where we use 100-dimensional word embeddings pre-trained using GloVe~\cite{pennington2014glove} on Wikipedia and Gigaword\footnote{\url{catalog.ldc.upenn.edu/LDC2011T07}}, and 20-dimensional vectors for distance embeddings. Each of the three subsets of \TimeRE is added after the previous phase has run for 15 epochs. \blue{The trace regularization weights for the three subsets are $\beta_1=0.01$, $\beta_2=-0.01$ and $\beta_3=-0.1$, respectively, from the reliable to the most unreliable part, and the ratio of $\beta_3$ and $\beta_2$ is fixed to 10 or 5 during hyper-parameter tuning.}
+ is performed on the \TimeRE dataset, where we use 100-dimensional word embeddings pre-trained using GloVe~\cite{pennington2014glove} on Wikipedia and Gigaword\footnote{\url{catalog.ldc.upenn.edu/LDC2011T07}}, and 20-dimensional vectors for distance embeddings. Each of the three subsets of \TimeRE is added after the previous phase has run for 15 epochs. The trace regularization weights for the three subsets are $\beta_1=0.01$, $\beta_2=-0.01$ and $\beta_3=-0.1$, respectively, from the reliable to the most unreliable part, and the ratio of $\beta_3$ and $\beta_2$ is fixed to 10 or 5 during hyper-parameter tuning.
 
 \paragraph{Bag level modeling}
 is performed on both  \TimeRE and  \EntityRE datasets. We use the same parameters as sentence level for \TimeRE.
