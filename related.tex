@@ -22,7 +22,7 @@ The work presented by \cite{takamatsu2012reducing} removes potential noisy sente
 patterns at the pre-processing stage. \cite{xu2013filling} uses pseudo-relevance feedback to find
 possible false negative data. \cite{riedel2010modeling} proposes to alleviate the noise problem by considering the \RE task
 as a multi-instance classification problem and assume
-that at least one of the retrieved sentences containing both \emph{subj} and \emph{obj} supports the corresponding $<$\emph{subj},\emph{rel},\emph{obj}$>$ triple (i.e. at-least-one assumption).
+that at least one of the retrieved sentences containing both \emph{subj} and \emph{obj} supports the corresponding $<$\emph{subj},\emph{rel},\emph{obj}$>$ triple (i.e. \emph{at-least-one} assumption).
 Following this assumption, people further improves the original method using prababilistic graphic model mehtods~\cite{hoffmann2011knowledge,surdeanu2012multi}, and neural network methods \cite{zeng2015distant}. Recently \cite{lin2016neural} further proposes to use attention mechanism to reduce the noise inside the sentence bag. 
 In contrast to our work in noise modeling, these approaches all aim to identify either reliable or unreliable instances to reduce
 the bad influence of noise.
@@ -40,7 +40,7 @@ the bad influence of noise.
 
 
 \paragraph{Noise Modeling}
-The at-least-one assumption mentioned above is often too strong in practice, and there are still chances that the
+The \emph{at-least-one} assumption mentioned above is often too strong in practice, and there are still chances that the
 sentence bag may be false positive or false negative. Thus it is important to model the noise pattern to guide the learning procedure.
 Recent works in the area include \cite{ritter2013modeling} and \cite{min2013distant} that
 employ a set of latent variables to represent the true relation. Our approach differs
