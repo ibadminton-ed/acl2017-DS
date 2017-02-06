@@ -1,3 +1,11 @@
 \section{Conclusion}
-\todo{re-write}
-In this paper, we propose that the input data may contain useful clues that indicate the noise pattern introduced by distant supervision. We therefore propose to model the noise by dynamically generating a transition matrix for each training data. To overcome the lack direct guidance over the noise pattern, we propose to use curriculum learning to model the noise gradually and trace regularization to help control the behavior of the transition matrix. The experiments on two datasets show that our transition matrix method improves both the sentence level and bag level model in the situation with and without prior knowledge of data quality. We also find that the prior knowledge of data quality can help the training of the transition matrix. 
+In this paper, we investigate the noise problem inherent in  the \DS-style training data, and argue that the data speak for themselves by providing useful clues to reveal their noise patterns.
+%which can be dynamically  dynamic transition matrix 
+We thus propose a novel transition matrix based method to dynamically characterize the noise underlying such training data in a unified framework along  the original prediction objective.  
+%
+%propose that the input data may contain useful clues that indicate the noise pattern introduced by distant supervision. We therefore propose to model the noise by dynamically generating a transition matrix for each training data. 
+One of our key innovations is to exploit a curriculum learning based training method to gradually  learn to model  the underlying noise pattern without direct guidance, and also to provide the flexibility to benefit from any prior knowledge of data quality to further improve the effectiveness of the transition matrix. 
+We evaluate our approach in two settings of the distantly supervised relation extraction, and the experimental results show 
+that  our proposed method can better characterize the underlying noise and consistently outperform start-of-the-art extraction models under various settings. 
+
+%Currently, our noise modeling branch is relatively independent  with respect to the normal prediction branch.  which 
