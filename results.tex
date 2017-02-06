@@ -62,16 +62,16 @@ This is because that it ranks highly the sentences expressing relation \emph{bir
 \end{center}
 \end{figure}
 
-\paragraph{Single and Dynamic Transition Matrix}
-We also compare our dynamic transition matrix method with the single transition matrix method. 
-Specifically, instead of dynamically generating a transition matrix for each datum, the single transition matrix method use a single transition matrix for all the traning data. First, we initialize an identity matrix $\mathbf{T}'\in\mathbb{R}^{k\times k}$ where $k$ is the number of relations (including \orange{\emph{no\_relation}, (unify the notation)}), then the single transition matrix is calculated with row-wise softmax:
+\paragraph{Global v.s. Dynamic Transition Matrix}
+We also compare our dynamic transition matrix method with the global transition matrix method. 
+Specifically, instead of dynamically generating a transition matrix for each datum, the global transition matrix method use a single transition matrix for all the traning data. First, we initialize an identity matrix $\mathbf{T}'\in\mathbb{R}^{k\times k}$ where $k$ is the number of relations (including \orange{\emph{no\_relation}, (unify the notation)}), then the global transition matrix is calculated with row-wise softmax:
 \begin{equation}
 \label{shared_mat}
 T_{ij} = \frac{e^{T'_{ij}}}{\sum_{j=1}^{k}{e^{T'_{ij}}}}
 \end{equation}
 where $T_{ij}$ and $T'_{ij}$ are the elements in the $i^{th}$ row and $j^{th}$ column of $\mathbf{T}$ and $\mathbf{T}'$. The element values of matrix $\mathbf{T}'$ are also updated via backpropagation during training.
 The results are shown in Figure \ref{fig: cmp_single_dynamic}.
-We can see that using only a single transition matrix (\texttt{\_STM}) is also beneficial and it improves both (\texttt{sent\_PR}) and (\texttt{bag\_att\_PR}). However, since using only a single transition matrix only captures global noise pattern and will therefore create noise when the data is reliable, it performs worse than our dynamic transition matrix methods (\texttt{\_TM}).
+We can see that using only a global transition matrix (\texttt{\_GTM}) is also beneficial and it improves both (\texttt{sent\_PR}) and (\texttt{bag\_att\_PR}). However, since the global transition matrix only captures global noise pattern and will therefore have incorrect behavior when the data is reliable, it performs worse than our dynamic transition matrix methods (\texttt{\_TM}).
 
 \begin{figure}[t!]
 \includegraphics[width=0.9\linewidth]{figures/re_att_avg_cmp_exp.png}
