@@ -10,7 +10,7 @@ The problem is at the beginning of the training, we have no prior knowledge abou
 Therefore, what we would like to have is a technique to guide our model to gradually adapt to the noisy training data, e.g., learning something simple first, and then trying to deal with noises.
 
 Fortunately, this is exactly what curriculum learning can do.
-The idea of \red{curriculum learning~\cite{}} is simple: starting with the easiest aspect of a task, and leveling up the difficulty gradually,
+The idea of curriculum learning~\cite{bengio2009curriculum} is simple: starting with the easiest aspect of a task, and leveling up the difficulty gradually,
 which fits well to our problem.
 We thus employ a curriculum
 learning framework to guide our model to gradually learn how to characterize the noise. 
@@ -19,7 +19,7 @@ Another advantange is to avoid falling into poor local optimum,
 when there is little knowledge about the noise pattern. 
 
 
-By exploring curriculum learning, our approach  provides the
+By exploiting curriculum learning, our approach  provides the
 flexibility to combine any prior knowledge of noise to improve the
 effectiveness of  the transition matrix. 
 We show that if one could break the
@@ -69,7 +69,7 @@ where $0>\alpha>1$ and $\beta>0$ are two weighting parameters, $y_i$ is the rela
 %and $p_{iy_{i}}$ are the probabilities that the observed and predicted relations for the $i$th instance are $y_i$ respectively.
 %Instead of using the observed relation distribution $\mathbf{o}$ only to simulate the relation labeled by \DS, we use the linear combination of the cross entropy of both the observed relation distribution $\mathbf{o}$ and the predicted relation distribution $\mathbf{p}$. \blue{do we need a reason or two?}
 
-Initially, we set $\alpha=1$, and train our model  completely by minimizing the loss from the prediction distribution $\mathbf{p}$. That is, we do not expect to model the noise,  but focusing  on the prediction branch at this time. As the training progresses, the prediction branch gradually learns the basic prediction ability. We then decrease $\alpha$ and  $\beta$ by $0<\rho<1$ \orange{($\alpha=\rho\alpha$ and $\beta=\rho\beta$)} every $\tau$ epochs i.e., learning more about the noise from the observed distribution $\mathbf{o}$ and allowing a relatively smaller $trace(\mathbf{T})$ to accommodate more noise.
+Initially, we set $\alpha=1$, and train our model  completely by minimizing the loss from the prediction distribution $\mathbf{p}$. That is, we do not expect to model the noise,  but focusing  on the prediction branch at this time. As the training progresses, the prediction branch gradually learns the basic prediction ability. We then decrease $\alpha$ and  $\beta$ by $0<\rho<1$ ($\alpha=\rho\alpha$ and $\beta=\rho\beta$) every $\tau$ epochs i.e., learning more about the noise from the observed distribution $\mathbf{o}$ and allowing a relatively smaller $trace(\mathbf{T})$ to accommodate more noise.
 % , to gradually shift part of our focus to \orange{noise modeling.} 
 %\red{learning with noise}. 
 The motivation behind is to put more and more effort on learning the noise pattern during training, 
