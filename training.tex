@@ -3,18 +3,19 @@
 %\blue{we talk about the difficulty of training with $\sum_{i=1}^N{-log(o_{iy_{i}}) } + \beta trace(\mathbf{T}_{i})$  first. 1) noisy data, 2) local optima. Therefore, we need CL. The advantages are 1) learn to model with noise gradually, 2) more robust, avoid local optima, 3) have a chance to control the effect of noise via Trace norm.  }
 
 One of the key challenges of this work is  on how to train and produce the transition matrix to model the noise without any direct guidance and human involvement in the training data.
-A straightforward solution is to directly align the observed distribution, $\mathbf{o}$, with respect to the noisy annotations by minimizing \red{ZW: minimzing the product of corss entropy and regularization, i.e.?}:
+A straightforward solution is to directly align the observed distribution, $\mathbf{o}$, with respect to the noisy annotations by minimizing the sum of the two terms:
 $CrossEntropy(\mathbf{o}) + Regularization$. However, doing so
 does not guarantee that the prediction distribution, $\mathbf{p}$, will match the true relation distribution.
-The problem is at the beginning of the training, we have no prior about the noise pattern; thus, both  $\mathbf{T}$ and $\mathbf{p}$ are less reliable, which will make the training procedure is likely to fall into the local optimum.
+The problem is at the beginning of the training, we have no prior knowledge about the noise pattern; thus, both  $\mathbf{T}$ and $\mathbf{p}$ are less reliable, which will make the training procedure be likely to trap into some poor local optimum.
 Therefore, what we would like to have is a technique to guide our model to gradually adapt to the noisy training data, e.g., learning something simple first, and then trying to deal with noises.
 
 Fortunately, this is exactly what curriculum learning can do.
-The idea of curriculum learning is simple: starting with the easiest aspect of a task, and leveling up the difficulty gradually,
+The idea of \red{curriculum learning~\cite{}} is simple: starting with the easiest aspect of a task, and leveling up the difficulty gradually,
 which fits well to our problem.
 We thus employ a curriculum
-learning framework to guide our model to gradually learn how to
-\red{characterize the noise and how to control its effect via trace regularization}, while avoiding falling into local optimum,
+learning framework to guide our model to gradually learn how to characterize the noise. 
+% and how to control its effect via trace regularization, while 
+Another advantange is to avoid falling into poor local optimum,
 when there is little knowledge about the noise pattern. 
 
 
@@ -34,8 +35,8 @@ enables us to build an adaptive scheme to better model the noise pattern over th
 %Apart from that, we also show how to constrain the \red{ability??} of the transition matrix to avoid \red{overfitting???}.
 
 \subsection{Trace Regularization}
-Before proceeding to training details, we first discuss how we characterize \red{ZW: What??}
-Intuitively, if the noise is small, the transition matrix $\mathbf{T}$ will tend to become an identity matrix, \blue{i.e., given a set of annotated training sentences,  the observed relations and their true relations are almost identical.}  Since each row of $\mathbf{T}$ sums to 1, the similarity between the transition matrix and the identity matrix can be represented by the trace of $\mathbf{T}$, $trace (\mathbf{T})$. The larger the $trace(\mathbf{T})$ is, the smaller the elements that do not lie in the diagonal are, and the more similar the transition matrix $\mathbf{T}$ is to the identity matrix. Therefore, we can characterize  the noise level of the data by controlling the \red{expected} value of $trace (\mathbf{T})$ in the form of regularization. For example, we will expect a larger $trace (\mathbf{T})$ for reliable data, but  a smaller $trace (\mathbf{T})$  for less reliable data. Another advantage of employing trace regularization is that it could helpful to reduce the model complexity,  %since we have so many parameters (each data has a TM),
+Before proceeding to training details, we first discuss how we characterize the noise level of the data by controling the trace of the transition matrix.
+Intuitively, if the noise is small, the transition matrix $\mathbf{T}$ will tend to become an identity matrix, i.e., given a set of annotated training sentences,  the observed relations and their true relations are almost identical. Since each row of $\mathbf{T}$ sums to 1, the similarity between the transition matrix and the identity matrix can be represented by the trace of $\mathbf{T}$, $trace (\mathbf{T})$. The larger the $trace(\mathbf{T})$ is, the larger the diagonal elements are, and the more similar the transition matrix $\mathbf{T}$ is to the identity matrix, indicating a lower level of noise. Therefore, we can characterize  the noise level of the data by controlling the \sout{\red{expected}} value of $trace (\mathbf{T})$ in the form of regularization. For example, we will expect a larger $trace (\mathbf{T})$ for reliable data, but  a smaller $trace (\mathbf{T})$  for less reliable data. Another advantage of employing trace regularization is that it could be helpful to reduce the model complexity,  %since we have so many parameters (each data has a TM),
 and avoid overfitting.
 
 %\subsection{Curriculum Learning}
@@ -64,17 +65,21 @@ Loss	&=\sum_{i=1}^N{-((1-\alpha) log(o_{iy_{i}}) + \alpha log(p_{iy_{i}}))} \\
 \end{aligned}
 \label{general_loss}
 \end{equation}
-where $0>\alpha>1$ and $\beta>0\red{????????}$ are two weighting parameters, $y_i$ is the relation assigned by \DS for the $i$th training instance, $N$ the total number of training instances , $o_{iy_{i}}$ is the probability that the observed relation for the $i$th instance is $y_i$, and $p_{iy_{i}}$ is the probability that the predicted relation for the $i$th instance is $y_i$.
+where $0>\alpha>1$ and $\beta>0$ are two weighting parameters, $y_i$ is the relation assigned by \DS for the $i$th training instance, $N$ the total number of training instances , $o_{iy_{i}}$ is the probability that the observed relation for the $i$th instance is $y_i$, and $p_{iy_{i}}$ is the probability that the predicted relation for the $i$th instance is $y_i$.
 %and $p_{iy_{i}}$ are the probabilities that the observed and predicted relations for the $i$th instance are $y_i$ respectively.
 %Instead of using the observed relation distribution $\mathbf{o}$ only to simulate the relation labeled by \DS, we use the linear combination of the cross entropy of both the observed relation distribution $\mathbf{o}$ and the predicted relation distribution $\mathbf{p}$. \blue{do we need a reason or two?}
 
-Initially, we set $\alpha=1$, and train our model  completely by minimizing the loss from the prediction distribution $\mathbf{p}$. That is, we do not expect to model the noise,  but focusing  on the prediction branch at this time. As the training progresses, the prediction branch gradually learns the basic prediction ability. We then increase the level by decreasing $\alpha$ and  $\beta$ by $0<\rho<1$ \todo{(need a formular? $\alpha=\alpha*(1-\rho)$??)} every $\tau$ epochs, i.e., learning more about the noise from the observed distribution $\mathbf{o}$ and allowing a relatively smaller $trace(\mathbf{T})$, to gradually shift part of our focus to \red{learning with noise}. This gradually learning
-paradigm is a significant departure from prior work on noise modeling for \DS seen to date. 
+Initially, we set $\alpha=1$, and train our model  completely by minimizing the loss from the prediction distribution $\mathbf{p}$. That is, we do not expect to model the noise,  but focusing  on the prediction branch at this time. As the training progresses, the prediction branch gradually learns the basic prediction ability. We then decrease $\alpha$ and  $\beta$ by $0<\rho<1$ \orange{($\alpha=\rho\alpha$ and $\beta=\rho\beta$)} every $\tau$ epochs i.e., learning more about the noise from the observed distribution $\mathbf{o}$ and allowing a relatively smaller $trace(\mathbf{T})$ to accommodate more noise.
+% , to gradually shift part of our focus to \orange{noise modeling.} 
+%\red{learning with noise}. 
+The motivation behind is to put more and more effort on learning the noise pattern during training, 
+with the essence of curriculum learning.
+This gradually learning paradigm significantly distinguishes from prior work on noise modeling for \DS seen to date. 
 Moreover, as such a method does not rely on any extra assumptions,
 it can serve as our default training method for $\mathbf{T}$.
 
 \paragraph{With Prior Knowledge of Data Quality}
-On the other hand, if we happen to have prior knowledge about which part of the training data is more reliable and which is less reliable, we can utilize this knowledge as an indirect guidance over the noise patterns \red{by helping the model to distinguish reliable data from less reliable ones (DO WE actually distinguish them??)}. Specifically, we can build a curriculum by first training the prediction branch on the reliable data for several epochs, and then adding the less reliable data to train the full model. In this way, the prediction branch is roughly trained before exposed to more noisy data, thus is less likely to fall into local optimum.
+On the other hand, if we happen to have prior knowledge about which part of the training data is more reliable and which is less reliable, we can utilize this knowledge as an indirect guidance over the noise patterns \red{by helping the model to distinguish reliable data from less reliable ones (DO WE actually distinguish them??)}\orange{yes, with trace reg, and indirectly with CL as well}. Specifically, we can build a curriculum by first training the prediction branch on the reliable data for several epochs, and then adding the less reliable data to train the full model. In this way, the prediction branch is roughly trained before exposed to more noisy data, thus is less likely to fall into poor local optimum.
 
 Furthermore, we can take better control of the training procedure by using trace regularization, e.g., encouraging larger $trace (\mathbf{T})$ for reliable subset and smaller $trace (\mathbf{T})$ for less relaibale ones.
 %\red{utilize our prior knowledge of the data quality in the form of trace regularization}.
@@ -82,15 +87,17 @@ Specifically, we propose to minimize the following  loss function:
 %
 \begin{equation}
 \begin{aligned}
-Loss=\sum_{m=1}^M{\sum_{i=1}^{N_m}{-log(o_{miy_{mi}})}} + \beta_m \red{trace(\mathbf{T}^{mi})}
+Loss=\sum_{m=1}^M{\sum_{i=1}^{N_m}{-log(o_{miy_{mi}})}} - \beta_m trace(\mathbf{T}^{mi})
 \end{aligned}
 \end{equation}
-where $\beta_m$ is the regularization weight for the $m$th data subset, $N_m$ is total number of instances in $m$th subset, and  $\mathbf{T}^{mi}$, $y_{mi}$ and $o_{miy_{mi}}$ are the transition matrix, the relation labeled by distant supervision and the observed probability for the $i$th training instance in the $m$th subset, respectively. Note that different from Equation~\ref{general_loss}, this loss function does not need to initiate the training procedure by
-minimizing the loss regarding the prediction distribution $\mathbf{p}$, since one can easily start by learning from the most reliable split first.
+where $\beta_m$ is the regularization weight for the $m$th data subset, $N_m$ is the total number of instances in $m$th subset, and  $\mathbf{T}^{mi}$, $y_{mi}$ and $o_{miy_{mi}}$ are the transition matrix, the relation labeled by distant supervision and the observed probability for the $i$th training instance in the $m$th subset, respectively. Note that different from Equation~\ref{general_loss}, this loss function does not need to initiate the training procedure by
+minimizing the loss regarding the prediction distribution $\mathbf{p}$, since one can easily start by learning from the most reliable split first. 
+%since we have indirect guidance over noise pattern here. Specifically, trace regularization can utilize the prior konwledge of data quality by using different weights to serve as indirect guidance over noise pattern. Therefore,  
+%\orange{change the reason to trace reg?}
 
-For the reliable subset, we want $trace(\mathbf{T})$ to be large  \red{(negative $\beta$)} so that the element values of $\mathbf{T}$ will be centralized to the diagonal and $trace (\mathbf{T})$ will be more similar to the identity matrix. As for the  less reliable subset, we want the $trace (\mathbf{T})$ to be small \red{(positive $\beta$)} so that the element values of their transition matrices will be diffusive and the transition matrix will be less similar to the identity matrix. \blue{In other words, the transition matrix is encouraged to characterize the noise. }
+For the reliable subset, we want $trace(\mathbf{T})$ to be large (positive $\beta$) so that the element values of $\mathbf{T}$ will be centralized to the diagonal and $trace (\mathbf{T})$ will be more similar to the identity matrix. As for the  less reliable subset, we want the $trace (\mathbf{T})$ to be small (negative $\beta$) so that the element values of their transition matrices will be diffusive and the transition matrix will be less similar to the identity matrix. In other words, the transition matrix is encouraged to characterize the noise.
 
-It is to note that this loss function only works for sentence level models. Since reliable sentences and less reliable ones are all aggregated into a sentence bag in the bag level models,  we can not determine which bag is reliable and which is not. However, bag level models can still use the curriculum by changing the content of the bag, \red{e.g., keeping reliable sentences in the bag first and gradually adding less reliable ones,}  and use Equation~\ref{general_loss} for training. By doing so, it can benefit from the prior knowledge of data quality as well.
+It is to note that this loss function only works for sentence level models. Since reliable sentences and less reliable ones are all aggregated into a sentence bag in the bag level models,  we can not determine which bag is reliable and which is not. However, bag level models can still use the curriculum by changing the content of the bag, e.g., keeping reliable sentences in the bag first and gradually adding less reliable ones, and use Equation~\ref{general_loss} for training. By doing so, it can benefit from the prior knowledge of data quality as well.
 
 
 
