@@ -2,18 +2,21 @@
 Distant supervision significantly reduces human efforts in constructing
 training data for classification tasks by automatically labeling data using
 knowledge learned from  seed examples. While promising,
-this technique often introduces noise into the dataset, which can
-severely affect the quality of the learned model. In this paper, we take
+this technique often introduces noise into the training data, which can
+severely affect the performance of the learned model. In this paper, we take
 a deep look at the application of distant supervision in relation extraction.
-We show that  dynamic transition matrices can effectively model the noise in the training data 
-generated through distant supervision. 
-We propose to use curriculum learning to \red{characterize} the noise patterns, and
-\red{control the behavior of noise} to further improve the model robustness. We apply our approach
-to relation extraction at both the sentence and
-the bag levels. %, with and without prior knowledge of the data quality. 
-The experimental results show that our method can better handle the noise over
-the state of the art in distantly supervised
-relation extraction and improve extraction performance in various settings.
-\todo{I do not like the last sentence!!  btw, shall we consider \TimeRE as a contribution? }
+We show that the dynamic transition matrix can effectively model the noise in the distant supervision generated training data. 
+The transition matrix can be effectively estimated using a novel curriculum learning based training method without direct supervision 
+about the noise.
+%%%% We thus propose a novel curriculum learning based training method to estimate the transition matrix without direct supervision  about the noise, which  can be further improved when the prior knowledge about the data quality is available. 
+%%%%
+% and  characterize the noise patterns, and \red{control the behavior of noise} to further improve the model robustness. 
+We evaluate our approach under different extraction setups, % of the relation extraction task, 
+%relation extraction at both the sentence and the bag levels. %, with and without prior knowledge of the data quality. 
+and the experimental results show that it is possible to learn to model the noise without explicit guidance, and  
+our proposed method can better characterize the underlying noise in the training data, leading to consistent improvements over
+the state of the art in various settings.
+%in distantly supervised relation extraction and improve extraction performance in various settings.
+\todo{I do not like the last sentence!!}
 
 \end{abstract} 
