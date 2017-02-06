@@ -14,22 +14,27 @@ facts from knowledge bases to text, this technique allows us to scale a small nu
 While promising, \DS does not guarantee perfect results and often introduces noise to the
 generated training data. In the context of relation extraction, \DS could match the knowledge tuple $<$``Donald Trump",
 \emph{born-in}, ``New York"$>$  in \emph{false positive} contexts like ``\emph{Donald Trump worked in New York City}".
-Many prior \red{works~\cite{}} show that \DS often mistakenly labels real positive instances as negative (\emph{false negative}) or
+Many prior \red{work~\cite{}} show that \DS often mistakenly labels real positive instances as negative (\emph{false negative}) or
 versa vice (\emph{false positive}), and there could also have confusions among positive labels too. These noises can
 severely affect the training
 procedure and lead to poorly-performing models.
 %This drawback greatly hinders the wide adoption of this powerful technique.
 
-There have been attempts to tackle the noisy data problem of \DS. Previous works have tried to preprocess the data by removing sentences containing unreliable syntactic patterns \cite{takamatsu2012reducing}, making the \textbf{\textit{at-least-one}} assumption that at least one of the aligned sentences support the knowledge triple to reduce the influence of noise \cite{riedel2010modeling} and adding a set of variables in probabilistic graphic models to \red{represent the true relation before????? the noisy relation} labeled by distant supervision \cite{hoffmann2011knowledge,surdeanu2012multi}. These works represent a substantial leap forward towards making \DS more practical. However, these methods either do not model the noise explicitly or \red{just handle false positive or false negative noise. ---------F: This argument is weak! can we say they either rely on predefined rules or extra labeled dataset?}
+However, it is not trivial to tackle the noisy data problem of \DS, since there is usually no explicit supervision to guide us for capturing the noise.  
+%There have been attempts to tackle the noisy data problem of \DS. 
+Previous works have tried to remove sentences containing unreliable syntactic patterns~\cite{takamatsu2012reducing},  or design new models by making the \textbf{\textit{at-least-one assumption}}  that at least one of the aligned sentences supports the knowledge triple~\cite{riedel2010modeling}, where they either introduce new variables in probabilistic graphic models to capture certain types of noise, or aggregate predictions from multiple classifiers to reduce the influence of certain noise~\cite{hoffmann2011knowledge,surdeanu2012multi,ritter2013modeling,min2013distant}. These works represent a substantial leap forward towards making \DS more practical. However, these methods are either designed specifically to deal with certain types of noise, e.g., false positive or false negative, or  rely on manual rules to filter noise, thus are unable to scale. 
+On the other hand, recent advances show that neural network models can attentively aggregate multiple evidences to learn prominent representations for relation extraction, and avoid characterizing the inherent noise explicitly~\cite{zeng2015distant,lin2016neural}. In fact, those neural network architectures provide more opportunities to explicitly characterize the noise underlying in the data.    
+% \red{---F: This argument is weak! can we say they either rely on predefined rules or extra labeled dataset?}
 
-In this paper, we show that while noise is inevitable, it is possible to model its pattern  in a unified framework Our key insight is that the input data would typically contain useful clues about the noise pattern. For example, if we see an input sentence describing the work place of a person, we can reasonably assume that it has some chances to be erroneously labeled by distant supervision to express relation \red{$born\_in$ (---F: can we use $live\_place$??)} .
-Accordingly, we propose to dynamically generate a transition matrix for each input datum to model its noise pattern. We apply our method to the relation extraction task. To tackle the difficulty of lack of direct guidance over the noise pattern, we employ curriculum learning to gradually model the noise pattern over time. To prevent \todo{xx}, we use trace regularization to control the behavior of the transition matrix during training. 
-We show that our novel technique can better model the noise pattern over the start-of-the-art, leading to improved learning performance. 
+In this paper, we show that while noise is inevitable in the \DS-style training data, it is still possible to characterize its pattern  in a unified framework along with its original classification objective. Our key insight is that the \DS-style training  data would typically contain useful clues about the noise pattern. For example, if we see a training sentence describing the work place of a person, we can reasonably assume that it has some chances to be erroneously labeled by \DS as relation \red{$live\_place$} .
+Accordingly, we propose to dynamically generate a transition matrix for each training instance to characterize its noise pattern.  To tackle the challenge of no direct guidance, we employ a curriculum learning based training method to gradually model the noise pattern over time. Our novel approach also provides the flexibility to combine the prior knowledge of data quality by utilizing trace regularization to control the behavior of the transition matrix during training. 
+We evaluate our method in the relation extraction task with various settings on two benchmark datasets. Experimental results show 
+that  the proposed technique can better model the noise pattern over the start of the art, leading to consistent improved performance. 
 
-We evaluate our approach by applying it to \red{xxx??} and compare it against a
-\red{state-of-the-art xx}. Experimental results show that \red{our approach can create a
-higher-quality relation extraction classifier with xx\% better performance
-using the same set of training data. (----F: Maybe we should change another type of representation? or list our contributions here?)}
+%We evaluate our approach by applying it to \red{xxx??} and compare it against a
+%\red{state-of-the-art xx}. Experimental results show that \red{our approach can create a
+%higher-quality relation extraction classifier with xx\% better performance
+%using the same set of training data. (----F: Maybe we should change another type of representation? or list our contributions here?)}
 
 This paper makes the following specific contributions. It is the first to
 \begin{itemize}
