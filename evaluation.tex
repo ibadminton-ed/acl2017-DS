@@ -25,7 +25,7 @@ which provides no prior knowledge of the data quality.
 
 
 \paragraph{\TimeRE}
- is automatically constructed by using \DS to align time-related \red{Wikidata\cite{}} knowledge triples to
+ is automatically constructed by using \DS to align time-related Wikidata\cite{vrandevcic2014wikidata} knowledge triples to
 Wikipedia text, containing 278,141 sentences with 12
 types of relations  between an entity mention and a time expression.
 We choose time-related relations in this dataset as time expressions speak for themselves in
@@ -44,7 +44,7 @@ reliable.  Negative data are constructed  heuristically that any
 During training, we can access  184,579 negative
 instances and  77,777 positive instances, including 22,214 reliable
 ones, 2,094 and 53,469 less reliable ones. The validation set and test set are randomly sampled from
-the \blue{reliable (full-date) data for relatively fair evaluations}  and contains
+the reliable (full-date) data for relatively fair evaluations and contains
 2,776, 2,771 positive instances and 5,143, 5,095 negative instances, respectively.
 %\red{talk bag level numbers?????} \orange{maybe too messy? how about only showing sentence level numbers in both dataset?}
 
@@ -70,16 +70,15 @@ However, it is a good example to evaluate the generalization ability of our tran
 
 \subsection{Hyperparameters}
 
-\paragraph{Neural network components} used in our algorithm are based on a convolution neural network with 200 convolution kernels and 200 layers, and a convolution window size of 3. To train the network, we use stochastic gradient descend (SGD) with a batch size of 20.  The learning rates for sentence-level  and bag-level modeling are 0.1 and 0.01, respectively.
-
+\paragraph{Neural network components} used in our algorithm are based on a convolution neural network with 200 convolution kernels and the window size is 3. To train the network, we use stochastic gradient descend (SGD) with a batch size of 20.  The learning rates for sentence-level  and bag-level models are 0.1 and 0.01, respectively.
 
 \paragraph{Sentence level modeling}
- is performed on the \TimeRE dataset, where we use 100-dimensional word embeddings pre-trained using GloVe~\cite{pennington2014glove} on Wikipedia and Gigaword, and 20-dimensional vectors for distance embeddings. Each of the three subsets of \TimeRE is added after the previous phase has run for 15 epochs. \blue{The trace regularization weights for the three subsets are $\beta_1=-0.01$, $\beta_2=0.01$ and $\beta_3=0.1$, respectively, from the reliable to the most unreliable part, and the ratio of $\beta_3$ and $\beta_2$ is fixed to 10 or 5 during hyper-parameter tuning.}
+ is performed on the \TimeRE dataset, where we use 100-dimensional word embeddings pre-trained using GloVe~\cite{pennington2014glove} on Wikipedia and Gigaword\footnote{\url{catalog.ldc.upenn.edu/LDC2011T07}}, and 20-dimensional vectors for distance embeddings. Each of the three subsets of \TimeRE is added after the previous phase has run for 15 epochs. \blue{The trace regularization weights for the three subsets are $\beta_1=0.01$, $\beta_2=-0.01$ and $\beta_3=-0.1$, respectively, from the reliable to the most unreliable part, and the ratio of $\beta_3$ and $\beta_2$ is fixed to 10 or 5 during hyper-parameter tuning.}
 
 \paragraph{Bag level modeling}
-is performed on both  \TimeRE and  \EntityRE datasets. We used the same parameters as sentence level for \TimeRE.
+is performed on both  \TimeRE and  \EntityRE datasets. We use the same parameters as sentence level for \TimeRE.
 %The parameters of the bag level model is almost the same as the sentence level model on TimeRE data, except that the learning rate is 0.01 and the less reliable data are added when the previous phase has run for 3 and 6 epochs.
-For \EntityRE, we use 50-dimensional word embeddings pre-trained on the \NYT corpus using word2vec\footnote{\url{ https://code.google.com/p/word2vec/}}. The size for distance embedding  is 5. For both datasets, the linear combination parameter $\alpha$ is 1 and the trace regularization parameter $\beta$ is initialized to -0.1. We tried various decay rates, \{0.95, 0.9, 0.8\}, and decay steps, \{3, 5, 8\}. We found that using a decay rate of 0.9 and step of 5 gives best performance in most cases.
+For \EntityRE, we use 50-dimensional word embeddings pre-trained on the \NYT corpus using word2vec\footnote{\url{code.google.com/p/word2vec/}}. The size for distance embedding is 5. For both datasets, the linear combination parameter $\alpha$ is 1 and the trace regularization parameter $\beta$ is initialized to 0.1. We tried various decay rates, \{0.95, 0.9, 0.8\}, and decay steps, \{3, 5, 8\}. We found that using a decay rate of 0.9 and step of 5 gives best performance in most cases.
 
 \subsection{Evaluation Metric}
 The performance is reported using the precision-recall (\PR) curve, calculated according to the extraction results ranked decreasingly by their confidence scores. This is a standard evaluation metric in relation extraction.
@@ -90,8 +89,10 @@ We evaluate our approach under a wide range of settings for
 (\texttt{sent\_}) and bag level (\texttt{bag\_}) models:
 (1) \texttt{\_mix}: models are trained on the three subsets of \TimeRE mixed together;
 (2) \texttt{\_reliable}: models are trained using the reliable subset of \TimeRE only;
-(3) \texttt{\_TM}: models are trained with the transition matrix;
-(4) \texttt{\_PR}: models are trained with prior knowledge of annotation quality, i.e., starting from the reliable data and then moving to the unreliable data;
+(3) \texttt{\_PR}: models are trained with prior knowledge of annotation quality, i.e., starting from the reliable data and then adding the unreliable data;
+(4) \texttt{\_TM}: models are trained with dynamic transition matrix;
+(5) \texttt{\_GTM}: models are trained with a global transition matrix;
+
 %\footnote{Since curriculum learning without prior knowledge is our default training method, we use \texttt{\_CL} to refer to the situation with prior knowledge of data quality here for simplicity. \red{ZW: What???}}.
 
 For bag level modeling, we also evaluate the model performance using average aggregation (\texttt{\_avg})
