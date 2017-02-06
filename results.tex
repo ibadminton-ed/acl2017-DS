@@ -3,11 +3,11 @@
 \begin{figure*}[t!]
 \centering
 \subfigure[Attention Aggregation]{
-\includegraphics[width=0.48\linewidth]{figures/bag_att_exp_overall.pdf}
+\includegraphics[width=0.48\textwidth]{figures/bag_att_exp_overall.pdf}
 \label{fig: bag_att_luo}
 }
 \subfigure[Average Aggregation]{
-\includegraphics[width=0.45\linewidth]{figures/bag_avg_exp_overall.png}
+\includegraphics[width=0.48\textwidth]{figures/bag_avg_exp_overall.pdf}
 \label{fig: bag_avg_luo}
 }
 \caption{Bag Level Results on TimeRE}
@@ -89,7 +89,7 @@ The results are shown in Figure \ref{fig: cmp_single_dynamic}.
 We can see that using only a global transition matrix (\texttt{\_GTM}) is also beneficial and it improves both \texttt{sent\_PR} and \texttt{bag\_att\_PR}. However, since the global transition matrix only captures global noise pattern and will therefore have incorrect behavior when the data is reliable, it performs worse than our dynamic transition matrix methods (\texttt{\_TM}).
 
 \begin{figure}[t!]
-\includegraphics[width=0.9\linewidth]{figures/re_att_avg_cmp_exp.png}
+\includegraphics[width=0.48\textwidth]{figures/re_att_avg_cmp_exp.pdf}
 \caption{Results on Dataset of Riedel et.al.}
 \label{fig: Riedel_res}
 \end{figure}
