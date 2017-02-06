@@ -105,7 +105,7 @@ We can see that using only a global transition matrix (\texttt{\_GTM}) is also b
 \end{figure}
 
 \subsection{Performance on \EntityRE}
-We also conduct experiments on the \EntityRE dataset, where we can evaluate our bag level models only. \todo{ZW: Why bag-level models only? We need a an answer! } \blue{F: I put a sentence in data preparation.}
+We also conduct experiments on the \EntityRE dataset, where we can evaluate our bag level models only. 
 We  implemented the average aggregation method (\texttt{avg}), and the attention aggregation method (\texttt{att}) proposed by \cite{lin2016neural} as well as their corresponding transition matrix versions (\texttt{avg\_TM} and \texttt{att\_TM}). As we can see in Figure \ref{fig: Riedel_res},  due to the inferior denoising ability of the average aggregation component, \texttt{avg} performs worst among all those models. %Similar to the trends on the TimeRE data, when
 \red{what should we say about this figure????}
 When we inject our transition matrix approach into both \emph{avg} and \emph{att}, the resulting two  models, both of which can  clearly outperform their basic extraction models.
