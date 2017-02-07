@@ -72,7 +72,7 @@ T_{ij} = \frac{exp({\mathbf{w}_{ij}^T \mathbf{x}_n + b})}{\sum_{j=1}^{|\mathbb{C
 where $T_{ij}$ is the conditional probability for the input sentence to be labeled as relation $j$ by \DS, given $i$ as the true relation, $b$ is a scalar bias,  $|\mathbb{C}|$ is the number of relations, $\mathbf{w}_{ij}$ is the weight vector characterizing the confusion between $i$ and~$j$. %, shared across the dataset.
 %The \emph{softmax} function guarantees that each row of $\mathbf{T}$ sums to 1.
 
-Here, we dynamically produce a transition matrix, $\mathbf{T}$, specifically for each sentence, but with the parameters ($\mathbf{w}_{ij}$) shared across the dataset. By doing so, we are able to adaptively characterize the noise pattern for each sentence, with a few parameters only. In contrast, one could also produce a global transition matrix for all sentences, with much less computation, where one need not to compute $\mathbf{T}$ on the air (see Section \ref{sec:results_in_TimeRE}).
+Here, we dynamically produce a transition matrix, $\mathbf{T}$, specifically for each sentence, but with the parameters ($\mathbf{w}_{ij}$) shared across the dataset. By doing so, we are able to adaptively characterize the noise pattern for each sentence, with a few parameters only. In contrast, one could also produce a global transition matrix for all sentences, with much less computation, where one need not to compute $\mathbf{T}$ on the fly (see Section \ref{sec:results_in_TimeRE}).
 
 
 \paragraph{Observed Distribution}
