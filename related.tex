@@ -19,7 +19,7 @@ However, these early applications of \DS do not well address the issue of data n
 
 %\paragraph{Noise Reduction}
 In relation extraction (\RE), recent works  have been proposed to reduce the influence of wrongly labeled data.
-The work presented by \cite{takamatsu2012reducing} removes potential noisy sentences by identifying bad syntactic
+The work of \cite{takamatsu2012reducing} removes potential noisy sentences by identifying bad syntactic
 patterns at the pre-processing stage. \cite{xu2013filling} use pseudo-relevance feedback to find
 possible false negative data. 
 \cite{riedel2010modeling} make the \emph{at-least-one assumption} 
@@ -79,13 +79,13 @@ Outside of NLP, various methods have been proposed in computer vision  to
  model the data noise using neural networks.
 \cite{sukhbaatar2014training}  utilize a global transition matrix with weight decay to transform the true label distribution to 
 the observed.  %, and further propose the idea of trace regularization but use weight decay for simplicity. 
-\cite{reed2014training} also use a hidden layer to represent the true label distribution but try to force it to predict both the noisy label and the input. \cite{chen2015webly,xiao2015learning} first estimate the transition matrix on a clean dataset and apply to the noisy data. 
+\cite{reed2014training} also use a hidden layer to represent the true label distribution but try to force it to predict both the noisy label and the input. \cite{chen2015webly,xiao2015learning} first estimate the transition matrix on a clean dataset and then apply it to noisy data. 
 % ~\cite{sukhbaatar2014training,reed2014training,chen2015webly,xiao2015learning,misra2016seeing}. 
 Our model shares similar spirit with \cite{misra2016seeing} in that we all dynamically generate a transition matrix for each
-training instance, but, instead of using Expectation-Maximization, we train our model with a novel curriculum learning training framework with trace regularization to control the behavior of noise.
-In NLP, the only recent work in neural-network-based noise modeling is to use a global transition matrix only to model the noise introduced by
+training instance, but, instead of using Expectation-Maximization, we train our model with a novel curriculum learning training framework with trace regularization to control the behavior of transition matrix.
+In NLP, the only recent work in neural-network-based noise modeling is to use a global transition matrix to model the transition matrix introduced by
 cross-lingual projection of training data~\cite{fang2016learning}.
- Our work advances them through generating a transition matrix dynamically for each instance, to avoid  using one single component to characterize both reliable and unreliable data. 
+ Our work advances them through generating a transition matrix dynamically for each instance, to avoid using a single matrix to characterize both reliable and unreliable data. 
 % This leads to significant better performance (see Section~\ref{sec:evaluation}).
 
 
