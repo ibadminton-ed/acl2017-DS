@@ -1,7 +1,9 @@
 \section{Experimental Results \label{sec:evaluation}}
 
 \begin{figure}[t!]
-\setlength{\belowcaptionskip}{-10pt}
+% \begin{figure}[htbp]
+\setlength{\abovecaptionskip}{3pt}
+\setlength{\belowcaptionskip}{-15pt}
 \begin{center}
 \includegraphics[width=0.45\textwidth]{figures/sent_time_exp_overall.pdf}
 \caption{Sentence Level Results on \TimeRE}
@@ -44,6 +46,8 @@ other models by a large margin.
 %\footnote{We will use all three subsets separately for all \texttt{\_PR} settings in the rest of the experiments.}. 
 
 \begin{figure*}[t!]
+% \begin{figure*}[htbp]
+\setlength{\abovecaptionskip}{3pt}
 \setlength{\belowcaptionskip}{-10pt}
 \centering
 \subfigure[Attention Aggregation]{
@@ -84,6 +88,7 @@ This is because that it ranks higher the sentences expressing either \texttt{bir
  %Note that due to the inferior denoising ability of average aggregation, the unhandled sentence level noise may further propagates to bag level, which gives the transition matrix more chance to help model the noise.
 
 \begin{figure}[htbp]
+\setlength{\abovecaptionskip}{3pt}
 \setlength{\belowcaptionskip}{-10pt}
 \begin{center}
 \includegraphics[width=0.45\textwidth]{figures/single_cmp_exp_overall.pdf}
@@ -113,6 +118,8 @@ captures the global noise pattern, thus fails to characterize individuals with s
 resulting in a performance drop compared to the dynamic one (\texttt{\_TM}).
 
 \begin{figure}[t!]
+% \begin{figure}[htbp]
+\setlength{\abovecaptionskip}{3pt}
 \setlength{\belowcaptionskip}{-10pt}
 \includegraphics[width=0.45\textwidth]{figures/re_att_avg_cmp_exp.pdf}
 \caption{Results on \EntityRE}
