@@ -85,9 +85,10 @@ On the other hand, if we happen to have prior knowledge about which part of the 
 %over the noise patterns \red{by helping the model to distinguish reliable data from less reliable ones (DO WE actually distinguish them??)} \orange{yes, with trace reg, and indirectly with CL as well}. 
 Specifically, we can build a curriculum by first training the prediction branch on the reliable data for several epochs, and then adding the less reliable data to train the full model. In this way, the prediction branch is roughly trained before exposed to more noisy data, thus is less likely to fall into poor local optimum.
 
-Furthermore, we can take better control of the training procedure by using trace regularization, e.g., encouraging larger $trace (\mathbf{T})$ for reliable subset and smaller $trace (\mathbf{T})$ for less relaibale ones.
+Furthermore, we can take better control of the training procedure with trace regularization, e.g., encouraging larger $trace (\mathbf{T})$ for reliable subset and smaller $trace (\mathbf{T})$ for less relaibale ones.
 %\red{utilize our prior knowledge of the data quality in the form of trace regularization}.
-Specifically, we propose to minimize the following  loss function:
+% Specifically, we propose to minimize the following  loss function:
+Specifically, we propose to minimize:
 %
 \begin{equation}
 \begin{aligned}

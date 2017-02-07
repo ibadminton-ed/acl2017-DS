@@ -2,8 +2,8 @@
 
 Distant supervision (\DS) is rapidly emerging as a viable means for supporting various classification tasks -- from relation extraction~\cite{mintz2009distant} and sentiment classification~\cite{go2009twitter} to cross-lingual semantic
 analysis~\cite{fang2016learning}.
- By automatically aligning
-facts from knowledge bases to text, \DS allows us to scale a small number of seeds to millions of instances.
+By distilling knowledge from seed examples, \DS automatically prepare large scalse training data for these tasks.
+% By automatically aligning facts from knowledge bases to text, \DS allows us to scale a small number of seeds to millions of instances.
 %\orange{By distilling feasible and effective rules from prior knowledge, this technique applys these rules to automatically prepare large scalse training data for these tasks.}
 % \orange{In the context of relation extraction}, \DS works by aligning  (\texttt{subject}, \texttt{relation}, \texttt{object}) triples in knowledge base
 % automatically aligning facts from knowledge bases to text, this technique allows us to scale a small number of seeds to millions of instances.
@@ -16,7 +16,9 @@ facts from knowledge bases to text, \DS allows us to scale a small number of see
 %generate relation contexts from unlabeled texts.
 
 While promising, \DS does not guarantee perfect results and often introduces noise to the
-generated data. In the context of relation extraction, \DS could match the knowledge base triple, $<$\emph{Donald Trump},
+generated data. In the context of relation extraction, 
+% \DS works by considering sentences containing both the \emph{subj} and the \emph{obj} of a $<$\emph{subj}, \texttt{rel}, \emph{obj}$>$ triple as its supports. However,
+\DS could match the knowledge base (\KB) triple, $<$\emph{Donald Trump},
 \texttt{born-in}, \emph{New York}$>$  in \emph{false positive} contexts like \emph{Donald Trump worked in New York City}.
 Prior works~\cite{takamatsu2012reducing,ritter2013modeling} show that \DS often mistakenly labels real positive instances as negative (\emph{false negative}) or
 versa vice (\emph{false positive}), and there could also have confusions among positive labels too. These noises can
@@ -28,15 +30,14 @@ Tackling the noisy data problem of \DS is non-trivial, since there usually lacks
 %There have been attempts to tackle the noisy data problem of \DS.
 Previous works have tried to remove sentences containing unreliable syntactic patterns~\cite{takamatsu2012reducing}, design new models under the
 \textit{at-least-one assumption}
-that at least one of the aligned sentences supports the triple in knowledge base~\cite{riedel2010modeling}. They attempt to introduce new variables in probabilistic graphic models to capture certain types of noise, or aggregate predictions from multiple classifiers to reduce the influence of certain noise~\cite{hoffmann2011knowledge,surdeanu2012multi,ritter2013modeling,min2013distant}. These approaches represent a substantial leap forward towards making \DS more practical. However, these methods are either tightly couple to certain types of noise,
+that at least one of the aligned sentences supports the triple in \KB~\cite{riedel2010modeling}. They attempt to introduce new variables in probabilistic graphic models to capture certain types of noise, or aggregate predictions from multiple classifiers to reduce the influence of certain noise~\cite{hoffmann2011knowledge,surdeanu2012multi,ritter2013modeling,min2013distant}. These approaches represent a substantial leap forward towards making \DS more practical. However, these methods are either tightly couple to certain types of noise,
 or have to rely on manual rules to filter noise, thus are unable to scale.
+% On the other hand, recent breakthrough in neural networks~\cite{lin2016neural} show that neural network models can reduce the influence of incorrectly labeled data without explicitly characterizing the inherent noise by aggregating the multiple training instances attentively for relation classification.
+% \orange{In fact, we find that the neural network architecture provides opportunities to explicitly characterize the noise underlying in the. This enables the model to infer the true label of incorrectly labeled data and thus can make use of rather than trying to ignore incorrectly labeled data.}
 
-
-The recent breakthrough in neural networks~\cite{lin2016neural} provides a new way to reduce the influence of incorrectly labeled data 
-by aggregating the multiple training instances attentively for relation classification, without explicitly characterizing the inherent noise. 
+The recent breakthrough in neural networks~\cite{lin2016neural} provides a new way to reduce the influence of incorrectly labeled data by aggregating the multiple training instances attentively for relation classification, without explicitly characterizing the inherent noise. 
 Promising results in this direction have been reported in recent work~\red{\cite{}}. However, this technique is still in its early stage and much remains to be done.
 
-%This provides a new way to explicitly characterize the noise of the \DS output.
 
 In this paper, we aim to enhance \DS noise modeling by providing the capability to explicitly characterize 
 the noise on the \DS output using neural networks.  We show that while noise is inevitable, it is possible to characterize the noise pattern  in a unified framework along with its original classification objective. Our key insight is that the \DS-style training  data typically contain useful clues about the noise pattern. For example, we can infer that since some people work in their birthplaces, \DS could wrongly label a training sentence describing a working place as a \texttt{born-in} relation.

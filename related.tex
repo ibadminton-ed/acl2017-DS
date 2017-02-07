@@ -4,7 +4,7 @@
 
 \paragraph{Distant Supervision in NLP} In addition to relation extraction~\cite{mintz2009distant}, distant supervision
 (\DS) is shown to be effective in generating training data for various NLP tasks, e.g., tweet sentiment
-classification~\cite{go2009twitter}, \orange{tweet named entity classifying}~\cite{ritter2011named}.
+classification~\cite{go2009twitter}, tweet named entity classifying~\cite{ritter2011named}.
 %multi-instance learning with overlapping relations~\cite{ritter2011named}.
 However, these early applications of \DS do not address the issue of data noise.
 
@@ -21,11 +21,11 @@ Some approaches have been proposed in recent years to reduce the influence of wr
 The work presented by \cite{takamatsu2012reducing} removes potential noisy sentences by identifying bad syntactic
 patterns at the pre-processing stage. \cite{xu2013filling} uses pseudo-relevance feedback to find
 possible false negative data. \cite{riedel2010modeling} proposes to alleviate the noise problem by considering the \RE task
-as a multi-instance classification problem and assume
-that at least one of the retrieved sentences containing both \emph{subj} and \emph{obj} supports the corresponding $<$\emph{subj},\emph{rel},\emph{obj}$>$ triple (i.e. \emph{at-least-one} assumption).
+as a multi-instance classification problem under the \emph{at-least-one assumption}. 
+% assume that at least one of the retrieved sentences containing both \emph{subj} and \emph{obj} supports the corresponding $<$\emph{subj},\emph{rel},\emph{obj}$>$ triple (i.e. \emph{at-least-one} assumption).
 Following this assumption, people further improves the original method using prababilistic graphic model mehtods~\cite{hoffmann2011knowledge,surdeanu2012multi}, and neural network methods \cite{zeng2015distant}. Recently \cite{lin2016neural} further proposes to use attention mechanism to reduce the noise inside the sentence bag.
-In contrast to our work in noise modeling, these approaches all aim to identify either reliable or unreliable instances to reduce
-the bad influence of noise.
+Instead of characterizing the noise, these approaches only aim to reduce the bag influence of noise.
+% In contrast to our work in noise modeling, these approaches all aim to identify either reliable or unreliable instances to reduce the bad influence of noise.
 
 %
 %Although distant supervision significantly reduces human efforts in build training data, it also introduces noise to
@@ -71,11 +71,11 @@ Recently, various approaches have been proposed in the computer vision domain fo
 %\cite{sukhbaatar2014training} proposes to use a global transition matrix to transform the true label distribution to the observed label distribution. They also propose the idea of trace regularization but use weight decay for simplicity. \cite{reed2014training} also uses a hidden layer to represent the true label distribution but try to force it to predict both the noisy label and the input. \cite{chen2015webly,xiao2015learning} first estimates the transition matrix on the clean data set and use it in the noisy data set.
 % ~\cite{sukhbaatar2014training,reed2014training,chen2015webly,xiao2015learning,misra2016seeing}.
 Our model shares similar spirit with \cite{misra2016seeing} in that we all dynamically generate a transition matrix for each
-training data item.
+training instance.
 However, instead of using Expectation-Maximization \red{ZW: What's the difference of EM and our CL?}, we train our model with a curriculum learning framework and trace regularization.
 In the field of NLP, there is currently little work in neural-network-based noise modeling. \cite{fang2016learning} is the closest work, which uses a global transition matrix to model the noise introduced by
-cross-lingual projection of training data. Our work advances \cite{fang2016learning} through dynamically generating a transition matrix for each data item,
-providing a finer-grained, more effective way for modeling reliable and unreliable data. 
+cross-lingual projection of training data. Our work advances \cite{fang2016learning} through dynamically generating a transition matrix for each instance,
+providing a finer-grained, more effective way for modeling the noise. 
 
 %which avoids the drawback of global transition matrix that it use a single transition matrix for both reliable and unreliable data.
 

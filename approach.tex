@@ -93,7 +93,8 @@ $\mathbf{T}$ and the predicted relation distribution, $\mathbf{p}$:
  \end{equation}
  \fi
 where %$\bm\cdot$ represents dot product, and
-we further normalize the elements of $\mathbf{o}$ to ensure $\sum_i{o_i}=1$.
+% we further normalize the elements of $\mathbf{o}$ to ensure $\sum_i{o_i}=1$.
+$\mathbf{o}$ is then normalized to ensure $\sum_i{o_i}=1$.
 
 Rather than using the predicted distribution $\mathbf{p}$ to directly match the relation labeled by \DS~\cite{zeng2015distant,lin2016neural},
 here we utilize $\mathbf{o}$ to match the noisy labels during training and still use $\mathbf{p}$ as output during testing,
