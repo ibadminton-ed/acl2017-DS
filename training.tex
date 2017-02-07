@@ -21,7 +21,7 @@ Another advantage is to avoid falling into poor local optimum.
 
 
 By exploiting curriculum learning, our approach  provides the
-flexibility to combine any prior knowledge of noise, e.g., splitting a dataset into reliable and less reliable subsets,  to improve the
+flexibility to combine prior knowledge of noise, e.g., splitting a dataset into reliable and less reliable subsets,  to improve the
 effectiveness of  the transition matrix and better model the noise.
 %We show that if one could break the
 %dataset into reliable and less reliable parts, our approach can exploit the split
@@ -94,13 +94,14 @@ Specifically, we propose to minimize the following  loss function:
 L=\sum_{m=1}^M{\sum_{i=1}^{N_m}{-log(o_{mi,y_{mi}})}} - \beta_m trace(\mathbf{T}^{mi})
 \end{aligned}
 \end{equation}
-where $\beta_m$ is the regularization weight for the $m$-th data subset, $M$ is the total number of subsets, $N_m$ the number of instances in $m$-th subset, and  $\mathbf{T}^{mi}$, $y_{mi}$ and $o_{mi,y_{mi}}$ are the transition matrix, the relation labeled by \DS and the observed probability for the $i$-th training instance in the $m$-th subset, respectively. Note that different from Equation~\ref{general_loss}, this loss function does not need to initiate the training procedure by
+where $\beta_m$ is the regularization weight for the $m$-th data subset, $M$ is the total number of subsets, $N_m$ the number of instances in $m$-th subset, and  $\mathbf{T}^{mi}$, $y_{mi}$ and $o_{mi,y_{mi}}$ are the transition matrix, the relation labeled by \DS and the observed probability of this relation for the $i$-th training instance in the $m$-th subset, respectively. Note that different from Equation~\ref{general_loss}, this loss function does not need to initiate training by
 minimizing the loss regarding the prediction distribution $\mathbf{p}$, since one can easily start by learning from the most reliable split first. 
 
 %since we have indirect guidance over noise pattern here. Specifically, trace regularization can utilize the prior konwledge of data quality by using different weights to serve as indirect guidance over noise pattern. Therefore,  
 %\orange{change the reason to trace reg?}
 
-For the most reliable subset, we also add a trace regularization, since there are still some noise annotations inevitably appearing in this split. 
+We also use trace regularization for the most reliable subset, since there are still some noise annotations inevitably appearing in this split. 
+% For the most reliable subset, we also add a trace regularization, since there are still some noise annotations inevitably appearing in this split. 
 Specifically, we expect its $trace(\mathbf{T})$ to be large (using a positive $\beta$) so that the elements of $\mathbf{T}$ will be centralized to the diagonal and $\mathbf{T}$ will be more similar to the identity matrix. As for the  less reliable subset, we expect the $trace (\mathbf{T})$ to be small (using a negative $\beta$) so that the elements of the transition matrix will be diffusive and $\mathbf{T}$  will be less similar to the identity matrix. In other words, the transition matrix is encouraged to characterize the noise.
 
 Note that this loss function only works for sentence level models. For bag level models, since reliable and less reliable sentences are all aggregated into a sentence bag,  we can not determine which bag is reliable and which is not. However, bag level models can still build a curriculum by changing the content of a bag, e.g., keeping reliable sentences in the bag first, then gradually adding less reliable ones, and training with Equation~\ref{general_loss}, which could benefit from the prior knowledge of data quality as well.

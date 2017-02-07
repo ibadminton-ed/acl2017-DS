@@ -12,7 +12,7 @@ and (2) whether the prior knowledge of data quality can help our approach better
 
 We apply our approach to both sentence level and bag level
 extraction models, and evaluate in the situations where we do not have prior knowledge of
-the data quality as well as %the situation
+the data quality as well as %the situation 
 where such prior knowledge is available.
 
 
@@ -26,12 +26,14 @@ We evaluate our approach on two datasets.  %, \TimeRE and \EntityRE.
 %
 
 \paragraph{\TimeRE}
-%\textbf{\TimeRE}
-is automatically constructed by using \DS to align time-related Wikidata~\cite{vrandevcic2014wikidata} KB triples to
-Wikipedia text, containing 278,141 sentences with 12
+%\textbf{\TimeRE} 
+We build \TimeRE by
+% is automatically constructed by 
+using \DS to align time-related Wikidata~\cite{vrandevcic2014wikidata} \KB triples to
+Wikipedia text. It contains 278,141 sentences with 12
 types of relations  between an entity mention and a time expression.
-We choose time-related relations in this dataset as time expressions speak for themselves in
-terms of reliability. That is, given a KB triple $<$$e$, \texttt{rel}, $t$$>$ and its
+We choose to use time-related relations because time expressions speak for themselves in
+terms of reliability. That is, given a \KB triple $<$$e$, \texttt{rel}, $t$$>$ and its
 aligned sentences,  the  finer-grained the time expression $t$ appears in the sentence,
 the more likely the sentence  supports the existence of this triple.
 For example, a sentence containing both \emph{Alphabet} and \emph{October-2-2015} is very likely to express the \texttt{inception-time} of \emph{Alphabet}, while a sentence containing both \emph{Alphabet} and \emph{2015} could instead talk  about many events, e.g.,  releasing financial report of 2015, hiring a new CEO, etc.
@@ -44,7 +46,7 @@ reliable.  Negative data are constructed  heuristically that any
 \emph{entity-time} pairs in a sentence without corresponding triples in Wikidata are treated as negative data.
 %\red{we still have noises in terms of \textbf{false negative}, right? do we have experiments to say this? } \orange{yes, but no experiments}
 During training, we can access  184,579 negative
- and  77,777 positive instances, including 22,214 reliable,
+ and  77,777 positive instances, including 22,214 reliable, 
 2,094 and 53,469 less reliable ones. The validation set and test set are randomly sampled from
 the reliable (full-date) data for relatively fair evaluations and contains
 2,776, 2,771 positive instances and 5,143, 5,095 negative instances, respectively.
@@ -54,11 +56,11 @@ the reliable (full-date) data for relatively fair evaluations and contains
 \paragraph{\EntityRE} is a widely-used entity
 relation extraction dataset, built %by independent researchers
 by aligning triples
-in Freebase to the New York Times (\NYT) corpus~\cite{riedel2010modeling}.
+in Freebase to the New York Times (\NYT) corpus~\cite{riedel2010modeling}. 
 %It contains 52 relations, 136,947 positive and 385,664 negative sentences for training, and 6,444 positive and 166,004 negative sentences  for testing.
 Unlike \TimeRE, this dataset does not contain any prior knowledge about the data quality.
 %However, it is a good example to evaluate the generalization ability of our transition matrix approach.
-Since the sentence level annotations in %the test set of
+Since the sentence level annotations in %the test set of 
  \EntityRE are too noisy to serve as gold standard,  we only evaluate bag-level models on \EntityRE, a standard practice in previous works~\cite{surdeanu2012multi,zeng2015distant,lin2016neural}.
 
 
@@ -66,43 +68,45 @@ Since the sentence level annotations in %the test set of
 %
 %
 \paragraph{Hyper-parameters}
+We use 200 convolution kernels with widow size 3. During training, we use stochastic gradient descend (SGD) with batch size 20.  The learning rates for sentence-level  and bag-level models are 0.1 and 0.01, respectively.
 %
-%\paragraph{Neural network components}
+%\paragraph{Neural network components} 
 %used in our algorithm are based on a convolution neural network with 200 convolution kernels and the window size is 3. To train the network, we use stochastic gradient descend (SGD) with a batch size of 20.  The learning rates for sentence-level  and bag-level models are 0.1 and 0.01, respectively.
 %
 %\paragraph{Sentence level modeling}
-Our sentence level experiments are performed on \TimeRE,
-%is performed on the \TimeRE dataset,
-using %where we use
-100-d word embeddings pre-trained using GloVe~\cite{pennington2014glove} on Wikipedia and Gigaword~\cite{gigaword},
-%\footnote{\url{catalog.ldc.upenn.edu/LDC2011T07}},
+
+Sentence level experiments are performed on \TimeRE, 
+%is performed on the \TimeRE dataset, 
+using %where we use 
+100-d word embeddings pre-trained using GloVe~\cite{pennington2014glove} on Wikipedia and Gigaword~\cite{parker2011english}, 
+%\footnote{\url{catalog.ldc.upenn.edu/LDC2011T07}}, 
 and 20-d vectors for distance embeddings. Each of the three subsets of \TimeRE is added after the previous phase has run for 15 epochs. The trace regularization weights are $\beta_1=0.01$, $\beta_2=-0.01$ and $\beta_3=-0.1$, respectively, from the reliable to the most unreliable, with the ratio of $\beta_3$ and $\beta_2$ fixed to 10 or 5 when tuning.
 
 %\paragraph{Bag level modeling}
-Our bag level experiments are performed on both  \TimeRE and  \EntityRE. For \TimeRE, we use the same parameters as above.
+Bag level experiments are performed on both  \TimeRE and  \EntityRE. For \TimeRE, we use the same parameters as above.
 %The parameters of the bag level model is almost the same as the sentence level model on TimeRE data, except that the learning rate is 0.01 and the less reliable data are added when the previous phase has run for 3 and 6 epochs.
-For \EntityRE, we use 50-d word embeddings pre-trained on the \NYT corpus using word2vec~\cite{word2vec},
-%\footnote{\url{code.google.com/p/word2vec/}}.
+For \EntityRE, we use 50-d word embeddings pre-trained on the \NYT corpus using word2vec~\cite{mikolov2013distributed}, 
+%\footnote{\url{code.google.com/p/word2vec/}}. 
 and 5-d vectors for distance embedding.
-%The size for distance embedding is 5.
+%The size for distance embedding is 5. 
 For both datasets,  $\alpha$ and $\beta$ in Eq.~\ref{general_loss} are initialized to 1 and 0.1, respectively. We tried various decay rates, \{0.95, 0.9, 0.8\}, and steps, \{3, 5, 8\}. We found that using a decay rate of 0.9 with step of 5 gives best performance in most cases.
 
 \paragraph{Evaluation Metric}
-The performance is reported using the precision-recall (\PR) curve, calculated according to the extraction results ranked decreasingly by their confidence scores. This is a standard evaluation metric in relation extraction.
+The performance is reported using the precision-recall (\PR) curve, calculated according to the extraction results ranked decreasingly by their confidence scores, a standard evaluation metric in relation extraction.
 
 \paragraph{Naming Conventions}
-We evaluate our approach under a wide range of scenarios for
+We evaluate our approach under a wide range of settings for
  sentence level
 (\texttt{sent\_}) and bag level (\texttt{bag\_}) models:
-(1) \texttt{\_mix}:  training on all three subsets of \TimeRE mixed together;
-(2) \texttt{\_reliable}:  training using the reliable subset of \TimeRE only;
-(3) \texttt{\_PR}:  training with prior knowledge of annotation quality, i.e., starting from the reliable data and then adding the unreliable data;
-(4) \texttt{\_TM}: training with a dynamic transition matrix;
-(5) \texttt{\_GTM}:  training with a global transition matrix.
+(1) \texttt{\_mix}:  trained on all three subsets of \TimeRE mixed together;
+(2) \texttt{\_reliable}:  trained using the reliable subset of \TimeRE only;
+(3) \texttt{\_PR}:  trained with prior knowledge of annotation quality, i.e., starting from the reliable data and then adding the unreliable data;
+(4) \texttt{\_TM}: trained with dynamic transition matrix;
+(5) \texttt{\_GTM}:  trained with a global transition matrix.
 %
 %\footnote{Since curriculum learning without prior knowledge is our default training method, we use \texttt{\_CL} to refer to the situation with prior knowledge of data quality here for simplicity. \red{ZW: What???}}.
 %
-For bag level modeling, we also investigate the difference   %the model performance using
+For bag level modeling, we also investigate the difference   %the model performance using 
 between average aggregation (\texttt{\_avg})
 and attention aggregation (\texttt{\_att}), as described in Section~\ref{sec:baglevelmodeling}.
 
