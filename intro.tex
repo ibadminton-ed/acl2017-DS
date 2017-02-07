@@ -30,16 +30,18 @@ Previous works have tried to remove sentences containing unreliable syntactic pa
 \textit{at-least-one assumption}
 that at least one of the aligned sentences supports the triple in knowledge base~\cite{riedel2010modeling}. They attempt to introduce new variables in probabilistic graphic models to capture certain types of noise, or aggregate predictions from multiple classifiers to reduce the influence of certain noise~\cite{hoffmann2011knowledge,surdeanu2012multi,ritter2013modeling,min2013distant}. These approaches represent a substantial leap forward towards making \DS more practical. However, these methods are either tightly couple to certain types of noise,
 or have to rely on manual rules to filter noise, thus are unable to scale.
+
+
 The recent breakthrough in neural networks~\cite{lin2016neural} provides a new way to reduce the influence of incorrectly labeled data 
 by aggregating the multiple training instances attentively for relation classification, without explicitly characterizing the inherent noise. 
-Some promising results in neural network based \DS noise modeling have been reported in recent work~\red{\cite{}}, but this technique is still in its early stage and much remains to be done.
+Promising results in this direction have been reported in recent work~\red{\cite{}}. However, this technique is still in its early stage and much remains to be done.
 
 %This provides a new way to explicitly characterize the noise of the \DS output.
 
 In this paper, we aim to enhance \DS noise modeling by providing the capability to explicitly characterize 
 the noise on the \DS output using neural networks.  We show that while noise is inevitable, it is possible to characterize the noise pattern  in a unified framework along with its original classification objective. Our key insight is that the \DS-style training  data typically contain useful clues about the noise pattern. For example, we can infer that since some people work in their birthplaces, \DS could wrongly label a training sentence describing a working place as a \texttt{born-in} relation.
-Our novel approach to noisy modeling is to use a dynamically-generated transition matrix for each training instance to (1) characterize the possibility that the \DS labeled relation is confused and (2) indicate its noise pattern.  To tackle the challenge of no direct guidance over the noise pattern, we employ a curriculum learning based training method to gradually model the noise pattern over time, and use trace regularization to control the behavior of the transition matrix during training. While our approach does not make assumptions of the data quality, it can make effectively use
-of the prior knowledge of the data quality to guide the learning procedure when such information is available. 
+Our novel approach to noisy modeling is to use a dynamically-generated transition matrix for each training instance to (1) characterize the possibility that the \DS labeled relation is confused and (2) indicate its noise pattern.  To tackle the challenge of no direct guidance over the noise pattern, we employ a curriculum learning based training method to gradually model the noise pattern over time, and use trace regularization to control the behavior of the transition matrix during training. Our approach is flexible -- while it does not make assumptions of the data quality, the algorithm can make effectively use
+of the data-quality prior knowledge to guide the learning procedure when such information is available. 
 
 We apply our method to the relation extraction task and evaluate it under various scenarios on two benchmark datasets. Experimental results show
 that our approach consistently improves the learned model performance, significantly outperforming a state-of-the-art neural network based
