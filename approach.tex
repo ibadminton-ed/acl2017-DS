@@ -70,7 +70,7 @@ T_{ij} = \frac{exp({\mathbf{w}_{ij}^T \mathbf{x}_n + b})}{\sum_{j=1}^{|\mathbb{C
 where $T_{ij}$ is the conditional probability for the input sentence to be labeled as relation $j$ by \DS, given $i$ as the true relation, $b$ is a scalar bias,  $|\mathbb{C}|$ is the number of relations, $\mathbf{w}_{ij}$ is the weight vector characterizing the confusion between $i$ and~$j$. %, shared across the dataset.
 %The \emph{softmax} function guarantees that each row of $\mathbf{T}$ sums to 1.
 
-Here, we dynamically produce a transition matrix, $\mathbf{T}$, specifically for each sentence, but with the parameters ($\mathbf{w}_{ij}$) shared across the dataset. By doing so, we are able to adaptively characterize the noise pattern for each sentence, with a few parameters only. In contrast, one could also produce one global transition matrix for all sentences, with much less computation, where one need not to compute $\mathbf{T}$ on the air (see Section \ref{sec:results_in_TimeRE}).
+Here, we dynamically produce a transition matrix, $\mathbf{T}$, specifically for each sentence, but with the parameters ($\mathbf{w}_{ij}$) shared across the dataset. By doing so, we are able to adaptively characterize the noise pattern for each sentence, with a few parameters only. In contrast, one could also produce a global transition matrix for all sentences, with much less computation, where one need not to compute $\mathbf{T}$ on the air (see Section \ref{sec:results_in_TimeRE}).
 
 
 \paragraph{Observed Distribution}
@@ -91,7 +91,7 @@ $\mathbf{T}$ and the predicted relation distribution, $\mathbf{p}$:
  \end{equation}
  \fi
 where %$\bm\cdot$ represents dot product, and 
-we normalize the elements of $\mathbf{o}$ to ensure $\sum_i{o_i}=1$.
+we further normalize the elements of $\mathbf{o}$ to ensure $\sum_i{o_i}=1$.
 
 Rather than using the predicted distribution $\mathbf{p}$ to directly match the relation labeled by \DS~\cite{zeng2015distant,lin2016neural}, 
 here we utilize $\mathbf{o}$ to match the noisy labels during training and still use $\mathbf{p}$ as output during testing,
@@ -124,7 +124,8 @@ The attention aggregation calculates an attention value, $a_{ij}$, for each sent
 %\end{equation}
 where $\mathbf{x}_{i}$ is the embedding of sentence $i$, $n$ the number of sentences in the bag, and $\mathbf{r}_j$ is the randomly initialized embedding for relation $j$.
 % and $\alpha_{ij}$ is the attention value over sentence $i$ with respect to relation $j$.
-Inspired by~\cite{lin2016neural}, 
+% Inspired by~\cite{lin2016neural}, 
+In similar spirit to~\cite{lin2016neural}, 
 the resulting bag embedding $\mathbf{s}_j$ is fed to a \emph{softmax} classifier %, \orange{which output the distribution over all relations}, 
 to predict the probability of relation $j$ for the given bag.
 
