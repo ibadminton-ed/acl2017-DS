@@ -7,8 +7,10 @@
 
 \begin{figure}[t!]
 \begin{center}
-\includegraphics[width=0.52\textwidth]{figures/overview.pdf}	
+\includegraphics[width=0.52\textwidth]{figures/overview.pdf}
+\vspace{-5mm}	
 \caption{Overview of our approach}
+\vspace{-2mm}
 \label{fig: denoise_framework}
 \end{center}
 \end{figure}
@@ -32,7 +34,7 @@
 In order to deal with the noisy training data obtained through \DS, our approach follows four steps as depicted in Figure \ref{fig: denoise_framework}.
 First, each input sentence is fed to a sentence encoder to generate an embedding vector. Our model then takes the sentence embeddings as input and produce a predicted relation
 distribution, $\mathbf{p}$, for the input sentence (or the input sentence bag). At the same time, our model dynamically produces
-a transition matrix, $\mathbf{T}$, which is used to characterize the noise pattern of  % the \DS-labeled input 
+a transition matrix, $\mathbf{T}$, which is used to characterize the noise pattern of  % the \DS-labeled input
 sentence (or the bag). Finally, the predicted distribution is multiplied by the transition matrix to produce the observed relation
 distribution, $\mathbf{o}$, which is used to match the noisy relation labels
 assigned by \DS
@@ -75,10 +77,10 @@ Here, we dynamically produce a transition matrix, $\mathbf{T}$, specifically for
 
 \paragraph{Observed Distribution}
 When we characterize the noise in a sentence with a transition matrix $\mathbf{T}$,
-if its true relation is $i$, we can assume that  $i$ might be erroneously labeled as relation $j$ 
-by \DS  with probability $T_{ij}$. 
+if its true relation is $i$, we can assume that  $i$ might be erroneously labeled as relation $j$
+by \DS  with probability $T_{ij}$.
 We can therefore capture the observed relation distribution, $\mathbf{o}$, by
-multiplying %transition matrix, 
+multiplying %transition matrix,
 $\mathbf{T}$ and the predicted relation distribution, $\mathbf{p}$:
  \begin{equation}
 \mathbf{o} = \mathbf{T}^T \bm\cdot \mathbf{p}
@@ -90,10 +92,10 @@ $\mathbf{T}$ and the predicted relation distribution, $\mathbf{p}$:
  o_i = \frac{o_i}{\sum_i{o_i}}
  \end{equation}
  \fi
-where %$\bm\cdot$ represents dot product, and 
+where %$\bm\cdot$ represents dot product, and
 we further normalize the elements of $\mathbf{o}$ to ensure $\sum_i{o_i}=1$.
 
-Rather than using the predicted distribution $\mathbf{p}$ to directly match the relation labeled by \DS~\cite{zeng2015distant,lin2016neural}, 
+Rather than using the predicted distribution $\mathbf{p}$ to directly match the relation labeled by \DS~\cite{zeng2015distant,lin2016neural},
 here we utilize $\mathbf{o}$ to match the noisy labels during training and still use $\mathbf{p}$ as output during testing,
 which actually captures the procedure of how the noisy label is produced and thus protects $\mathbf{p}$ from the noise.
 %
@@ -124,17 +126,17 @@ The attention aggregation calculates an attention value, $a_{ij}$, for each sent
 %\end{equation}
 where $\mathbf{x}_{i}$ is the embedding of sentence $i$, $n$ the number of sentences in the bag, and $\mathbf{r}_j$ is the randomly initialized embedding for relation $j$.
 % and $\alpha_{ij}$ is the attention value over sentence $i$ with respect to relation $j$.
-% Inspired by~\cite{lin2016neural}, 
-In similar spirit to~\cite{lin2016neural}, 
-the resulting bag embedding $\mathbf{s}_j$ is fed to a \emph{softmax} classifier %, \orange{which output the distribution over all relations}, 
+% Inspired by~\cite{lin2016neural},
+In similar spirit to~\cite{lin2016neural},
+the resulting bag embedding $\mathbf{s}_j$ is fed to a \emph{softmax} classifier %, \orange{which output the distribution over all relations},
 to predict the probability of relation $j$ for the given bag.
 
 \paragraph{Noise Modeling}
-%\orange{We use the same noise modeling method for both average and attention aggregation.} 
-Since the transition matrix addresses the transition probability with respect to each true relation, the attention mechanism appears to be a natural fit for calculating the transition matrix in bag level. 
-Similar to attention aggregation above, 
+%\orange{We use the same noise modeling method for both average and attention aggregation.}
+Since the transition matrix addresses the transition probability with respect to each true relation, the attention mechanism appears to be a natural fit for calculating the transition matrix in bag level.
+Similar to attention aggregation above,
 %we concentrate on each relation one by one and calculate its transition distribution respectively.
-%Specifically, 
+%Specifically,
 we calculate the bag embedding with respect to each relation using Equation~\ref{att_sum},  but with a separate set of relation embeddings $\mathbf{r'}_j$.
 We then calculate the transition matrix, $\mathbf{T}$, by:
 \begin{equation}

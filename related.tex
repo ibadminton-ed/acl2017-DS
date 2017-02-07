@@ -23,7 +23,7 @@ patterns at the pre-processing stage. \cite{xu2013filling} uses pseudo-relevance
 possible false negative data. \cite{riedel2010modeling} proposes to alleviate the noise problem by considering the \RE task
 as a multi-instance classification problem and assume
 that at least one of the retrieved sentences containing both \emph{subj} and \emph{obj} supports the corresponding $<$\emph{subj},\emph{rel},\emph{obj}$>$ triple (i.e. \emph{at-least-one} assumption).
-Following this assumption, people further improves the original method using prababilistic graphic model mehtods~\cite{hoffmann2011knowledge,surdeanu2012multi}, and neural network methods \cite{zeng2015distant}. Recently \cite{lin2016neural} further proposes to use attention mechanism to reduce the noise inside the sentence bag. 
+Following this assumption, people further improves the original method using prababilistic graphic model mehtods~\cite{hoffmann2011knowledge,surdeanu2012multi}, and neural network methods \cite{zeng2015distant}. Recently \cite{lin2016neural} further proposes to use attention mechanism to reduce the noise inside the sentence bag.
 In contrast to our work in noise modeling, these approaches all aim to identify either reliable or unreliable instances to reduce
 the bad influence of noise.
 
@@ -40,12 +40,12 @@ the bad influence of noise.
 
 
 \paragraph{Noise Modeling}
-The \emph{at-least-one} assumption mentioned above is often too strong in practice, and there are still chances that the
+The \emph{at-least-one} assumption is often too strong in practice, and there are still chances that the
 sentence bag may be false positive or false negative. Thus it is important to model the noise pattern to guide the learning procedure.
 Recent works in the area include \cite{ritter2013modeling} and \cite{min2013distant} that
 employ a set of latent variables to represent the true relation. Our approach differs
-from the these two approaches in two aspects. 
-First, we target the neutral network framework while they target the probabilistic graphic model framework. 
+from the these two approaches in two aspects.
+First, we target the neutral network framework while they target the probabilistic graphic model framework.
 Second, we advance their models by providing the capability to model the fine-grained transition from the true to the observed relation.
 % Third, while our model is fully differentiable, their parameters used to model the transition from true relation to observed transtion need to be set by hand or heuristics.
 
@@ -66,16 +66,19 @@ Second, we advance their models by providing the capability to model the fine-gr
 %This method has the problem that it also removes good sentences since the sentences containing bag patterns are not always noises.
 %The noise can come from automatically constructed dataset like Tiny Images dataset \cite{torralba200880} where the images are gathered from web search engine and can also come from human labeled dataset \cite{misra2016seeing} like the MS COCO Captions dataset \cite{chen2015microsoft}.
 
-% \paragraph{Neural Network Based Denoising} 
-Recently, various approaches have been proposed in the computer vision domain for modeling the data noise using neural networks.
-\cite{sukhbaatar2014training} proposes to use a global transition matrix to transform the true label distribution to the observed label distribution. They also propose the idea of trace regularization but use weight decay for simplicity. \cite{reed2014training} also uses a hidden layer to represent the true label distribution but try to force it to predict both the noisy label and the input. \cite{chen2015webly,xiao2015learning} first estimates the transition matrix on the clean data set and use it in the noisy data set. 
-% ~\cite{sukhbaatar2014training,reed2014training,chen2015webly,xiao2015learning,misra2016seeing}. 
+\paragraph{Neural Network Based Noise Modeling}
+Recently, various approaches have been proposed in the computer vision domain for modeling the data noise using neural networks ~\cite{sukhbaatar2014training,reed2014training,chen2015webly,xiao2015learning,misra2016seeing}.
+%\cite{sukhbaatar2014training} proposes to use a global transition matrix to transform the true label distribution to the observed label distribution. They also propose the idea of trace regularization but use weight decay for simplicity. \cite{reed2014training} also uses a hidden layer to represent the true label distribution but try to force it to predict both the noisy label and the input. \cite{chen2015webly,xiao2015learning} first estimates the transition matrix on the clean data set and use it in the noisy data set.
+% ~\cite{sukhbaatar2014training,reed2014training,chen2015webly,xiao2015learning,misra2016seeing}.
 Our model shares similar spirit with \cite{misra2016seeing} in that we all dynamically generate a transition matrix for each
-training data item. 
-However, instead of using Expectation-Maximization (EM), we train our model with a curriculum learning framework and trace regularization.
-In the field of NLP, there is currently little work in neural-network-based nosie modeling. A recent work is conduct by \cite{fang2016learning}, which uses a global transition matrix to model the noise introduced by
-cross-lingual projection of training data. Our work advances \cite{fang2016learning} through generating a transition matrix for each datum dynamically, which avoids the drawback of global transition matrix that it use a single transition matrix for both reliable and unreliable data. 
-% This leads to significant better performance (see Section~\ref{sec:evaluation}).
+training data item.
+However, instead of using Expectation-Maximization \red{ZW: What's the difference of EM and our CL?}, we train our model with a curriculum learning framework and trace regularization.
+In the field of NLP, there is currently little work in neural-network-based noise modeling. \cite{fang2016learning} is the closest work, which uses a global transition matrix to model the noise introduced by
+cross-lingual projection of training data. Our work advances \cite{fang2016learning} through dynamically generating a transition matrix for each data item,
+providing a finer-grained, more effective way for modeling reliable and unreliable data. 
+
+%which avoids the drawback of global transition matrix that it use a single transition matrix for both reliable and unreliable data.
+
 
 
 % Our method is also related to the thread of work of designing denoising neural network components in computer vision.  \cite{sukhbaatar2014training} proposes to use a global transition matrix to transform the true label distribution to the observed label distribution and uses weight decay on the transition matrix during training. \cite{reed2014training} also uses a hidden layer to represent the true label distribution but try to force it to predict both the noisy label and the input. \cite{chen2015webly,xiao2015learning} first estimates the transition matrix on the clean data set and use it in the noisy data set. \cite{misra2016seeing} generates the transition matrix dynamically for each training instance.
