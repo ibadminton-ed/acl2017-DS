@@ -30,8 +30,10 @@ Previous works have tried to remove sentences containing unreliable syntactic pa
 \textit{at-least-one assumption}
 that at least one of the aligned sentences supports the triple in knowledge base~\cite{riedel2010modeling}. They attempt to introduce new variables in probabilistic graphic models to capture certain types of noise, or aggregate predictions from multiple classifiers to reduce the influence of certain noise~\cite{hoffmann2011knowledge,surdeanu2012multi,ritter2013modeling,min2013distant}. These approaches represent a substantial leap forward towards making \DS more practical. However, these methods are either tightly couple to certain types of noise,
 or have to rely on manual rules to filter noise, thus are unable to scale.
-The recent breakthrough in neural networks~\cite{lin2016neural} make it possible to reduce the influence of incorrectly labeled data 
+The recent breakthrough in neural networks~\cite{lin2016neural} provides a new way to reduce the influence of incorrectly labeled data 
 by aggregating the multiple training instances attentively for relation classification, without explicitly characterizing the inherent noise. 
+Some promising results in neural network based \DS noise modeling have been reported in recent work~\red{\cite{}}, but this technique is still in its early stage and much remains to be done.
+
 %This provides a new way to explicitly characterize the noise of the \DS output.
 
 In this paper, we aim to enhance \DS noise modeling by providing the capability to explicitly characterize 
