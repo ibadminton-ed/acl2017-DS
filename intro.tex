@@ -18,40 +18,40 @@ By using knowledge learned from seed examples to label data, \DS automatically p
 %generate relation contexts from unlabeled texts.
 
 While promising, \DS does not guarantee perfect results and often introduces noise to the
-generated data. In the context of relation extraction,
-\DS works by considering sentences containing both the subject and object of a $<$\emph{subj}, \texttt{rel}, \emph{obj}$>$ triple as its supports. However, the generated data are not always perfect. For instance,
+generated data. In the context of relation extraction, 
+\DS works by considering sentences containing both the subject and object of a $<$\emph{subj}, \texttt{rel}, \emph{obj}$>$ triple as its supports. However, the generated data are not always perfect. For instance,  
 \DS could match the knowledge base (\KB) triple, $<$\emph{Donald Trump},
 \texttt{born-in}, \emph{New York}$>$  in \emph{false positive} contexts like \emph{Donald Trump worked in New York City}.
 Prior works~\cite{takamatsu2012reducing,ritter2013modeling} show that \DS often mistakenly labels real positive instances as negative (\emph{false negative}) or
-versa vice (\emph{false positive}), and there could be  confusions among positive labels as well.
+versa vice (\emph{false positive}), and there could be  confusions among positive labels as well. 
 These noises can severely affect training and lead to poorly-performing models.
 %This drawback greatly hinders the wide adoption of this powerful technique.
 
 Tackling the noisy data problem of \DS is non-trivial, since there usually lacks of explicit supervision to capture the noise.
 %There have been attempts to tackle the noisy data problem of \DS.
-Previous works have tried to remove sentences containing unreliable syntactic patterns~\cite{takamatsu2012reducing},
+Previous works have tried to remove sentences containing unreliable syntactic patterns~\cite{takamatsu2012reducing}, 
 design new models to capture certain types of noise or aggregate multiple predictions under the
 \textit{at-least-one assumption}
 that at least one of the aligned sentences supports the triple in \KB~\cite{riedel2010modeling,surdeanu2012multi,ritter2013modeling,min2013distant}.
-%They attempt to introduce new variables in probabilistic graphic models to capture certain types of noise, or aggregate predictions from multiple classifiers to reduce the influence of certain noise~\cite{hoffmann2011knowledge,surdeanu2012multi,ritter2013modeling,min2013distant}.
-These approaches represent a substantial leap forward towards making \DS more practical. However,  they are either tightly couple to certain types of noise,
-or have to rely on manual rules to filter noise. %, thus does not scale.
+%They attempt to introduce new variables in probabilistic graphic models to capture certain types of noise, or aggregate predictions from multiple classifiers to reduce the influence of certain noise~\cite{hoffmann2011knowledge,surdeanu2012multi,ritter2013modeling,min2013distant}. 
+These approaches represent a substantial leap forward towards making \DS more practical. however,  are either tightly couple to certain types of noise,
+or have to rely on manual rules to filter noise, thus unable to scale.
 % On the other hand, recent breakthrough in neural networks~\cite{lin2016neural} show that neural network models can reduce the influence of incorrectly labeled data without explicitly characterizing the inherent noise by aggregating the multiple training instances attentively for relation classification.
 % \orange{In fact, we find that the neural network architecture provides opportunities to explicitly characterize the noise underlying in the. This enables the model to infer the true label of incorrectly labeled data and thus can make use of rather than trying to ignore incorrectly labeled data.}
 %
 Recent breakthrough in neural networks provides a new way to reduce the influence of incorrectly labeled data by aggregating multiple training instances attentively for relation classification, without explicitly characterizing the inherent noise~\cite{lin2016neural,zeng2015distant}.
-Although promising, %results in this direction have been reported in recent work~\red{\cite{}}.
+Although promising, %results in this direction have been reported in recent work~\red{\cite{}}. 
  modeling noise within neural network architectures is still in its early stage and much remains to be done.
 
 
-In this paper, we aim to enhance \DS noise modeling by providing the capability to explicitly characterize
-the noise in the \DS-style training data within neural network architectures.  We show that while noise is inevitable, it is possible to characterize the noise pattern  in a unified framework along with its original classification objective. Our key insight is that the \DS-style training  data typically contain useful clues about the noise pattern. For example, we can infer that since some people work in their birthplaces, it is reasonable to assume that \DS could wrongly label a training sentence describing a working place as a \texttt{born-in} relation.
+In this paper, we aim to enhance \DS noise modeling by providing the capability to explicitly characterize 
+the noise in the \DS-style training data within neural networks architectures.  We show that while noise is inevitable, it is possible to characterize the noise pattern  in a unified framework along with its original classification objective. Our key insight is that the \DS-style training  data typically contain useful clues about the noise pattern. For example, we can infer that since some people work in their birthplaces, \DS could wrongly label a training sentence describing a working place as a \texttt{born-in} relation.
 Our novel approach to noisy modeling is to use a dynamically-generated transition matrix for each training instance to (1) characterize the possibility that the \DS labeled relation is confused and (2) indicate its noise pattern.  To tackle the challenge of no direct guidance over the noise pattern, we employ a curriculum learning based training method to gradually model the noise pattern over time, and utilize trace regularization to control the behavior of the transition matrix during training. Our approach is flexible -- while it does not make any assumptions about the data quality, the algorithm can make effective use
-of the data-quality prior knowledge to guide the learning procedure when such clues are available.
+of the data-quality prior knowledge to guide the learning procedure when such clues are available. 
 
-We apply our method to the relation extraction task and evaluate under various scenarios on two benchmark datasets. Experimental results show that our approach consistently improves both extraction settings, outperforming the state-of-the-art models in different settings.
+We apply our method to the relation extraction task and evaluate under various scenarios on two benchmark datasets. Experimental results show that our approach consistently improves both extraction settings, outperforming the state-of-the-art models in different settings. 
 
-Our work offers an effective way for tackling the noisy data problem of \DS, making \DS more practical in scale. Our main contributions are to (1) design a \emph{dynamic} transition matrix structure to characterize the noise introduced by \DS, and (2) employ curriculum learning to guide the training procedure performed on \DS generated data.
+Our work offers an effective way for tackling the noisy data problem of \DS, making \DS more practical at scale. Our main contributions are to (1) design a \emph{dynamic} transition matrix structure to characterize the noise introduced by \DS, and (2) design a curriculum learning based framework to adaptively guide the training procedure to learn with noise.
 
 %This paper makes the following specific contributions. It is the first to
 %\begin{itemize}[noitemsep]
