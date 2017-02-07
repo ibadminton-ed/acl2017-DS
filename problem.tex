@@ -1,8 +1,10 @@
 \section{Problem Definition}
 The task of distantly supervised relation extraction is to extract knowledge tuples, i.e.,$<$\emph{subj}, \texttt{rel}, \emph{obj}$>$, from free text using existing knowledge base, which can be applied in both the sentence and the bag
 levels.  The former  takes a sentence $s$ containing both $subj$ and $obj$ as input, and outputs the relation expressed
-by the sentence between $subj$ and $obj$. The latter setting is based on the \textit{at-least-one assumption}
- and takes a bag of sentences $S$ as input where each sentence
+by the sentence between $subj$ and $obj$. 
+The latter setting is based on the \textit{at-least-one assumption} 
+that at least one of the sentences containing both $subj$ and $obj$ support the $<$\emph{subj}, \texttt{rel}, \emph{obj}$>$ triple,
+and takes a bag of sentences $S$ as input where each sentence
 $s\in S$ contains both $subj$ and
 $obj$, and output  the relation between $subj$ and $obj$ expressed by this bag.
 

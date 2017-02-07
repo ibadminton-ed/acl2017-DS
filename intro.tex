@@ -24,7 +24,10 @@ procedure and lead to poorly-performing models.
 
 However, it is not trivial to tackle the noisy data problem of \DS, since there is usually no explicit supervision to guide us for capturing the noise.
 %There have been attempts to tackle the noisy data problem of \DS.
-Previous works have tried to remove sentences containing unreliable syntactic patterns~\cite{takamatsu2012reducing}, design new models \orange{under the} \textbf{\textit{at-least-one assumption}}  that at least one of the aligned sentences supports the triple in knowledge base~\cite{riedel2010modeling}, where they either introduce new variables in probabilistic graphic models to capture certain types of noise, or aggregate predictions from multiple classifiers to reduce the influence of certain noise~\cite{hoffmann2011knowledge,surdeanu2012multi,ritter2013modeling,min2013distant}. These works represent a substantial leap forward towards making \DS more practical. However, these methods are either designed specifically to deal with certain types of noise, 
+Previous works have tried to remove sentences containing unreliable syntactic patterns~\cite{takamatsu2012reducing}, design new models \orange{under the} 
+% \textbf{\textit{at-least-one assumption}}  
+\textit{at-least-one assumption}
+that at least one of the aligned sentences supports the triple in knowledge base~\cite{riedel2010modeling}, where they either introduce new variables in probabilistic graphic models to capture certain types of noise, or aggregate predictions from multiple classifiers to reduce the influence of certain noise~\cite{hoffmann2011knowledge,surdeanu2012multi,ritter2013modeling,min2013distant}. These works represent a substantial leap forward towards making \DS more practical. However, these methods are either designed specifically to deal with certain types of noise, 
 % e.g., false positive or false negative, 
 or rely on manual rules to filter noise, thus are unable to scale.
 On the other hand, recent breakthrough in neural networks~\cite{lin2016neural} show that neural network models can reduce the influence of incorrectly labeled data without explicitly characterizing the inherent noise by aggregating the multiple training instances attentively for relation classification.

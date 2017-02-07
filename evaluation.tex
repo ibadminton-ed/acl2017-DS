@@ -50,12 +50,12 @@ the reliable (full-date) data for relatively fair evaluations and contains
 
 
 \paragraph{\EntityRE} is a widely-used entity
-relation extraction dataset, built %by independent researchers
+relation extraction dataset, and is built %by independent researchers
 by aligning triples
 in Freebase to the New York Times (\NYT) corpus~\cite{riedel2010modeling}. It contains 52 relations, 136,947 positive and 385,664 negative sentences for training, and 6,444 positive and 166,004 negative sentences  for testing.
 Unlike \TimeRE, this dataset does not contain any prior knowledge about the data quality.
 However, it is a good example to evaluate the generalization ability of our transition matrix approach.
-\emph{Since the sentence level annotations in the test set of \EntityRE are too noisy to serve as gold standard,  we only evaluate bag-level models on \EntityRE -- a standard practice in previous works}~\cite{surdeanu2012multi,zeng2015distant,lin2016neural}. \orange{necessary to use different style?}
+Since the sentence level annotations in the test set of \EntityRE are too noisy to serve as gold standard,  we only evaluate bag-level models on \EntityRE -- a standard practice in previous works~\cite{surdeanu2012multi,zeng2015distant,lin2016neural}.
 
 
 %\subsection{Experimental Setup}
