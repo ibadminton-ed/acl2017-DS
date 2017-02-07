@@ -17,13 +17,12 @@ By distilling knowledge from seed examples, \DS automatically prepare large scal
 
 While promising, \DS does not guarantee perfect results and often introduces noise to the
 generated data. In the context of relation extraction, 
-% \DS works by considering sentences containing both the \emph{subj} and the \emph{obj} of a $<$\emph{subj}, \texttt{rel}, \emph{obj}$>$ triple as its supports. However,
+\DS works by considering sentences containing both the \emph{subj} and the \emph{obj} of a $<$\emph{subj}, \texttt{rel}, \emph{obj}$>$ triple as its supports. However, the generated data are not perfect, 
 \DS could match the knowledge base (\KB) triple, $<$\emph{Donald Trump},
 \texttt{born-in}, \emph{New York}$>$  in \emph{false positive} contexts like \emph{Donald Trump worked in New York City}.
 Prior works~\cite{takamatsu2012reducing,ritter2013modeling} show that \DS often mistakenly labels real positive instances as negative (\emph{false negative}) or
 versa vice (\emph{false positive}), and there could also have confusions among positive labels too. These noises can
-severely affect the training
-procedure and lead to poorly-performing models.
+severely affect training and lead to poorly-performing models.
 %This drawback greatly hinders the wide adoption of this powerful technique.
 
 Tackling the noisy data problem of \DS is non-trivial, since there usually lacks of explicit supervision to capture the noise.
