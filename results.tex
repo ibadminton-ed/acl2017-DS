@@ -1,5 +1,9 @@
 \section{Experimental Results \label{sec:evaluation}}
 
+
+
+
+\subsection{Performance on \TimeRE} \label{sec:results_in_TimeRE}
 \begin{figure}[t!]
 % \begin{figure}[htbp]
 \setlength{\abovecaptionskip}{3pt}
@@ -10,10 +14,6 @@
 \label{fig: sent_luo}
 \end{center}
 \end{figure}
-
-
-\subsection{Performance on \TimeRE} \label{sec:results_in_TimeRE}
-
 \paragraph{Sentence Level Models}
 The results of sentence level models on \TimeRE are shown in Figure \ref{fig:
 sent_luo}. We can see that mixing all subsets together (\texttt{sent\_mix})
@@ -87,6 +87,9 @@ This is because that it ranks higher the sentences expressing either \texttt{bir
 %However, since  denoising ability is not as good as attention aggregation, adding unreliable data gradually (\emph{bag\_avg\_currd}) improves the model performance here. We can also see that the transition matrix improves the average aggregation models more significantly than the attention aggregation models.
  %Note that due to the inferior denoising ability of average aggregation, the unhandled sentence level noise may further propagates to bag level, which gives the transition matrix more chance to help model the noise.
 
+
+
+\paragraph{Global v.s. Dynamic Transition Matrix}\vspace{-.3em}
 \begin{figure}[htbp]
 \setlength{\abovecaptionskip}{3pt}
 \setlength{\belowcaptionskip}{-10pt}
@@ -96,8 +99,6 @@ This is because that it ranks higher the sentences expressing either \texttt{bir
 \label{fig: cmp_single_dynamic}
 \end{center}
 \end{figure}
-
-\paragraph{Global v.s. Dynamic Transition Matrix}
 We also compare our dynamic transition matrix method with the global transition matrix method, 
 which maintains only one transition matrix for all training instances %instead of dynamically producing a transition matrix for each instance.
 and is updated via back-propagation during training. 
@@ -117,16 +118,9 @@ using  one global transition matrix (\texttt{\_GTM}) is also beneficial and impr
 captures the global noise pattern, thus fails to characterize individuals with subtle differences, 
 resulting in a performance drop compared to the dynamic one (\texttt{\_TM}).
 
-\begin{figure}[t!]
-% \begin{figure}[htbp]
-\setlength{\abovecaptionskip}{3pt}
-\setlength{\belowcaptionskip}{-10pt}
-\includegraphics[width=0.45\textwidth]{figures/re_att_avg_cmp_exp.pdf}
-\caption{Results on \EntityRE}
-\label{fig: Riedel_res}
-\end{figure}
 
-\subsection{Performance on \EntityRE}
+
+\subsection{Performance on \EntityRE}\vspace{-.6em}
 We evaluate our bag level models on \EntityRE. 
 As shown in Figure~\ref{fig: Riedel_res}, it is not surprising that the basic model with attention aggregation (\texttt{att}) significantly outperforms the average one (\texttt{avg}), where \texttt{att}  in our bag embedding is similar in spirit to \cite{lin2016neural},
 which has reported the-state-of-the-art performance on \EntityRE.  
@@ -138,3 +132,13 @@ When injected with our transition matrix approach,  both \texttt{att\_TM} and \t
 Similar to the situations in \TimeRE, since  \texttt{att} has taken the \textit{at-least-one assumption} into account  through its attention-based bag embedding, thus the improvement by \texttt{att\_TM}  is not as large as by \texttt{avg\_TM}.
 %Since
 %Note that the low recall part corresponds to high precision, which is more useful than the rest of the extraction results in practice. Therefore, our transition matrix method is also useful in this situation.
+%
+%
+\begin{figure}[t!]
+% \begin{figure}[htbp]
+\setlength{\abovecaptionskip}{3pt}
+\setlength{\belowcaptionskip}{-10pt}
+\includegraphics[width=0.45\textwidth]{figures/re_att_avg_cmp_exp.pdf}
+\caption{Results on \EntityRE}
+\label{fig: Riedel_res}
+\end{figure}
