@@ -1,33 +1,17 @@
 \section{Problem Definition}
 The task of distantly supervised relation extraction is to extract knowledge triples, $<$\emph{subj}, \texttt{rel}, \emph{obj}$>$, from free text with the training data constructed by aligning existing \KB triples with a large corpus.
+\orange{Specifically, given a triple in \KB, \DS works by first retrieving all the sentences containing both \emph{subj} and \emph{obj} of the triple, and then constructing the training data by considering these sentences as support to the existence of the triple.}
 This task can be conducted in both the sentence and the bag levels.
 The former  takes a sentence $s$ containing both $subj$ and $obj$ as input, and outputs the relation expressed
 by the sentence between $subj$ and $obj$.
-The latter setting is based on the \textit{\textbf{at-least-one assumption}}
-that at least one of the sentences containing both $subj$ and $obj$ supports the $<$\emph{subj}, \texttt{rel}, \emph{obj}$>$ triple.
- It takes a bag of sentences $S$ as input where each sentence
+The latter setting
+\orange{alleviates the noisy data problem by using the \textit{\textbf{at-least-one assumption}}}
+% is based on the \textit{\textbf{at-least-one assumption}}
+that at least one of the retrieved sentences containing both $subj$ and $obj$ supports the $<$\emph{subj}, \texttt{rel}, \emph{obj}$>$ triple.
+It takes a bag of sentences $S$ as input where each sentence
 $s\in S$ contains both $subj$ and
 $obj$, and outputs  the relation between $subj$ and $obj$ expressed by this bag.
 
-%
-%This work aims to improve the state of the art in \DS for relation extraction.
-%We do so by first modeling the noise in the \DS generated training data using a dynamic transition matrix,  at both the sentence and the bag levels (Section~\ref{sec:approach}),  and then introducing a curriculum learning framework  to control the behavior of noise  under various training situations (Section~\ref{sec:training}).
-%
-%
-%
-
-
-
-%\red{Our model is applied at both the sentence and the bag levels. We evaluate approach
-%in scenarios with and without prior knowledge of the data quality (Section xx).  we do not need the last sentence, right??}
-
-%\todo{How to split data sets should go to experimental setup}
-
-
-%In this paper, we will \orange{apply (changed from inject)} our noise modeling approach in both settings, and further investigate the performance of our approach in the situation with and without prior knowledge of the data quality. Specifically, we assume the prior knowledge can help us roughly distinguish reliable data from unreliable ones, and therefore split the dataset into several subsets with different levels of reliability. If no prior knowledge can be used, all the data are treated equally.
-
-
-%In this paper, we apply transition matrix to two types of models. First, sentence level models take a sentence $s$ containing both $subj$ and $obj$ as input. We need to identify the relation expressed by the sentence between $subj$ and $obj$. Second, bag level models are based on the at-least-one assumption and take a bag of sentences $S$ as input where each sentence $s\in S$ contains both $subj$ and $obj$. We need to identify the relation expressed by the sentence bag between $subj$ and $obj$.
 
 %\blue{DS is a powerful technique for performing relation extraction on a large text corpus where manually labeling every single sentence is impossible}
 %
