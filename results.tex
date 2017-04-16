@@ -104,14 +104,6 @@ This is because that it ranks higher the sentences expressing either \texttt{bir
 \hline
 \textit{sent\_PR\_TM} 				&\textbf{99.64}	&\textbf{97.42}	&94.74 	\\
 \hline
-\textit{bag\_att\_mix} 				&97.20	&95.30	&94.80 	\\
-\hline
-\textit{bag\_att\_mix\_TM} 		&96.53	&96.18	&95.45 	\\
-\hline
-\textit{bag\_att\_PR} 				&95.86	&95.63	&94.87 	\\
-\hline
-\textit{bag\_att\_PR\_TM} 			&97.19	&95.96	&\textbf{95.65} 	\\
-\hline
 \textit{bag\_avg\_mix} 				&95.53	&94.87	&94.09 	\\
 \hline
 \textit{bag\_avg\_mix\_TM} 		&97.54	&94.87	&94.80 	\\
@@ -120,14 +112,22 @@ This is because that it ranks higher the sentences expressing either \texttt{bir
 \hline
 \textit{bag\_avg\_PR\_TM} 			&97.20	&95.85	&95.32 	\\
 \hline
+\textit{bag\_att\_mix} 				&97.20	&95.30	&94.80 	\\
+\hline
+\textit{bag\_att\_mix\_TM} 		&96.53	&96.18	&95.45 	\\
+\hline
+\textit{bag\_att\_PR} 				&95.86	&95.63	&94.87 	\\
+\hline
+\textit{bag\_att\_PR\_TM} 			&97.19	&95.96	&\textbf{95.65} 	\\
+\hline
 \end{tabular}
 }
 \caption{\orange{Overall comparison on \TimeRE. P@R\_10/30/50 refers to the precision when recall equals 10\%, 30\%, and 50\%.}}
 \label{overall_TimeRE}
 \end{table}
 
-\paragraph{Bag Level v.s. Sentence Level}
-\orange{We summarize the performances of the sentence level and bag level models in Table~\ref{overall_TimeRE}.} We can see that, since the \textit{at-least-one assumption} alleviates the noisy data problem, bag level models performs better than sentence level models when no prior knowledge about data quality is used (\texttt{\_mix}). Even with the powerful transition matrix, \texttt{sent\_mix\_TM} still performs worse than \texttt{bag\_att\_mix}, indicating the importance of good observations about the dataset. However, when we divide the dataset into several subsets with different reliability (\texttt{\_PR}), \texttt{sent\_PR\_TM} generally performs better than bag level models.
+\paragraph{Sentence Level v.s. Bag Level}
+\orange{We summarize the performances of the sentence level and bag level models in Table~\ref{overall_TimeRE}.} We can see that, since the \textit{at-least-one assumption} alleviates the noisy data problem, bag level models performs better than sentence level models when no prior knowledge about data quality is used (\texttt{\_mix}). Even with the powerful transition matrix, \texttt{sent\_mix\_TM} still performs worse than \texttt{bag\_att\_mix}, indicating the importance of good observations about the dataset. However, when we divide the dataset into several subsets with different reliability levels (\texttt{\_PR}), \texttt{sent\_PR\_TM} performs generally better than bag level models.
 This shows that, with proper guidance, using transition matrix to model the sentence level noise is better than using the \textit{at-least-one assumption} to transform the fine-grained sentence level noise to the coarse bag level noise.
 
 
@@ -143,8 +143,8 @@ This shows that, with proper guidance, using transition matrix to model the sent
 \end{center}
 \end{figure}
 We also compare our dynamic transition matrix method with the global transition matrix method, 
-which maintains only one transition matrix for all training instances %instead of dynamically producing a transition matrix for each instance.
-and is updated via back-propagation during training. 
+which maintains only one transition matrix for all training instances. %instead of dynamically producing a transition matrix for each instance.
+% and is updated via back-propagation during training. 
 \orange{Specifically, instead of dynamically generating a transition matrix for each datum, we first initialize an identity matrix $\mathbf{T}'\in\mathbb{R}^{|\mathbb{C}|\times |\mathbb{C}|}$, where $|\mathbb{C}|$ is the number of relations (including \texttt{no-relation}). 
 Then the global transition matrix $\mathbf{T}$ is built by applying \emph{softmax} to each row of $\mathbf{T}'$ so that $\sum_j{\mathbf{T}_{ij}}=1$:}
 \begin{equation}
@@ -158,6 +158,9 @@ using one global transition matrix (\texttt{\_GTM}) is also beneficial and impro
 captures the global noise pattern, it fails to characterize individuals with subtle differences, 
 resulting in a performance drop compared to the dynamic one (\texttt{\_TM}).
 
+
+\paragraph{Case Study}
+\orange{We find our transition matrix method tends to obtain more significant improvement on noisier relations.} For example, \textit{time\_of\_spacecraft\_landing} is noisier than \textit{time\_of\_spacecraft\_launch} since compared to the launching of a spacecraft, there are fewer sentences containing the landing time of a spacecraft that talks directly about the landing. Instead, many of these sentences tend to talk about the activities of the crew. Our \texttt{sent\_PR\_TM} model improves the F1 of \textit{time\_of\_spacecraft\_landing} and \textit{time\_of\_spacecraft\_launch} over \texttt{sent\_PR} by 9.09\% and 2.78\%, respectively. The more significant improvement on \textit{time\_of\_spacecraft\_landing} shows that the transition matrix is more useful when the noise level is higher. 
 
 
 \subsection{Performance on \EntityRE}
@@ -212,7 +215,7 @@ Similar to the situations in \TimeRE, since  \texttt{att} has taken the \textit{
 \end{table}
 
 % \paragraph{Comparison with Feature-based Methods}
-\orange{We also include the comparison with three feature-based methods}: \texttt{Mintz}~\cite{mintz2009distant} is a multiclass logistic regression model; \texttt{MultiR}~\cite{hoffmann2011knowledge} is a probabilistic graphical model that can handle overlapping relations; \texttt{MIML}~\cite{surdeanu2012multi} is also a probabilistic graphical model but operates in the multi-instance multi-label paradigm. As shown in Table~\ref{feature-based}, although traditional feature-based methods have reasonable results in the low recall region, their performances drop quickly as the recall goes up. This indicates that, while the patterns captured by feature based models are reliable, their coverage is relatively low. On the other hand, neural network models have more stable performance across different recalls, and our \texttt{att\_TM} performs consistently better than other models, indicating again the effectiveness of our transition matrix method.
+\orange{We also include the comparison with three feature-based methods}: \texttt{Mintz}~\cite{mintz2009distant} is a multiclass logistic regression model; \texttt{MultiR}~\cite{hoffmann2011knowledge} is a probabilistic graphical model that can handle overlapping relations; \texttt{MIML}~\cite{surdeanu2012multi} is also a probabilistic graphical model but operates in the multi-instance multi-label paradigm. As shown in Table~\ref{feature-based}, although traditional feature-based methods have reasonable results in the low recall region, their performances drop quickly as the recall goes up. This indicates that, while the patterns captured by feature based models are reliable, their coverage is relatively low. On the other hand, neural network models have more stable performance across different recalls, and \texttt{att\_TM} performs consistently better than other models, indicating again the effectiveness of our transition matrix method.
 
 
 
