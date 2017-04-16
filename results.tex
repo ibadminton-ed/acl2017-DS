@@ -185,28 +185,57 @@ Similar to the situations in \TimeRE, since  \texttt{att} has taken the \textit{
 
 
 
+% \begin{table}
+% \centering
+% \small{
+% \begin{tabular}{|c|c|c|c|c|c|}
+% \hline
+% % \textbf{Att\_Weight}
+% % \bm{$\beta$}
+% \textbf{Method}							& \textbf{P@R\_5} 		& \textbf{P@R\_10} 			& \textbf{P@R\_15} & \textbf{P@R\_20} \\
+% \hline
+% \textit{Mintz} 							&52.13	&39.88	&34.07	&28.55 	\\
+% \hline
+% \textit{MultiR} 						&63.23	&60.94	&41.18	&36.41 	\\
+% \hline
+% \textit{MIML} 							&68.53	&60.75	&46.36	&33.82 	\\
+% \hline
+% \textit{avg} 								&59.76	&58.04	&54.16	&51.25 	\\
+% \hline
+% \textit{avg\_TM} 						&70.50	&58.56	&54.77	&52.35 	\\
+% \hline
+% \textit{att} 								&66.67	&61.51	&59.31	&56.36 	\\
+% \hline
+% \textit{att\_TM} 						&\textbf{74.81}	&\textbf{67.24}	&\textbf{62.21}	&\textbf{57.61} 	\\
+% \hline
+% \end{tabular}
+% }
+% \caption{\orange{Comparison with feature-based methods. P@R\_5/10/15/20 refers to the precision when recall equals 5\%, 10\%, 15\% and 20\%.}}
+% \label{feature-based}
+% \end{table}
+
 \begin{table}
 \centering
 \small{
-\begin{tabular}{|c|c|c|c|c|c|}
+\begin{tabular}{|c|c|c|c|c|}
 \hline
 % \textbf{Att\_Weight}
 % \bm{$\beta$}
-\textbf{Method}							& \textbf{P@R\_5} 		& \textbf{P@R\_10} 			& \textbf{P@R\_15} & \textbf{P@R\_20} \\
+\textbf{Method}							& \textbf{P@R\_10} 		& \textbf{P@R\_20} 			& \textbf{P@R\_30} \\
 \hline
-\textit{Mintz} 							&52.13	&39.88	&34.07	&28.55 	\\
+\textit{Mintz} 							&39.88	&28.55	&16.81 	\\
 \hline
-\textit{MultiR} 						&63.23	&60.94	&41.18	&36.41 	\\
+\textit{MultiR} 						&60.94	&36.41	&- 	\\
 \hline
-\textit{MIML} 							&68.53	&60.75	&46.36	&33.82 	\\
+\textit{MIML} 							&60.75	&33.82	&- 	\\
 \hline
-\textit{avg} 								&59.76	&58.04	&54.16	&51.25 	\\
+\textit{avg} 								&58.04	&51.25	&42.45 	\\
 \hline
-\textit{avg\_TM} 						&70.50	&58.56	&54.77	&52.35 	\\
+\textit{avg\_TM} 						&58.56	&52.35	&43.59 	\\
 \hline
-\textit{att} 								&66.67	&61.51	&59.31	&56.36 	\\
+\textit{att} 								&61.51	&56.36	&\textbf{45.63} 	\\
 \hline
-\textit{att\_TM} 						&\textbf{74.81}	&\textbf{67.24}	&\textbf{62.21}	&\textbf{57.61} 	\\
+\textit{att\_TM} 						&\textbf{67.24}	&\textbf{57.61}	&44.90 	\\
 \hline
 \end{tabular}
 }
@@ -215,7 +244,10 @@ Similar to the situations in \TimeRE, since  \texttt{att} has taken the \textit{
 \end{table}
 
 % \paragraph{Comparison with Feature-based Methods}
-\orange{We also include the comparison with three feature-based methods}: \texttt{Mintz}~\cite{mintz2009distant} is a multiclass logistic regression model; \texttt{MultiR}~\cite{hoffmann2011knowledge} is a probabilistic graphical model that can handle overlapping relations; \texttt{MIML}~\cite{surdeanu2012multi} is also a probabilistic graphical model but operates in the multi-instance multi-label paradigm. As shown in Table~\ref{feature-based}, although traditional feature-based methods have reasonable results in the low recall region, their performances drop quickly as the recall goes up. This indicates that, while the patterns captured by feature based models are reliable, their coverage is relatively low. On the other hand, neural network models have more stable performance across different recalls, and \texttt{att\_TM} performs consistently better than other models, indicating again the effectiveness of our transition matrix method.
+\orange{We also include the comparison with three feature-based methods}: \texttt{Mintz}~\cite{mintz2009distant} is a multiclass logistic regression model; \texttt{MultiR}~\cite{hoffmann2011knowledge} is a probabilistic graphical model that can handle overlapping relations; \texttt{MIML}~\cite{surdeanu2012multi} is also a probabilistic graphical model but operates in the multi-instance multi-label paradigm. As shown in Table~\ref{feature-based}, although traditional feature-based methods have reasonable results in the low recall region, their performances drop quickly as the recall goes up, and \texttt{MultiR} and \texttt{MIML} did not even reach the 30\% recall. This indicates that, while the patterns captured by feature based models are reliable, their coverage is relatively low. On the other hand, neural network models have more stable performance across different recalls, 
+% and \texttt{att\_TM} performs consistently better than other models, 
+and \texttt{att\_TM} performs generally better than other models, 
+indicating again the effectiveness of our transition matrix method.
 
 
 
