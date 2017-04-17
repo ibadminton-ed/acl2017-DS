@@ -7,7 +7,7 @@
 
 @inproceedings{bollacker2008freebase,
   title={Freebase: a collaboratively created graph database for structuring human knowledge},
-  author={Bollacker, Kurt and others},
+  author={Bollacker, Kurt and Evans, Colin and Paritosh, Praveen and Sturge, Tim and Taylor, Jamie},
   booktitle={ACM SIGMOD},
   pages={1247--1250},
   year={2008},
@@ -15,7 +15,7 @@
 
 @inproceedings{suchanek2007yago,
   title={Yago: a core of semantic knowledge},
-  author={Suchanek, Fabian M and others},
+  author={Suchanek, Fabian M and Kasneci, Gjergji and Weikum, Gerhard},
   booktitle={WWW},
   pages={697--706},
   year={2007},
@@ -23,7 +23,7 @@
 
 @inproceedings{wang2010timely,
   title={Timely yago: harvesting, querying, and visualizing temporal knowledge from wikipedia},
-  author={Wang, Yafang and others},
+  author={Wang, Yafang and Zhu, Mingjie and Qu, Lizhen and Spaniol, Marc and Weikum, Gerhard},
   booktitle={13th International Conference on Extending Database Technology},
   pages={697--700},
   year={2010},
@@ -31,7 +31,7 @@
 
 @inproceedings{yih2015semantic,
   title={Semantic parsing via staged query graph generation: Question answering with knowledge base},
-  author={Yih, Wen-tau and others},
+  author={Yih, Wen-tau and Chang, Ming-Wei and He, Xiaodong and Gao, Jianfeng},
   booktitle={ACL},
   year={2015}
 }
@@ -45,14 +45,14 @@
 
 @article{dhingra2016end,
   title={End-to-End Reinforcement Learning of Dialogue Agents for Information Access},
-  author={Dhingra, Bhuwan and others},
+  author={Dhingra, Bhuwan and Li, Lihong and Li, Xiujun and Gao, Jianfeng and Chen, Yun-Nung and Ahmed, Faisal and Deng, Li},
   journal={arXiv preprint arXiv:1609.00777},
   year={2016}
 }
 
 @inproceedings{zeng2015distant,
   title={Distant Supervision for Relation Extraction via Piecewise Convolutional Neural Networks},
-  author={Zeng, Daojian and others},
+  author={Zeng, Daojian and Liu, Kang and Chen, Yubo and Zhao, Jun},
   year={2015},
   booktitle={EMNLP}
 }
@@ -68,21 +68,21 @@
 
 @inproceedings{mintz2009distant,
   title={Distant supervision for relation extraction without labeled data},
-  author={Mintz, Mike and others},
+  author={Mintz, Mike and Bills, Steven and Snow, Rion and Jurafsky, Dan},
   booktitle={ACL},
   year={2009},
 }
 
 @inproceedings{hoffmann2011knowledge,
   title={Knowledge-based weak supervision for information extraction of overlapping relations},
-  author={Hoffmann, Raphael and others},
+  author={Hoffmann, Raphael and Zhang, Congle and Ling, Xiao and Zettlemoyer, Luke and Weld, Daniel S},
   booktitle={Proceedings of ACL},
   year={2011},
 }
 
 @inproceedings{surdeanu2012multi,
   title={Multi-instance multi-label learning for relation extraction},
-  author={Surdeanu, Mihai and others},
+  author={Surdeanu, Mihai and Tibshirani, Julie and Nallapati, Ramesh and Manning, Christopher D},
   booktitle={EMNLP-CoNLL},
   pages={455--465},
   year={2012},
@@ -110,7 +110,7 @@
 
 @inproceedings{artiles2011cuny,
   title={CUNY BLENDER TACKBP2011 Temporal Slot Filling System Description},
-  author={Artiles, Javier and others},
+  author={Artiles, Javier and Li, Qi and Cassidy, Taylor and Tamang, Suzanne and Ji, Heng},
   booktitle={TAC},
   year={2011}
 }
@@ -125,7 +125,7 @@
 
 @inproceedings{verhagen2007semeval,
   title={Semeval-2007 task 15: Tempeval temporal relation identification},
-  author={Verhagen, Marc and others},
+  author={Verhagen, Marc and Gaizauskas, Robert and Schilder, Frank and Hepple, Mark and Katz, Graham and Pustejovsky, James},
   booktitle={4th International Workshop on Semantic Evaluations},
   pages={75--80},
   year={2007},
@@ -142,21 +142,21 @@
 
 @inproceedings{mani2006machine,
   title={Machine learning of temporal relations},
-  author={Mani, Inderjeet and others},
+  author={Mani, Inderjeet and Verhagen, Marc and Wellner, Ben and Lee, Chong Min and Pustejovsky, James},
   booktitle={ACL},
   year={2006},
 }
 
 @inproceedings{yoshikawa2009jointly,
   title={Jointly identifying temporal relations with markov logic},
-  author={Yoshikawa, Katsumasa and others},
+  author={Yoshikawa, Katsumasa and Riedel, Sebastian and Asahara, Masayuki and Matsumoto, Yuji},
   booktitle={ACL-IJCNLP},
   year={2009},
 }
 
 @inproceedings{sukhbaatar2014training,
   title={Training convolutional networks with noisy labels},
-  author={Sukhbaatar, Sainbayar and others},
+  author={Sukhbaatar, Sainbayar and Bruna, Joan and Paluri, Manohar and Bourdev, Lubomir and Fergus, Rob},
   booktitle=ICLR},
   year={2015}
 }
@@ -173,7 +173,7 @@
 
 @inproceedings{misra2016seeing,
   title={Seeing through the Human Reporting Bias: Visual Classifiers from Noisy Human-Centric Labels},
-  author={Misra, Ishan and others},
+  author={Misra, Ishan and Lawrence Zitnick, C and Mitchell, Margaret and Girshick, Ross},
   booktitle={CVPR},
   pages={2930--2939},
   year={2016}
@@ -181,14 +181,14 @@
 
 @article{chen2015microsoft,
   title={Microsoft COCO captions: Data collection and evaluation server},
-  author={Chen, Xinlei and others},
+  author={Chen, Xinlei and Fang, Hao and Lin, Tsung-Yi and Vedantam, Ramakrishna and Gupta, Saurabh and Doll{\'a}r, Piotr and Zitnick, C Lawrence},
   journal={arXiv preprint arXiv:1504.00325},
   year={2015}
 }
 
 @inproceedings{lin2016neural,
   title={Neural relation extraction with selective attention over instances},
-  author={Lin, Yankai and others},
+  author={Lin, Yankai and Shen, Shiqi and Liu, Zhiyuan and Luan, Huanbo and Sun, Maosong},
   booktitle={ACL},
   volume={1},
   pages={2124--2133},
@@ -197,7 +197,7 @@
 
 @article{reed2014training,
   title={Training deep neural networks on noisy labels with bootstrapping},
-  author={Reed, Scott and others},
+  author={Reed, Scott and Lee, Honglak and Anguelov, Dragomir and Szegedy, Christian and Erhan, Dumitru and Rabinovich, Andrew},
   journal={arXiv preprint arXiv:1412.6596},
   year={2014}
 }
@@ -212,7 +212,7 @@
 
 @inproceedings{xiao2015learning,
   title={Learning from massive noisy labeled data for image classification},
-  author={Xiao, Tong and others},
+  author={Xiao, Tong and Xia, Tian and Yang, Yi and Huang, Chang and Wang, Xiaogang},
   booktitle={CVPR},
   pages={2691--2699},
   year={2015}
@@ -245,7 +245,7 @@
 
 @inproceedings{min2013distant,
   title={Distant Supervision for Relation Extraction with an Incomplete Knowledge Base.},
-  author={Min, Bonan and others},
+  author={Min, Bonan and Grishman, Ralph and Wan, Li and Wang, Chang and Gondek, David},
   booktitle={HLT-NAACL},
   pages={777--782},
   year={2013}
@@ -253,7 +253,7 @@
 
 @article{ritter2013modeling,
   title={Modeling missing data in distant supervision for information extraction},
-  author={Ritter, Alan and others},
+  author={Ritter, Alan and Zettlemoyer, Luke and Mausam and Etzioni, Oren},
   journal={Transactions of the Association for Computational Linguistics},
   volume={1},
   pages={367--378},
@@ -262,7 +262,7 @@
 
 @inproceedings{xu2013filling,
   title={Filling Knowledge Base Gaps for Distant Supervision of Relation Extraction.},
-  author={Xu, Wei and others},
+  author={Xu, Wei and Hoffmann, Raphael and Zhao, Le and Grishman, Ralph},
   booktitle={ACL},
   pages={665--670},
   year={2013}
@@ -299,7 +299,7 @@
 
 @inproceedings{ritter2011named,
   title={Named entity recognition in tweets: an experimental study},
-  author={Ritter, Alan and others},
+  author={Ritter, Alan and Clark, Sam and Etzioni, Oren and others},
   booktitle={EMNLP},
   pages={1524--1534},
   year={2011},
@@ -308,7 +308,7 @@
 
 @inproceedings{bengio2009curriculum,
   title={Curriculum learning},
-  author={Bengio, Yoshua and others},
+  author={Bengio, Yoshua and Louradour, J{\'e}r{\^o}me and Collobert, Ronan and Weston, Jason},
   booktitle={ICML},
   pages={41--48},
   year={2009},
@@ -317,14 +317,14 @@
 
 @techreport{parker2011english,
   title={English Gigaword fifth edition, linguistic data consortium},
-  author={Parker, Robert and others},
+  author={Parker, Robert and Graff, David and Kong, Junbo and Chen, Ke and Maeda, Kazuaki},
   year={2011},
   institution={Linguistic Data Consortium, Philadelphia}
 }
 
 @inproceedings{mikolov2013distributed,
   title={Distributed representations of words and phrases and their compositionality},
-  author={Mikolov, Tomas and ohters},
+  author={Mikolov, Tomas and Sutskever, Ilya and Chen, Kai and Corrado, Greg S and Dean, Jeff},
   booktitle={NIPS},
   pages={3111--3119},
   year={2013}
