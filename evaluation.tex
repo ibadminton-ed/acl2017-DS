@@ -44,20 +44,18 @@ Instances with full date expressions, i.e., \texttt{Year-Month-Day}, can be seen
 partial date expressions, e.g., \texttt{Month-Year} and \texttt{Year-Only}, are considered as less
 reliable.  Negative data are constructed  heuristically that any
 \emph{entity-time} pairs in a sentence without corresponding triples in Wikidata are treated as negative data.
-%\red{we still have noises in terms of \textbf{false negative}, right? do we have experiments to say this? } \orange{yes, but no experiments}
 During training, we can access  184,579 negative
- and  77,777 positive instances, including 22,214 reliable, 
+ and  77,777 positive sentences, including 22,214 reliable, 
 2,094 and 53,469 less reliable ones. The validation set and test set are randomly sampled from
 the reliable (full-date) data for relatively fair evaluations and contains
-2,776, 2,771 positive instances and 5,143, 5,095 negative instances, respectively.
-%\red{talk bag level numbers?????} \orange{maybe too messy? how about only showing sentence level numbers in both dataset?}
+2,776, 2,771 positive sentences and 5,143, 5,095 negative sentences, respectively.
 
 
 \paragraph{\EntityRE} is a widely-used entity
 relation extraction dataset, built %by independent researchers
 by aligning triples
 in Freebase to the New York Times (\NYT) corpus~\cite{riedel2010modeling}. 
-%It contains 52 relations, 136,947 positive and 385,664 negative sentences for training, and 6,444 positive and 166,004 negative sentences  for testing.
+It contains 52 relations, 136,947 positive and 385,664 negative sentences for training, and 6,444 positive and 166,004 negative sentences  for testing.
 Unlike \TimeRE, this dataset does not contain any prior knowledge about the data quality.
 %However, it is a good example to evaluate the generalization ability of our transition matrix approach.
 Since the sentence level annotations in %the test set of 

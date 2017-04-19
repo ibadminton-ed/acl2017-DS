@@ -141,7 +141,7 @@ Similar to attention aggregation above,
 we calculate the bag embedding with respect to each relation using Equation~\ref{att_sum},  but with a separate set of relation embeddings $\mathbf{r'}_j$.
 We then calculate the transition matrix, $\mathbf{T}$, by:
 \begin{equation}
-T_{ij} = \frac{exp({\mathbf{s}_i^T \mathbf{r'}_j  + b})}{\sum_{j=1}^{|\mathbb{C}|}{exp(\mathbf{s}_i^T \mathbf{r'}_j + b})}
+T_{ij} = \frac{exp({\mathbf{s}_i^T \mathbf{r'}_j  + b_i})}{\sum_{j=1}^{|\mathbb{C}|}{exp(\mathbf{s}_i^T \mathbf{r'}_j + b_i})}
 \end{equation}
 where $\mathbf{s}_i$ is the bag embedding regarding relation $i$, and $\mathbf{r'}_j$ is the embedding for relation $j$.
 % \orange{do we need to clarify that avg and att share the same noise modeling method?}

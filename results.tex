@@ -6,14 +6,15 @@
 \subsection{Performance on \TimeRE} \label{sec:results_in_TimeRE}
 \begin{figure}[t!]
 % \begin{figure}[htbp]
-\setlength{\abovecaptionskip}{3pt}
-\setlength{\belowcaptionskip}{-15pt}
+% \setlength{\abovecaptionskip}{3pt}
+\setlength{\belowcaptionskip}{-10pt}
 \begin{center}
 \includegraphics[width=0.45\textwidth]{figures/sent_time_exp_overall.pdf}
 \caption{Sentence Level Results on \TimeRE}
 \label{fig: sent_luo}
 \end{center}
 \end{figure}
+
 \paragraph{Sentence Level Models}
 The results of sentence level models on \TimeRE are shown in Figure \ref{fig:
 sent_luo}. We can see that mixing all subsets together (\texttt{sent\_mix})
@@ -47,7 +48,7 @@ other models by a large margin.
 
 \begin{figure*}[t!]
 % \begin{figure*}[htbp]
-\setlength{\abovecaptionskip}{3pt}
+% \setlength{\abovecaptionskip}{3pt}
 \setlength{\belowcaptionskip}{-10pt}
 \centering
 \subfigure[Attention Aggregation]{
@@ -87,54 +88,54 @@ This is because that it ranks higher the sentences expressing either \texttt{bir
 %However, since  denoising ability is not as good as attention aggregation, adding unreliable data gradually (\emph{bag\_avg\_currd}) improves the model performance here. We can also see that the transition matrix improves the average aggregation models more significantly than the attention aggregation models.
  %Note that due to the inferior denoising ability of average aggregation, the unhandled sentence level noise may further propagates to bag level, which gives the transition matrix more chance to help model the noise.
 
-\begin{table}
-\centering
-\small{
-\begin{tabular}{|c|c|c|c|c|}
-\hline
-% \textbf{Att\_Weight}
-% \bm{$\beta$}
-\textbf{Method}							& \textbf{P@R\_10} 		& \textbf{P@R\_30} 			& \textbf{P@R\_50} \\
-\hline
-\textit{sent\_mix} 						&80.81	&84.98	&86.90 	\\
-\hline
-\textit{sent\_mix\_TM} 				&89.39	&90.24	&90.23 	\\
-\hline
-\textit{sent\_PR} 						&94.24	&93.06	&93.27 	\\
-\hline
-\textit{sent\_PR\_TM} 				&\textbf{99.64}	&\textbf{97.42}	&94.74 	\\
-\hline
-\textit{bag\_avg\_mix} 				&95.53	&94.87	&94.09 	\\
-\hline
-\textit{bag\_avg\_mix\_TM} 		&97.54	&94.87	&94.80 	\\
-\hline
-\textit{bag\_avg\_PR} 				&96.86	&95.19	&94.61 	\\
-\hline
-\textit{bag\_avg\_PR\_TM} 			&97.20	&95.85	&95.32 	\\
-\hline
-\textit{bag\_att\_mix} 				&97.20	&95.30	&94.80 	\\
-\hline
-\textit{bag\_att\_mix\_TM} 		&96.53	&96.18	&95.45 	\\
-\hline
-\textit{bag\_att\_PR} 				&95.86	&95.63	&94.87 	\\
-\hline
-\textit{bag\_att\_PR\_TM} 			&97.19	&95.96	&\textbf{95.65} 	\\
-\hline
-\end{tabular}
-}
-\caption{\orange{Overall comparison on \TimeRE. P@R\_10/30/50 refers to the precision when recall equals 10\%, 30\%, and 50\%.}}
-\label{overall_TimeRE}
-\end{table}
+% \begin{table}
+% \centering
+% \small{
+% \begin{tabular}{|c|c|c|c|c|}
+% \hline
+% % \textbf{Att\_Weight}
+% % \bm{$\beta$}
+% \textbf{Method}							& \textbf{P@R\_10} 		& \textbf{P@R\_30} 			& \textbf{P@R\_50} \\
+% \hline
+% \textit{sent\_mix} 						&80.81	&84.98	&86.90 	\\
+% \hline
+% \textit{sent\_mix\_TM} 				&89.39	&90.24	&90.23 	\\
+% \hline
+% \textit{sent\_PR} 						&94.24	&93.06	&93.27 	\\
+% \hline
+% \textit{sent\_PR\_TM} 				&\textbf{99.64}	&\textbf{97.42}	&94.74 	\\
+% \hline
+% \textit{bag\_avg\_mix} 				&95.53	&94.87	&94.09 	\\
+% \hline
+% \textit{bag\_avg\_mix\_TM} 		&97.54	&94.87	&94.80 	\\
+% \hline
+% \textit{bag\_avg\_PR} 				&96.86	&95.19	&94.61 	\\
+% \hline
+% \textit{bag\_avg\_PR\_TM} 			&97.20	&95.85	&95.32 	\\
+% \hline
+% \textit{bag\_att\_mix} 				&97.20	&95.30	&94.80 	\\
+% \hline
+% \textit{bag\_att\_mix\_TM} 		&96.53	&96.18	&95.45 	\\
+% \hline
+% \textit{bag\_att\_PR} 				&95.86	&95.63	&94.87 	\\
+% \hline
+% \textit{bag\_att\_PR\_TM} 			&97.19	&95.96	&\textbf{95.65} 	\\
+% \hline
+% \end{tabular}
+% }
+% \caption{\orange{Overall comparison on \TimeRE. P@R\_10/30/50 refers to the precision when recall equals 10\%, 30\%, and 50\%.}}
+% \label{overall_TimeRE}
+% \end{table}
 
-\paragraph{Sentence Level v.s. Bag Level}
-\orange{We summarize the performances of the sentence level and bag level models in Table~\ref{overall_TimeRE}.} We can see that, since the \textit{at-least-one assumption} alleviates the noisy data problem, bag level models performs better than sentence level models when no prior knowledge about data quality is used (\texttt{\_mix}). Even with the powerful transition matrix, \texttt{sent\_mix\_TM} still performs worse than \texttt{bag\_att\_mix}, indicating the importance of good observations about the dataset. However, when we divide the dataset into several subsets with different reliability levels (\texttt{\_PR}), \texttt{sent\_PR\_TM} performs generally better than bag level models.
-This shows that, with proper guidance, using transition matrix to model the sentence level noise is better than using the \textit{at-least-one assumption} to transform the fine-grained sentence level noise to the coarse bag level noise.
+% \paragraph{Sentence Level v.s. Bag Level}
+% \orange{We summarize the performances of the sentence level and bag level models in Table~\ref{overall_TimeRE}.} We can see that, since the \textit{at-least-one assumption} alleviates the noisy data problem, bag level models performs better than sentence level models when no prior knowledge about data quality is used (\texttt{\_mix}). Even with the powerful transition matrix, \texttt{sent\_mix\_TM} still performs worse than \texttt{bag\_att\_mix}, indicating the importance of good observations about the dataset. However, when we divide the dataset into several subsets with different reliability levels (\texttt{\_PR}), \texttt{sent\_PR\_TM} performs generally better than bag level models.
+% This shows that, with proper guidance, using transition matrix to model the sentence level noise is better than using the \textit{at-least-one assumption} to transform the fine-grained sentence level noise to the coarse bag level noise.
 
 
 
 \paragraph{Global v.s. Dynamic Transition Matrix}
 \begin{figure}[htbp]
-\setlength{\abovecaptionskip}{3pt}
+% \setlength{\abovecaptionskip}{3pt}
 % \setlength{\belowcaptionskip}{-10pt}
 \begin{center}
 \includegraphics[width=0.45\textwidth]{figures/single_cmp_exp_overall.pdf}
@@ -160,7 +161,8 @@ resulting in a performance drop compared to the dynamic one (\texttt{\_TM}).
 
 
 \paragraph{Case Study}
-\orange{We find our transition matrix method tends to obtain more significant improvement on noisier relations.} For example, \textit{time\_of\_spacecraft\_landing} is noisier than \textit{time\_of\_spacecraft\_launch} since compared to the launching of a spacecraft, there are fewer sentences containing the landing time of a spacecraft that talks directly about the landing. Instead, many of these sentences tend to talk about the activities of the crew. Our \texttt{sent\_PR\_TM} model improves the F1 of \textit{time\_of\_spacecraft\_landing} and \textit{time\_of\_spacecraft\_launch} over \texttt{sent\_PR} by 9.09\% and 2.78\%, respectively. The more significant improvement on \textit{time\_of\_spacecraft\_landing} shows that the transition matrix is more useful when the noise level is higher. 
+\orange{We find our transition matrix method tends to obtain more significant improvement on noisier relations.} For example, \textit{time\_of\_spacecraft\_landing} is noisier than \textit{time\_of\_spacecraft\_launch} since compared to the launching of a spacecraft, there are fewer sentences containing the landing time of a spacecraft that talks directly about the landing. Instead, many of these sentences tend to talk about the activities of the crew. Our \texttt{sent\_PR\_TM} model improves the F1 of \textit{time\_of\_spacecraft\_landing} and \textit{time\_of\_spacecraft\_launch} over \texttt{sent\_PR} by 9.09\% and 2.78\%, respectively. 
+The transition matrix makes more significant improvement on \textit{time\_of\_spacecraft\_landing} since there are more noisy sentences for our method to handle, which results in more significant improvement on the quality of the training data.
 
 
 \subsection{Performance on \EntityRE}
@@ -170,13 +172,13 @@ which has reported the-state-of-the-art performance on \EntityRE.
 When injected with our transition matrix approach,  both \texttt{att\_TM} and \texttt{avg\_TM} clearly outperform their basic versions.
 
 %since the unhandled sentence level noise propagates to the bag level, which makes the bag level noise become more severe, the transition matrix has more chance to model the noise. Therefore, the \emph{avg\_TM} model clearly outperforms the \emph{avg} model.
-Similar to the situations in \TimeRE, since  \texttt{att} has taken the \textit{at-least-one assumption} into account  through its attention-based bag embedding, thus the improvement by \texttt{att\_TM}  is not as large as by \texttt{avg\_TM}.
+Similar to the situations in \TimeRE, since \texttt{att} has taken the \textit{at-least-one assumption} into account  through its attention-based bag embedding mechanism, thus the improvement by \texttt{att\_TM}  is not as large as by \texttt{avg\_TM}.
 %Since
 %Note that the low recall part corresponds to high precision, which is more useful than the rest of the extraction results in practice. Therefore, our transition matrix method is also useful in this situation.
 
 \begin{figure}[t!]
 % \begin{figure}[htbp]
-\setlength{\abovecaptionskip}{3pt}
+% \setlength{\abovecaptionskip}{3pt}
 % \setlength{\belowcaptionskip}{-10pt}
 \includegraphics[width=0.45\textwidth]{figures/re_att_avg_cmp_exp.pdf}
 \caption{Results on \EntityRE}
@@ -185,28 +187,58 @@ Similar to the situations in \TimeRE, since  \texttt{att} has taken the \textit{
 
 
 
+\begin{table}
+\centering
+\small{
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+% \textbf{Att\_Weight}
+% \bm{$\beta$}
+\textbf{Method}							& \textbf{P@R\_5} 		& \textbf{P@R\_10} 			& \textbf{P@R\_15} & \textbf{P@R\_20} \\
+\hline
+\textit{Mintz} 							&52.13	&39.88	&34.07	&28.55 	\\
+\hline
+\textit{MultiR} 						&63.23	&60.94	&41.18	&36.41 	\\
+\hline
+\textit{MIML} 							&68.53	&60.75	&46.36	&33.82 	\\
+\hline
+\textit{avg} 								&59.76	&58.04	&54.16	&51.25 	\\
+\hline
+\textit{avg\_TM} 						&70.50	&58.56	&54.77	&52.35 	\\
+\hline
+\textit{att} 								&66.67	&61.51	&59.31	&56.36 	\\
+\hline
+\textit{att\_TM} 						&\textbf{74.81}	&\textbf{67.24}	&\textbf{62.21}	&\textbf{57.61} 	\\
+\hline
+\end{tabular}
+}
+\caption{\orange{Comparison with feature-based methods. P@R\_5/10/15/20 refers to the precision when recall equals 5\%, 10\%, 15\% and 20\%.}}
+\label{feature-based}
+\vspace{-1em}
+\end{table}
+
 % \begin{table}
 % \centering
 % \small{
-% \begin{tabular}{|c|c|c|c|c|c|}
+% \begin{tabular}{|c|c|c|c|c|}
 % \hline
 % % \textbf{Att\_Weight}
 % % \bm{$\beta$}
-% \textbf{Method}							& \textbf{P@R\_5} 		& \textbf{P@R\_10} 			& \textbf{P@R\_15} & \textbf{P@R\_20} \\
+% \textbf{Method}							& \textbf{P@R\_10} 		& \textbf{P@R\_20} 			& \textbf{P@R\_30} \\
 % \hline
-% \textit{Mintz} 							&52.13	&39.88	&34.07	&28.55 	\\
+% \textit{Mintz} 							&39.88	&28.55	&16.81 	\\
 % \hline
-% \textit{MultiR} 						&63.23	&60.94	&41.18	&36.41 	\\
+% \textit{MultiR} 						&60.94	&36.41	&- 	\\
 % \hline
-% \textit{MIML} 							&68.53	&60.75	&46.36	&33.82 	\\
+% \textit{MIML} 							&60.75	&33.82	&- 	\\
 % \hline
-% \textit{avg} 								&59.76	&58.04	&54.16	&51.25 	\\
+% \textit{avg} 								&58.04	&51.25	&42.45 	\\
 % \hline
-% \textit{avg\_TM} 						&70.50	&58.56	&54.77	&52.35 	\\
+% \textit{avg\_TM} 						&58.56	&52.35	&43.59 	\\
 % \hline
-% \textit{att} 								&66.67	&61.51	&59.31	&56.36 	\\
+% \textit{att} 								&61.51	&56.36	&\textbf{45.63} 	\\
 % \hline
-% \textit{att\_TM} 						&\textbf{74.81}	&\textbf{67.24}	&\textbf{62.21}	&\textbf{57.61} 	\\
+% \textit{att\_TM} 						&\textbf{67.24}	&\textbf{57.61}	&44.90 	\\
 % \hline
 % \end{tabular}
 % }
@@ -214,39 +246,10 @@ Similar to the situations in \TimeRE, since  \texttt{att} has taken the \textit{
 % \label{feature-based}
 % \end{table}
 
-\begin{table}
-\centering
-\small{
-\begin{tabular}{|c|c|c|c|c|}
-\hline
-% \textbf{Att\_Weight}
-% \bm{$\beta$}
-\textbf{Method}							& \textbf{P@R\_10} 		& \textbf{P@R\_20} 			& \textbf{P@R\_30} \\
-\hline
-\textit{Mintz} 							&39.88	&28.55	&16.81 	\\
-\hline
-\textit{MultiR} 						&60.94	&36.41	&- 	\\
-\hline
-\textit{MIML} 							&60.75	&33.82	&- 	\\
-\hline
-\textit{avg} 								&58.04	&51.25	&42.45 	\\
-\hline
-\textit{avg\_TM} 						&58.56	&52.35	&43.59 	\\
-\hline
-\textit{att} 								&61.51	&56.36	&\textbf{45.63} 	\\
-\hline
-\textit{att\_TM} 						&\textbf{67.24}	&\textbf{57.61}	&44.90 	\\
-\hline
-\end{tabular}
-}
-\caption{\orange{Comparison with feature-based methods. P@R\_5/10/15/20 refers to the precision when recall equals 5\%, 10\%, 15\% and 20\%.}}
-\label{feature-based}
-\end{table}
-
 % \paragraph{Comparison with Feature-based Methods}
 \orange{We also include the comparison with three feature-based methods}: \texttt{Mintz}~\cite{mintz2009distant} is a multiclass logistic regression model; \texttt{MultiR}~\cite{hoffmann2011knowledge} is a probabilistic graphical model that can handle overlapping relations; \texttt{MIML}~\cite{surdeanu2012multi} is also a probabilistic graphical model but operates in the multi-instance multi-label paradigm. As shown in Table~\ref{feature-based}, although traditional feature-based methods have reasonable results in the low recall region, their performances drop quickly as the recall goes up, and \texttt{MultiR} and \texttt{MIML} did not even reach the 30\% recall. This indicates that, while the patterns captured by feature based models are reliable, their coverage is relatively low. On the other hand, neural network models have more stable performance across different recalls, 
-% and \texttt{att\_TM} performs consistently better than other models, 
-and \texttt{att\_TM} performs generally better than other models, 
+and \texttt{att\_TM} performs consistently better than other models, 
+% and \texttt{att\_TM} performs generally better than other models, 
 indicating again the effectiveness of our transition matrix method.
 
 
