@@ -21,7 +21,7 @@ sent_luo}. We can see that mixing all subsets together (\texttt{sent\_mix})
 gives the worst performance,  significantly
 worse than using the reliable subset only (\texttt{sent\_reliable}). This
 suggests the noisy nature of the training data obtained through \DS and
-properly dealing with the noise is the key for \DS for a wider range of applications. %to be adopted at a wider scale. 
+properly dealing with the noise is the key for \DS for a wider range of applications. %to be adopted at a wider scale.
 When getting help from our dynamic transition matrix, % during training, the
 the model (\texttt{sent\_mix\_TM}) significantly improves \texttt{sent\_mix},
 delivering the same level of performance as \texttt{sent\_reliable} in most
@@ -44,7 +44,7 @@ utilizing the dynamic transition matrix to model the noise.
 It is not surprising that when we use all three subsets separately,
 our model (\texttt{sent\_PR\_TM}) significantly outperforms all
 other models by a large margin.
-%\footnote{We will use all three subsets separately for all \texttt{\_PR} settings in the rest of the experiments.}. 
+%\footnote{We will use all three subsets separately for all \texttt{\_PR} settings in the rest of the experiments.}.
 
 \begin{figure*}[t!]
 % \begin{figure*}[htbp]
@@ -70,7 +70,7 @@ Consider the comparison between the  model trained on the reliable subset only (
 In contrast to the sentence level, \texttt{bag\_att\_mix} outperforms \texttt{bag\_att\_reliable} by a large margin, because \texttt{bag\_att\_mix} has taken the \textit{at-least-one assumption} into consideration through the attention aggregation mechanism (Eq.~\ref{att_sum}), which can be seen as a denoising step within the bag.
 This may also be the reason that when we introduce either our dynamic transition matrix (\texttt{bag\_att\_mix\_TM})  or the curriculum of using prior knowledge of data quality (\texttt{bag\_att\_PR}) into the bag level models, the improvement regarding \texttt{bag\_att\_mix}  is not as significant as in the sentence level.
 
-However, when we apply our dynamic transition matrix %to model the noise with 
+However, when we apply our dynamic transition matrix %to model the noise with
 into the curriculum built upon prior knowledge of data quality (\texttt{bag\_att\_PR\_TM}), the performance gets further improved. This happens especially in the high precision part compared to \texttt{bag\_att\_PR}.
 We also note that the bag level's \textit{at-least-one assumption} does not always hold, and there are still false negative and false positive problems. Therefore, using our transition matrix approach with or without prior knowledge of data quality, i.e., \texttt{bag\_att\_mix\_TM}  and \texttt{bag\_att\_PR\_TM}, both improve the performance, and \texttt{bag\_att\_PR\_TM} performs slightly better.
 
@@ -134,7 +134,7 @@ This is because that it ranks higher the sentences expressing either \texttt{bir
 
 
 \paragraph{Global v.s. Dynamic Transition Matrix}
-\begin{figure}[htbp]
+\begin{figure}[t!]
 % \setlength{\abovecaptionskip}{3pt}
 % \setlength{\belowcaptionskip}{-10pt}
 \begin{center}
@@ -143,17 +143,17 @@ This is because that it ranks higher the sentences expressing either \texttt{bir
 \label{fig: cmp_single_dynamic}
 \end{center}
 \end{figure}
-We also compare our dynamic transition matrix method with the global transition matrix method, 
+We also compare our dynamic transition matrix method with the global transition matrix method,
 which maintains only one transition matrix for all training instances. %instead of dynamically producing a transition matrix for each instance.
 % and is updated via back-propagation during training. 
-\orange{Specifically, instead of dynamically generating a transition matrix for each datum, we first initialize an identity matrix $\mathbf{T}'\in\mathbb{R}^{|\mathbb{C}|\times |\mathbb{C}|}$, where $|\mathbb{C}|$ is the number of relations (including \texttt{no-relation}). 
+\orange{Specifically, instead of dynamically generating a transition matrix for each datum, we first initialize an identity matrix $\mathbf{T}'\in\mathbb{R}^{|\mathbb{C}|\times |\mathbb{C}|}$, where $|\mathbb{C}|$ is the number of relations (including \texttt{no-relation}).
 Then the global transition matrix $\mathbf{T}$ is built by applying \emph{softmax} to each row of $\mathbf{T}'$ so that $\sum_j{\mathbf{T}_{ij}}=1$:}
 \begin{equation}
 \label{shared_mat}
 T_{ij} = \frac{e^{T'_{ij}}}{\sum_{j=1}^{|\mathbb{C}|}{e^{T'_{ij}}}}
 \end{equation}
 where $T_{ij}$ and $T'_{ij}$ are the elements in the $i^{th}$ row and $j^{th}$ column of $\mathbf{T}$ and $\mathbf{T}'$. The element values of matrix $\mathbf{T}'$ are also updated via backpropagation during training.
-As shown in Figure~\ref{fig: cmp_single_dynamic}, 
+As shown in Figure~\ref{fig: cmp_single_dynamic},
 %we can see that 
 using one global transition matrix (\texttt{\_GTM}) is also beneficial and improves both the sentence level (\texttt{sent\_PR}) and bag level  (\texttt{bag\_att\_PR}) models. However, since the global transition matrix only 
 captures the global noise pattern, it fails to characterize individuals with subtle differences, 
@@ -166,9 +166,9 @@ The transition matrix makes more significant improvement on \textit{time\_of\_sp
 
 
 \subsection{Performance on \EntityRE}
-We evaluate our bag level models on \EntityRE. 
+We evaluate our bag level models on \EntityRE.
 As shown in Figure~\ref{fig: Riedel_res}, it is not surprising that the basic model with attention aggregation (\texttt{att}) significantly outperforms the average one (\texttt{avg}), where \texttt{att}  in our bag embedding is similar in spirit to \cite{lin2016neural},
-which has reported the-state-of-the-art performance on \EntityRE.  
+which has reported the-state-of-the-art performance on \EntityRE.
 When injected with our transition matrix approach,  both \texttt{att\_TM} and \texttt{avg\_TM} clearly outperform their basic versions.
 
 %since the unhandled sentence level noise propagates to the bag level, which makes the bag level noise become more severe, the transition matrix has more chance to model the noise. Therefore, the \emph{avg\_TM} model clearly outperforms the \emph{avg} model.
@@ -248,7 +248,7 @@ Similar to the situations in \TimeRE, since \texttt{att} has taken the \textit{a
 
 % \paragraph{Comparison with Feature-based Methods}
 \orange{We also include the comparison with three feature-based methods}: \texttt{Mintz}~\cite{mintz2009distant} is a multiclass logistic regression model; \texttt{MultiR}~\cite{hoffmann2011knowledge} is a probabilistic graphical model that can handle overlapping relations; \texttt{MIML}~\cite{surdeanu2012multi} is also a probabilistic graphical model but operates in the multi-instance multi-label paradigm. As shown in Table~\ref{feature-based}, although traditional feature-based methods have reasonable results in the low recall region, their performances drop quickly as the recall goes up, and \texttt{MultiR} and \texttt{MIML} did not even reach the 30\% recall. This indicates that, while the patterns captured by feature based models are reliable, their coverage is relatively low. On the other hand, neural network models have more stable performance across different recalls, 
-and \texttt{att\_TM} performs consistently better than other models, 
+and \texttt{att\_TM} performs consistently better than other models,
 % and \texttt{att\_TM} performs generally better than other models, 
 indicating again the effectiveness of our transition matrix method.
 
