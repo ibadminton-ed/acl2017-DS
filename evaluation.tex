@@ -90,7 +90,10 @@ and 5-d vectors for distance embedding.
 For both datasets,  $\alpha$ and $\beta$ in Eq.~\ref{general_loss} are initialized to 1 and 0.1, respectively. We tried various decay rates, \{0.95, 0.9, 0.8\}, and steps, \{3, 5, 8\}. We found that using a decay rate of 0.9 with step of 5 gives best performance in most cases.
 
 \paragraph{Evaluation Metric}
-The performance is reported using the precision-recall (\PR) curve, calculated according to the extraction results ranked decreasingly by their confidence scores, a standard evaluation metric in relation extraction.
+The performance is reported using the precision-recall (\PR) curve,
+% which is calculated according to the extraction results ranked decreasingly by their confidence scores, a standard evaluation metric in relation extraction.
+which is a standard evaluation metric in relation extraction.
+Specifically, the extraction results are first ranked decreasingly by their confidence scores, then the precision and recall are calculated by setting the threshold to be the score of each extraction result one by one.
 
 \paragraph{Naming Conventions}
 We evaluate our approach under a wide range of settings for

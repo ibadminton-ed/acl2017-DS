@@ -146,8 +146,8 @@ This is because that it ranks higher the sentences expressing either \texttt{bir
 We also compare our dynamic transition matrix method with the global transition matrix method,
 which maintains only one transition matrix for all training instances. %instead of dynamically producing a transition matrix for each instance.
 % and is updated via back-propagation during training. 
-\orange{Specifically, instead of dynamically generating a transition matrix for each datum, we first initialize an identity matrix $\mathbf{T}'\in\mathbb{R}^{|\mathbb{C}|\times |\mathbb{C}|}$, where $|\mathbb{C}|$ is the number of relations (including \texttt{no-relation}).
-Then the global transition matrix $\mathbf{T}$ is built by applying \emph{softmax} to each row of $\mathbf{T}'$ so that $\sum_j{\mathbf{T}_{ij}}=1$:}
+Specifically, instead of dynamically generating a transition matrix for each datum, we first initialize an identity matrix $\mathbf{T}'\in\mathbb{R}^{|\mathbb{C}|\times |\mathbb{C}|}$, where $|\mathbb{C}|$ is the number of relations (including \texttt{no-relation}).
+Then the global transition matrix $\mathbf{T}$ is built by applying \emph{softmax} to each row of $\mathbf{T}'$ so that $\sum_j{\mathbf{T}_{ij}}=1$:
 \begin{equation}
 \label{shared_mat}
 T_{ij} = \frac{e^{T'_{ij}}}{\sum_{j=1}^{|\mathbb{C}|}{e^{T'_{ij}}}}
@@ -161,18 +161,18 @@ resulting in a performance drop compared to the dynamic one (\texttt{\_TM}).
 
 
 \paragraph{Case Study}
-\orange{We find our transition matrix method tends to obtain more significant improvement on noisier relations.} For example, \textit{time\_of\_spacecraft\_landing} is noisier than \textit{time\_of\_spacecraft\_launch} since compared to the launching of a spacecraft, there are fewer sentences containing the landing time of a spacecraft that talks directly about the landing. Instead, many of these sentences tend to talk about the activities of the crew. Our \texttt{sent\_PR\_TM} model improves the F1 of \textit{time\_of\_spacecraft\_landing} and \textit{time\_of\_spacecraft\_launch} over \texttt{sent\_PR} by 9.09\% and 2.78\%, respectively. 
+We find our transition matrix method tends to obtain more significant improvement on noisier relations. For example, \textit{time\_of\_spacecraft\_landing} is noisier than \textit{time\_of\_spacecraft\_launch} since compared to the launching of a spacecraft, there are fewer sentences containing the landing time of a spacecraft that talks directly about the landing. Instead, many of these sentences tend to talk about the activities of the crew. Our \texttt{sent\_PR\_TM} model improves the F1 of \textit{time\_of\_spacecraft\_landing} and \textit{time\_of\_spacecraft\_launch} over \texttt{sent\_PR} by 9.09\% and 2.78\%, respectively. 
 The transition matrix makes more significant improvement on \textit{time\_of\_spacecraft\_landing} since there are more noisy sentences for our method to handle, which results in more significant improvement on the quality of the training data.
 
 
 \subsection{Performance on \EntityRE}
 We evaluate our bag level models on \EntityRE.
-As shown in Figure~\ref{fig: Riedel_res}, it is not surprising that the basic model with attention aggregation (\texttt{att}) significantly outperforms the average one (\texttt{avg}), where \texttt{att}  in our bag embedding is similar in spirit to \cite{lin2016neural},
+As shown in Figure~\ref{fig: Riedel_res}, it is not surprising that the basic model with attention aggregation (\texttt{att}) significantly outperforms the average one (\texttt{avg}), where \texttt{att} in our bag embedding is similar in spirit to \cite{lin2016neural},
 which has reported the-state-of-the-art performance on \EntityRE.
 When injected with our transition matrix approach,  both \texttt{att\_TM} and \texttt{avg\_TM} clearly outperform their basic versions.
 
 %since the unhandled sentence level noise propagates to the bag level, which makes the bag level noise become more severe, the transition matrix has more chance to model the noise. Therefore, the \emph{avg\_TM} model clearly outperforms the \emph{avg} model.
-Similar to the situations in \TimeRE, since \texttt{att} has taken the \textit{at-least-one assumption} into account  through its attention-based bag embedding mechanism, thus the improvement by \texttt{att\_TM}  is not as large as by \texttt{avg\_TM}.
+Similar to the situations in \TimeRE, since \texttt{att} has taken the \textit{at-least-one assumption} into account through its attention-based bag embedding mechanism, thus the improvement made by \texttt{att\_TM} is not as large as by \texttt{avg\_TM}.
 %Since
 %Note that the low recall part corresponds to high precision, which is more useful than the rest of the extraction results in practice. Therefore, our transition matrix method is also useful in this situation.
 
@@ -187,69 +187,73 @@ Similar to the situations in \TimeRE, since \texttt{att} has taken the \textit{a
 
 
 
-\begin{table}
-\centering
-\small{
-\begin{tabular}{|c|c|c|c|c|c|}
-\hline
-% \textbf{Att\_Weight}
-% \bm{$\beta$}
-\textbf{Method}							& \textbf{P@R\_5} 		& \textbf{P@R\_10} 			& \textbf{P@R\_15} & \textbf{P@R\_20} \\
-\hline
-\textit{Mintz} 							&52.13	&39.88	&34.07	&28.55 	\\
-\hline
-\textit{MultiR} 						&63.23	&60.94	&41.18	&36.41 	\\
-\hline
-\textit{MIML} 							&68.53	&60.75	&46.36	&33.82 	\\
-\hline
-\textit{avg} 								&59.76	&58.04	&54.16	&51.25 	\\
-\hline
-\textit{avg\_TM} 						&70.50	&58.56	&54.77	&52.35 	\\
-\hline
-\textit{att} 								&66.67	&61.51	&59.31	&56.36 	\\
-\hline
-\textit{att\_TM} 						&\textbf{74.81}	&\textbf{67.24}	&\textbf{62.21}	&\textbf{57.61} 	\\
-\hline
-\end{tabular}
-}
-\caption{\orange{Comparison with feature-based methods. P@R\_5/10/15/20 refers to the precision when recall equals 5\%, 10\%, 15\% and 20\%.}}
-\label{feature-based}
-\vspace{-1em}
-\end{table}
-
 % \begin{table}
 % \centering
 % \small{
-% \begin{tabular}{|c|c|c|c|c|}
+% \begin{tabular}{|c|c|c|c|c|c|}
 % \hline
 % % \textbf{Att\_Weight}
 % % \bm{$\beta$}
-% \textbf{Method}							& \textbf{P@R\_10} 		& \textbf{P@R\_20} 			& \textbf{P@R\_30} \\
+% \textbf{Method}							& \textbf{P@R\_5} 		& \textbf{P@R\_10} 			& \textbf{P@R\_15} & \textbf{P@R\_20} \\
 % \hline
-% \textit{Mintz} 							&39.88	&28.55	&16.81 	\\
+% \textit{Mintz} 							&52.13	&39.88	&34.07	&28.55 	\\
 % \hline
-% \textit{MultiR} 						&60.94	&36.41	&- 	\\
+% \textit{MultiR} 						&63.23	&60.94	&41.18	&36.41 	\\
 % \hline
-% \textit{MIML} 							&60.75	&33.82	&- 	\\
+% \textit{MIML} 							&68.53	&60.75	&46.36	&33.82 	\\
 % \hline
-% \textit{avg} 								&58.04	&51.25	&42.45 	\\
+% \textit{avg} 								&59.76	&58.04	&54.16	&51.25 	\\
 % \hline
-% \textit{avg\_TM} 						&58.56	&52.35	&43.59 	\\
+% \textit{avg\_TM} 						&70.50	&58.56	&54.77	&52.35 	\\
 % \hline
-% \textit{att} 								&61.51	&56.36	&\textbf{45.63} 	\\
+% \textit{att} 								&66.67	&61.51	&59.31	&56.36 	\\
 % \hline
-% \textit{att\_TM} 						&\textbf{67.24}	&\textbf{57.61}	&44.90 	\\
+% \textit{att\_TM} 						&\textbf{74.81}	&\textbf{67.24}	&\textbf{62.21}	&\textbf{57.61} 	\\
 % \hline
 % \end{tabular}
 % }
-% \caption{\orange{Comparison with feature-based methods. P@R\_5/10/15/20 refers to the precision when recall equals 5\%, 10\%, 15\% and 20\%.}}
+% \caption{Comparison with feature-based methods. P@R\_5/10/15/20 refers to the precision when recall equals 5\%, 10\%, 15\% and 20\%.}
 % \label{feature-based}
+% \vspace{-1em}
 % \end{table}
 
+\begin{table}
+\centering
+\small{
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+% \textbf{Att\_Weight}
+% \bm{$\beta$}
+\textbf{Method}							& \textbf{P@R\_10} 		& \textbf{P@R\_20} 			& \textbf{P@R\_30} \\
+\hline
+\textit{Mintz} 							&39.88	&28.55	&16.81 	\\
+\hline
+\textit{MultiR} 						&60.94	&36.41	&- 	\\
+\hline
+\textit{MIML} 							&60.75	&33.82	&- 	\\
+\hline
+\textit{avg} 								&58.04	&51.25	&42.45 	\\
+\hline
+\textit{avg\_TM} 						&58.56	&52.35	&43.59 	\\
+\hline
+\textit{att} 								&61.51	&56.36	&\textbf{45.63} 	\\
+\hline
+\textit{att\_TM} 						&\textbf{67.24}	&\textbf{57.61}	&44.90 	\\
+\hline
+\end{tabular}
+}
+\caption{Comparison with feature-based methods. P@R\_10/20/30 refers to the precision when recall equals 10\%, 20\% and 30\%.}
+\label{feature-based}
+\end{table}
+
 % \paragraph{Comparison with Feature-based Methods}
-\orange{We also include the comparison with three feature-based methods}: \texttt{Mintz}~\cite{mintz2009distant} is a multiclass logistic regression model; \texttt{MultiR}~\cite{hoffmann2011knowledge} is a probabilistic graphical model that can handle overlapping relations; \texttt{MIML}~\cite{surdeanu2012multi} is also a probabilistic graphical model but operates in the multi-instance multi-label paradigm. As shown in Table~\ref{feature-based}, although traditional feature-based methods have reasonable results in the low recall region, their performances drop quickly as the recall goes up, and \texttt{MultiR} and \texttt{MIML} did not even reach the 30\% recall. This indicates that, while the patterns captured by feature based models are reliable, their coverage is relatively low. On the other hand, neural network models have more stable performance across different recalls, 
-and \texttt{att\_TM} performs consistently better than other models,
-% and \texttt{att\_TM} performs generally better than other models, 
+We also include the comparison with three feature-based methods: \texttt{Mintz}~\cite{mintz2009distant} is a multiclass logistic regression model; \texttt{MultiR}~\cite{hoffmann2011knowledge} is a probabilistic graphical model that can handle overlapping relations; \texttt{MIML}~\cite{surdeanu2012multi} is also a probabilistic graphical model but operates in the multi-instance multi-label paradigm. As shown in Table~\ref{feature-based}, although traditional feature-based methods have reasonable results in the low recall region, their performances drop quickly as the recall goes up,
+and \texttt{MultiR} and \texttt{MIML} did not even reach the 30\% recall.
+This indicates that, while human-designed featurs can effectively capture certain relation patterns, their coverage is relatively low.
+% This indicates that, while the patterns captured by feature based models are reliable, their coverage is relatively low. 
+On the other hand, neural network models have more stable performance across different recalls, 
+% and \texttt{att\_TM} performs consistently better than other models,
+and \texttt{att\_TM} performs generally better than other models, 
 indicating again the effectiveness of our transition matrix method.
 
 
